@@ -1,1794 +1,1698 @@
-<!DOCTYPE html>
-<html lang="vi" class="dark">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Thiệp Sinh Nhật Hoàng Gia & Cổ Tích Lãng Mạn</title>
-  
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Love story - kỉ niệm 2 tháng chính thức quen nhau</title>
 
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            hero: ['Playfair Display', 'serif'],
-            serif: ['Playfair Display', 'serif'],
-            heading: ['Poppins', 'sans-serif'],
-            body: ['Poppins', 'sans-serif'],
-            button: ['Poppins', 'sans-serif'],
-            caption: ['Poppins', 'sans-serif'],
-            handwriting: ['Dancing Script', 'cursive'],
-            sans: ['Poppins', 'sans-serif']
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Dancing+Script:wght@600;700&family=Great+Vibes&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <!-- Tailwind CSS v3 CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Be Vietnam Pro', 'sans-serif'],
+              dancing: ['Dancing Script', 'cursive'],
+              vibes: ['Great Vibes', 'cursive'],
+              playfair: ['Playfair Display', 'serif'],
+            },
+            keyframes: {
+              pulseGlow: {
+                '0%, 100%': {
+                  boxShadow: '0 0 15px rgba(255, 107, 129, 0.6), 0 0 30px rgba(255, 159, 67, 0.4)',
+                  transform: 'scale(1)',
+                },
+                '50%': {
+                  boxShadow: '0 0 30px rgba(255, 107, 129, 0.9), 0 0 50px rgba(255, 159, 67, 0.7)',
+                  transform: 'scale(1.04)',
+                },
+              },
+              floatUp: {
+                '0%': { transform: 'translateY(100vh) rotate(0deg) scale(0.8)', opacity: '0' },
+                '20%': { opacity: '0.8' },
+                '80%': { opacity: '0.8' },
+                '100%': { transform: 'translateY(-20vh) rotate(360deg) scale(1.2)', opacity: '0' },
+              },
+              fadeIn: {
+                '0%': { opacity: '0', transform: 'translateY(10px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              }
+            },
+            animation: {
+              'pulse-glow': 'pulseGlow 2.5s infinite ease-in-out',
+              'float-heart': 'floatUp 14s linear infinite',
+              'fade-in': 'fadeIn 1s ease-out forwards',
+            }
           }
         }
       }
-    }
-  </script>
+    </script>
 
-  <!-- Canvas Confetti CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <!-- Custom CSS Styles -->
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: rgba(255, 230, 235, 0.5);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #ff80bf;
+        border-radius: 999px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #ff528c;
+      }
+    </style>
 
-  <!-- React & ReactDOM 18 CDN -->
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <!-- React 18 & ReactDOM 18 CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
 
-  <!-- Babel Standalone CDN -->
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Babel Standalone CDN -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-  <style>
-    @keyframes pulseSlow {
-      0%, 100% { transform: scale(1); opacity: 0.9; }
-      50% { transform: scale(1.05); opacity: 1; }
-    }
-    .animate-pulse-slow {
-      animation: pulseSlow 3s ease-in-out infinite;
-    }
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-8px); }
-    }
-    .animate-float {
-      animation: float 4s ease-in-out infinite;
-    }
-    /* Scrollbar Styling */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: rgba(15, 23, 42, 0.6);
-    }
-    ::-webkit-scrollbar-thumb {
-      background: rgba(244, 114, 182, 0.4);
-      border-radius: 9999px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: rgba(244, 114, 182, 0.7);
-    }
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-  </style>
-</head>
-<body class="bg-slate-950 text-slate-100 font-sans antialiased overflow-x-hidden selection:bg-pink-500 selection:text-white">
-  
-  <div id="root"></div>
+    <!-- Canvas Confetti CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  </head>
+  <body class="bg-gradient-to-br from-amber-100 via-rose-200 to-pink-300 text-slate-800 antialiased min-h-screen selection:bg-rose-500 selection:text-white">
+    <!-- Main React Root Container -->
+    <div id="root"></div>
 
-  <!-- React App Code -->
-  <script type="text/babel">
-    const { useState, useEffect, useRef } = React;
+    <!-- Complete Self-Contained React Application Code -->
+    <script type="text/babel">
+      const { useState, useEffect, useRef, useMemo } = React;
 
-    // --- SVG ICON COMPONENT ---
-    const Icon = ({ name, className = "w-5 h-5", ...props }) => {
-      const icons = {
-        Heart: <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />,
-        Sparkles: <path d="m12 3-1.9 5.8a2 2 0 0 1-1.28 1.28L3 12l5.8 1.9a2 2 0 0 1 1.28 1.28L12 21l1.9-5.8a2 2 0 0 1 1.28-1.28L21 12l-5.8-1.9a2 2 0 0 1-1.28-1.28Z" />,
-        Crown: <path d="m2 4 3 12h14l3-12-6 7-4-5-4 5-6-7zm3 16h14" />,
-        Key: <path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4a1 1 0 0 0-1.4 0l-2.1 2.1a1 1 0 0 0 0 1.4zM21 2l-9.6 9.6A6.5 6.5 0 1 0 14 14l1.5-1.5" />,
-        Lock: <path d="M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2zm-7 0V7a5 5 0 0 1 10 0v4" />,
-        Gift: <path d="M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7zm0 0h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" />,
-        ScrollText: <path d="M8 21h12a2 2 0 0 0 2-2v-2H10v2a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v12a4 4 0 0 0 4 4zm0 0H4M19 17V3a2 2 0 0 0-2-2H8M12 7h4M12 11h4" />,
-        Music: <path d="M9 18V5l12-2v13M9 9l12-2M6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm12 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />,
-        Camera: <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3zM12 18a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" />,
-        Cake: <path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1M2 21h20M7 8v3M12 8v3M17 8v3M7 4h.01M12 4h.01M17 4h.01" />,
-        Moon: <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />,
-        Sun: <path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm0-5v2m0 14v2m9-9h-2M5 12H3m15.364-6.364l-1.414 1.414M7.05 16.95l-1.414 1.414m12.728 0l-1.414-1.414M7.05 7.05L5.636 5.636" />,
-        Settings: <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2zM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />,
-        Play: <path d="m6 3 14 9-14 9V3z" />,
-        Pause: <path d="M6 4h4v16H6zm8 0h4v16h-4z" />,
-        RotateCcw: <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8M3 3v5h5" />,
-        ArrowRight: <path d="M5 12h14M12 5l7 7-7 7" />,
-        ArrowLeft: <path d="M19 12H5M12 19l-7-7 7-7" />,
-        Check: <path d="M20 6 9 17l-5-5" />,
-        X: <path d="M18 6 6 18M6 6l12 12" />,
-        Star: <path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />,
-        Flame: <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 3.5z" />,
-        ShieldCheck: <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10zM9 12l2 2 4-4" />,
-        FastForward: <path d="m13 19 9-7-9-7v14zM2 19l9-7-9-7v14z" />,
-        User: <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" />,
-        MessageSquare: <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />,
-        Image: <path d="M18 22H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2zM9 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm11 8-5-5-4 4-2-2-4 4" />,
-        Plus: <path d="M12 5v14M5 12h14" />,
-        Trash2: <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6" />,
-        Save: <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2zM17 21v-8H7v8M7 3v5h8" />,
-        Share2: <g><circle cx="18" cy="5" r="3"/><path d="M6 12 18 5M6 12l12 7"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/></g>,
-        Send: <g><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></g>,
-        Volume2: <g><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></g>,
-        Quote: <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.75-2-2-2H4c-1.25 0-2 .75-2 2v6c0 1.25.75 2 2 2h3c0 3-1 6-4 8zM15 21c3 0 7-1 7-8V5c0-1.25-.75-2-2-2h-4c-1.25 0-2 .75-2 2v6c0 1.25.75 2 2 2h3c0 3-1 6-4 8z"/>,
-        Disc: <g><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></g>,
-        SkipBack: <g><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></g>,
-        SkipForward: <g><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></g>
+      // --- GOOGLE DRIVE & DROPBOX DIRECT LINK CONVERTER HELPER ---
+      const getGoogleDriveFileId = (url) => {
+        if (!url || typeof url !== 'string') return null;
+        const trimmed = url.trim();
+        const driveRegex = /(?:drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:[^&]+&)*id=)|lh3\.googleusercontent\.com\/d\/)([a-zA-Z0-9_-]+)/i;
+        const match = trimmed.match(driveRegex);
+        return match && match[1] ? match[1] : null;
       };
 
-      return (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className={className}
-          {...props}
-        >
-          {icons[name] || icons.Heart}
-        </svg>
-      );
-    };
+      const isGoogleDriveUrl = (url) => getGoogleDriveFileId(url) !== null;
 
-    // --- INITIAL CONFIG ---
-    const initialBirthdayConfig = {
-      recipientName: "My Princess",
-      senderName: "Your Forever Love",
-      birthdayDate: "07 August 2026",
-      ageNumber: 20,
-      ageTitle: "Tuổi 20 Rạng Rỡ & Ngọt Ngào",
-      theme: {
-        primaryColor: "#FF80AB",
-        secondaryColor: "#E040FB",
-        accentColor: "#FFD700"
-      },
-      photos: [
-        {
-          id: "1",
-          url: "https://images.unsplash.com/photo-1518895949257-7621c3c786d7?auto=format&fit=crop&w=800&q=80",
-          title: "Nụ Cười Đầu Tiên",
-          caption: "Khoảnh khắc anh nhìn thấy nụ cười của em, trái tim anh như tan chảy trong sự ngọt ngào.",
-          date: "14 Feb 2024",
-          location: "Đà Lạt Mộng Mơ"
-        },
-        {
-          id: "2",
-          url: "https://images.unsplash.com/photo-1529619768328-e37af76c6fe5?auto=format&fit=crop&w=800&q=80",
-          title: "Dưới Ánh Đèn Đêm",
-          caption: "Buổi tối cùng em dạo bước qua những con phố lung linh ánh đèn và tiếng cười ngập tràn.",
-          date: "20 May 2024",
-          location: "Phố Cổ Hội An"
-        },
-        {
-          id: "3",
-          url: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=800&q=80",
-          title: "Biển Chiều Hoàng Hôn",
-          caption: "Gió biển thổi nhẹ vờn tóc em, tay nắm chặt tay cùng hứa hẹn về một tương lai lãng mạn.",
-          date: "10 Aug 2024",
-          location: "Bãi Biển Phú Quốc"
-        },
-        {
-          id: "4",
-          url: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=800&q=80",
-          title: "Ấm Áp Ngày Mùa Đông",
-          caption: "Cùng uống tách trà ấm, trao nhau những cái ôm nồng nàn dẫu ngoài trời trở lạnh.",
-          date: "24 Dec 2024",
-          location: "Sapa Tuyết Trắng"
-        }
-      ],
-      letter: {
-        title: "Thư Sinh Nhật Lãng Mạn",
-        paragraphs: [
-          "Gửi em - công chúa xinh đẹp nhất trong thế giới của anh,",
-          "Hôm nay là một ngày vô cùng đặc biệt, ngày mà vũ trụ đã mang một thiên thần nhỏ đáng yêu đến bên anh. Cảm ơn em vì đã luôn ở đây, mang đến cho anh những nụ cười, tình yêu nồng thắm và những ký ức tuyệt vời nhất.",
-          "Tuổi mới đến, anh chúc em luôn rạng rỡ như ánh mặt trời ban mai, hạnh phúc tràn ngập trong ánh mắt và mọi điều ước ước mơ của em đều trở thành hiện thực.",
-          "Cho dù thời gian có trôi đi, tình yêu của anh dành cho em vẫn sẽ luôn ngọt ngào và vĩnh cửu như ngày đầu tiên."
-        ],
-        closing: "Yêu em nhiều hơn mỗi ngày,",
-        signature: "Anh Của Em ❤️",
-        typewriterSpeedMs: 35
-      },
-      playlist: [
-        {
-          id: "track-1",
-          title: "Fairytale Waltz of Love",
-          artist: "Magical Symphony",
-          cover: "https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=400&q=80",
-          duration: "03:45",
-          lyricsQuote: "Like stars in the night sky, your love shines forever bright."
-        },
-        {
-          id: "track-2",
-          title: "Golden Hogwarts Stars",
-          artist: "Dreamy Serenade",
-          cover: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=400&q=80",
-          duration: "04:12",
-          lyricsQuote: "In every magical universe, I would choose you again and again."
-        },
-        {
-          id: "track-3",
-          title: "Forever Princess Symphony",
-          artist: "Enchanted Strings",
-          cover: "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=400&q=80",
-          duration: "03:30",
-          lyricsQuote: "Thank you for existing and making every day a fairytale."
-        }
-      ]
-    };
+      const isDropboxUrl = (url) => {
+        if (!url || typeof url !== 'string') return false;
+        return /dropbox\.com/i.test(url) || /dl\.dropboxusercontent\.com/i.test(url);
+      };
 
-    // --- WEB AUDIO API SYNTHESIZER ---
-    class AudioEngine {
-      constructor() {
-        this.ctx = null;
-        this.masterGain = null;
-        this.isBgmPlaying = false;
-        this.bgmInterval = null;
-        this.currentNoteIndex = 0;
-      }
-      init() {
-        if (!this.ctx) {
-          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-          if (AudioContextClass) {
-            this.ctx = new AudioContextClass();
-            this.masterGain = this.ctx.createGain();
-            this.masterGain.gain.setValueAtTime(0.3, this.ctx.currentTime);
-            this.masterGain.connect(this.ctx.destination);
+      const getGoogleDrivePreviewIframeUrl = (url) => {
+        const fileId = getGoogleDriveFileId(url);
+        if (!fileId) return null;
+        return `https://drive.google.com/file/d/${fileId}/preview`;
+      };
+
+      const getGoogleDriveViewUrl = (url) => {
+        const fileId = getGoogleDriveFileId(url);
+        if (!fileId) return url;
+        return `https://drive.google.com/file/d/${fileId}/view?usp=sharing`;
+      };
+
+      const getDriveDirectLink = (url, mediaType = 'auto') => {
+        if (!url || typeof url !== 'string') return url || '';
+        const trimmed = url.trim();
+
+        // 1. Google Drive conversion
+        const fileId = getGoogleDriveFileId(trimmed);
+        if (fileId) {
+          if (mediaType === 'audio') {
+            return `https://drive.google.com/uc?export=download&id=${fileId}`;
           }
+          // Convert all images, videos, url & photoUrl from Drive to standard lh3 streamable link format
+          return `https://lh3.googleusercontent.com/d/${fileId}`;
         }
-        if (this.ctx && this.ctx.state === 'suspended') {
-          this.ctx.resume();
-        }
-      }
-      playClick() {
-        this.init();
-        if (!this.ctx) return;
-        const osc = this.ctx.createOscillator();
-        const gain = this.ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(600, this.ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(1000, this.ctx.currentTime + 0.08);
-        gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.08);
-        osc.connect(gain);
-        gain.connect(this.masterGain);
-        osc.start();
-        osc.stop(this.ctx.currentTime + 0.08);
-      }
-      playMagicSparkle() {
-        this.init();
-        if (!this.ctx) return;
-        const notes = [523.25, 659.25, 783.99, 1046.50, 1318.51];
-        notes.forEach((freq, idx) => {
-          const osc = this.ctx.createOscillator();
-          const gain = this.ctx.createGain();
-          osc.type = 'triangle';
-          osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.06);
-          gain.gain.setValueAtTime(0.1, this.ctx.currentTime + idx * 0.06);
-          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + idx * 0.06 + 0.3);
-          osc.connect(gain);
-          gain.connect(this.masterGain);
-          osc.start(this.ctx.currentTime + idx * 0.06);
-          osc.stop(this.ctx.currentTime + idx * 0.06 + 0.3);
-        });
-      }
-      playStarCollect() {
-        this.playMagicSparkle();
-      }
-      playFanfare() {
-        this.init();
-        if (!this.ctx) return;
-        const fanfareNotes = [
-          { freq: 523.25, duration: 0.15, delay: 0 },
-          { freq: 659.25, duration: 0.15, delay: 0.15 },
-          { freq: 783.99, duration: 0.15, delay: 0.3 },
-          { freq: 1046.50, duration: 0.5, delay: 0.45 }
-        ];
-        fanfareNotes.forEach(({ freq, duration, delay }) => {
-          const osc = this.ctx.createOscillator();
-          const gain = this.ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(freq, this.ctx.currentTime + delay);
-          gain.gain.setValueAtTime(0.2, this.ctx.currentTime + delay);
-          gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + delay + duration);
-          osc.connect(gain);
-          gain.connect(this.masterGain);
-          osc.start(this.ctx.currentTime + delay);
-          osc.stop(this.ctx.currentTime + delay + duration);
-        });
-      }
-      playFirework() {
-        this.init();
-        if (!this.ctx) return;
-        const now = this.ctx.currentTime;
-        const osc = this.ctx.createOscillator();
-        const gain = this.ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(300, now);
-        osc.frequency.exponentialRampToValueAtTime(1200, now + 0.3);
-        gain.gain.setValueAtTime(0.15, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
-        osc.connect(gain);
-        gain.connect(this.masterGain);
-        osc.start(now);
-        osc.stop(now + 0.3);
-      }
-      playBlowCandle() {
-        this.init();
-        if (!this.ctx) return;
-        const bufferSize = this.ctx.sampleRate * 0.3;
-        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
-        const output = buffer.getChannelData(0);
-        for (let i = 0; i < bufferSize; i++) {
-          output[i] = Math.random() * 2 - 1;
-        }
-        const whiteNoise = this.ctx.createBufferSource();
-        whiteNoise.buffer = buffer;
-        const filter = this.ctx.createBiquadFilter();
-        filter.type = 'lowpass';
-        filter.frequency.setValueAtTime(800, this.ctx.currentTime);
-        filter.frequency.exponentialRampToValueAtTime(100, this.ctx.currentTime + 0.3);
-        const gain = this.ctx.createGain();
-        gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.3);
-        whiteNoise.connect(filter);
-        filter.connect(gain);
-        gain.connect(this.masterGain);
-        whiteNoise.start();
-      }
-      startSynthBgm() {
-        if (this.isBgmPlaying) return;
-        this.init();
-        this.isBgmPlaying = true;
-        const melodyNotes = [
-          [261.63, 329.63, 392.00, 493.88],
-          [220.00, 261.63, 329.63, 392.00],
-          [174.61, 220.00, 261.63, 329.63],
-          [196.00, 246.94, 293.66, 392.00],
-        ];
-        const arpeggio = [523.25, 659.25, 783.99, 987.77, 1046.50, 1318.51];
-        this.currentNoteIndex = 0;
 
-        this.bgmInterval = window.setInterval(() => {
-          if (!this.ctx || !this.masterGain) return;
-          const now = this.ctx.currentTime;
-          const chordIdx = Math.floor(this.currentNoteIndex / 8) % melodyNotes.length;
-          const chord = melodyNotes[chordIdx];
-          if (this.currentNoteIndex % 8 === 0) {
-            chord.forEach((freq) => {
-              if (!this.ctx || !this.masterGain) return;
-              const osc = this.ctx.createOscillator();
-              const gain = this.ctx.createGain();
-              osc.type = 'sine';
-              osc.frequency.setValueAtTime(freq, now);
-              gain.gain.setValueAtTime(0.04, now);
-              gain.gain.exponentialRampToValueAtTime(0.001, now + 2.0);
-              osc.connect(gain);
-              gain.connect(this.masterGain);
-              osc.start(now);
-              osc.stop(now + 2.0);
-            });
+        // 2. Dropbox conversion
+        if (isDropboxUrl(trimmed)) {
+          let direct = trimmed.replace(/www\.dropbox\.com/i, 'dl.dropboxusercontent.com');
+          if (direct.includes('dl=0')) {
+            direct = direct.replace('dl=0', 'raw=1');
+          } else if (!direct.includes('raw=1') && !direct.includes('dl=1')) {
+            direct += (direct.includes('?') ? '&' : '?') + 'raw=1';
           }
-          const arpFreq = arpeggio[this.currentNoteIndex % arpeggio.length];
-          const osc = this.ctx.createOscillator();
-          const gain = this.ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(arpFreq, now);
-          gain.gain.setValueAtTime(0.03, now);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
-          osc.connect(gain);
-          gain.connect(this.masterGain);
-          osc.start(now);
-          osc.stop(now + 0.5);
-          this.currentNoteIndex++;
-        }, 320);
-      }
-      stopSynthBgm() {
-        if (this.bgmInterval !== null) {
-          clearInterval(this.bgmInterval);
-          this.bgmInterval = null;
+          return direct;
         }
-        this.isBgmPlaying = false;
-      }
-    }
-    const audioEngine = new AudioEngine();
 
-    const launchGrandConfettiShower = () => {
-      if (!window.confetti) return;
-      const duration = 2.5 * 1000;
-      const animationEnd = Date.now() + duration;
-      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
-
-      const interval = setInterval(() => {
-        const timeLeft = animationEnd - Date.now();
-        if (timeLeft <= 0) return clearInterval(interval);
-        const particleCount = 50 * (timeLeft / duration);
-        window.confetti({ ...defaults, particleCount, origin: { x: Math.random() * 0.4 + 0.1, y: Math.random() - 0.2 } });
-        window.confetti({ ...defaults, particleCount, origin: { x: Math.random() * 0.4 + 0.5, y: Math.random() - 0.2 } });
-      }, 250);
-    };
-
-    // --- PARTICLE BACKGROUND CANVAS ---
-    const ParticleSystem = (canvas) => {
-      let ctx = canvas.getContext('2d');
-      let animId = null;
-      let particles = [];
-
-      const resize = () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        return trimmed;
       };
 
-      const createParticle = () => {
-        const types = ['heart', 'star', 'sparkle'];
-        return {
-          x: Math.random() * canvas.width,
-          y: canvas.height + 20,
-          size: Math.random() * 12 + 6,
-          speedY: Math.random() * 1.5 + 0.5,
-          speedX: (Math.random() - 0.5) * 0.6,
-          opacity: Math.random() * 0.5 + 0.3,
-          type: types[Math.floor(Math.random() * types.length)],
-          color: ['#F472B6', '#FBBF24', '#C084FC', '#F43F5E'][Math.floor(Math.random() * 4)]
-        };
+      const convertGoogleDriveUrl = getDriveDirectLink;
+
+      // --- DEFAULT DATA CONFIGURATION ---
+      const defaultCoupleConfig = {
+        person1Name: 'Võ Minh Thành',
+        person2Name: 'Vũ Phương Hoa',
+        startDate: '2026-05-20',
+        audioUrl: 'https://dl.dropboxusercontent.com/scl/fi/325avou6d5o5v2cfvsd40/HO-NG-D-NG-Y-N-INTRO-_-OFFICIAL-AUDIO.mp3?rlkey=hkml4jdg4231nijpq7qql65li&st=xcque8r1&raw=1',
+        audioTitle: 'HOÀNG DŨNG - YÊN',
+        heroSubtitle: 'Mỗi ngày trôi qua bên em đều là một món quà kỳ diệu nhất trong cuộc đời anh ✨',
+        letterContent: `Gửi người anh yêu thương nhất,\n\nVậy là chúng mình đã chính thức bước sang tháng thứ 2 cùng nắm tay nhau bước đi. 60 ngày không phải chặng đường quá dài, nhưng đủ để anh nhận ra em chính là mảnh ghép bình yên nhất mà anh luôn tìm kiếm.\n\nCảm ơn em đã mang tới những nụ cười, sự ấm áp và sự ngọt ngào tới cho anh. Chúc cho tình yêu của chúng ta luôn rực rỡ, đong đầy như những ngày đầu tiên!\n\niu em thật nhiều! 💕`,
       };
 
-      const init = () => {
-        resize();
-        window.addEventListener('resize', resize);
-        particles = Array.from({ length: 35 }, createParticle);
-      };
-
-      const draw = () => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particles.forEach((p, idx) => {
-          p.y -= p.speedY;
-          p.x += p.speedX;
-          if (p.y < -30) {
-            particles[idx] = createParticle();
-          }
-
-          ctx.save();
-          ctx.globalAlpha = p.opacity;
-          ctx.fillStyle = p.color;
-          ctx.font = `${p.size}px sans-serif`;
-          ctx.fillText(p.type === 'heart' ? '❤️' : p.type === 'star' ? '⭐' : '✨', p.x, p.y);
-          ctx.restore();
-        });
-
-        animId = requestAnimationFrame(draw);
-      };
-
-      init();
-      draw();
-
-      return {
-        destroy: () => {
-          window.removeEventListener('resize', resize);
-          if (animId) cancelAnimationFrame(animId);
+      const defaultGalleryItems = [
+        {
+          id: '1',
+          type: 'image',
+          url: './LoveStory_files/retouch_2026030305520159.jpg',
+          title: 'Buổi hẹn nhiều cảm xúc đầu tiên',
+          caption: 'Khoảnh khắc kỷ niệm ngọt ngào',
+          date: 'Kỷ niệm mới',
+          category: 'highlight'
+        },
+        {
+          id: '2',
+          type: 'image',
+          url: './LoveStory_files/retouch_2026040306231111.jpg',
+          title: 'Những ngày đi chơi với nhau',
+          caption: 'Khoảnh khắc kỷ niệm ngọt ngào',
+          date: '5 tháng tìm hiểu nhau.',
+          category: 'highlight'
+        },
+        {
+          id: '3',
+          type: 'image',
+          url: './LoveStory_files/1774400346969-be80b1bb-fe26-4042-bdae-3fb1d98a4bcf.jpg',
+          title: 'Chụp photobooth với em',
+          caption: 'Lần đầu đi chụp photobooth với em.',
+          date: 'Kỷ niệm mới',
+          category: 'highlight'
+        },
+        {
+          id: '4',
+          type: 'video',
+          url: 'https://lh3.googleusercontent.com/d/1_AzLxvzrlmW1hYzhz_7UejU4ZpHAI_vW',
+          poster: 'https://lh3.googleusercontent.com/d/1wPuoytdoXCInZSx5H2hfbkhCoo8-Vq1A=s2500',
+          title: 'Quay Flycam',
+          caption: 'Lần đầu quay Flycam với em ở Phước Hải.',
+          date: 'Kỷ niệm mới',
+          category: 'highlight'
+        },
+        {
+          id: '5',
+          type: 'image',
+          url: './LoveStory_files/retouch_2026041605571822.jpg',
+          title: 'Mua hoa lần thứ nhất',
+          caption: 'Khoảnh khắc kỷ niệm ngọt ngào',
+          date: 'Kỷ niệm mới',
+          category: 'daily'
+        },
+        {
+          id: '6',
+          type: 'video',
+          url: 'https://lh3.googleusercontent.com/d/1tz4rGh6BGsLqqFm2DzcWUiGsEfeNcElh',
+          poster: 'https://lh3.googleusercontent.com/d/15cXzukBQnj0rD-ItWMrsrFaCkq6BiSao=s2500',
+          title: 'Mua hoa lần thứ hai',
+          caption: 'Khoảnh khắc kỷ niệm ngọt ngào',
+          date: 'Kỷ niệm mới',
+          category: 'highlight'
+        },
+        {
+          id: '7',
+          type: 'video',
+          url: 'https://lh3.googleusercontent.com/d/16BqOgjNCKCvDqwCCddkt1YgBR93VykYg',
+          poster: 'https://lh3.googleusercontent.com/d/1MHw6Of5Byc2H_q6k_KG5GG9VtJmxDlPI=s2500',
+          title: 'Giọng nói ngọt ngào của em',
+          caption: 'Thật sự mê giọng nói này!!!!',
+          date: 'Kỷ niệm mới',
+          category: 'daily'
+        },
+        {
+          id: '8',
+          type: 'image',
+          url: './LoveStory_files/Screenshot_20260728_060900_Instagram.jpg',
+          title: 'Lời tỏa tình thành công',
+          caption: 'Sau nhiều lần cuối cùng em cũng say Yes!!!',
+          date: '20/05/2026',
+          category: 'highlight'
+        },
+        {
+          id: '9',
+          type: 'image',
+          url: './LoveStory_files/IMG_20260615_013217_689.jpg',
+          title: 'Em tổ chức sinh nhật cho anh',
+          caption: 'Khoảnh khắc kỷ niệm ngọt ngào',
+          date: '14/06',
+          category: 'highlight'
+        },
+        {
+          id: '10',
+          type: 'image',
+          url: './LoveStory_files/IMG_20260629_061831_030.jpg',
+          title: 'Lần đầu gặp anh Hai của em',
+          caption: 'Mới gặp 2 anh em không biết nói gì chỉ bắt tay :))',
+          date: 'Kỷ niệm mới',
+          category: 'highlight'
+        },
+        {
+          id: '11',
+          type: 'image',
+          url: './LoveStory_files/IMG_20260706_104102_260.jpg',
+          title: 'Rồi lần đầu gặp gia đình em',
+          caption: 'Hơi run và lo lắng khi gặp ba mẹ em luôn á',
+          date: 'Kỷ niệm mới',
+          category: 'highlight'
+        },
+        {
+          id: '12',
+          type: 'image',
+          url: './LoveStory_files/IMG_20260704_094028_318.jpg',
+          title: 'Em iu',
+          caption: 'Anh iu em lắm luôn á!!!!!',
+          date: 'Kỷ niệm mới',
+          category: 'highlight'
+        },
+        {
+          id: '13',
+          type: 'video',
+          url: 'https://lh3.googleusercontent.com/d/1iY1uELzm3NUBlDv7Q-tPy-R0RHKPXLkw',
+          poster: 'https://lh3.googleusercontent.com/d/1sHBywgGNK5GC0V0LxawrRF1KW-I6trrN=s2500',
+          title: 'Lần đầu cùng em xem pháo hoa',
+          caption: 'Lần đầu đưa em iu đi xem pháo hoa và Sài Gòn về khuya :))',
+          date: 'Kỷ niệm mới',
+          category: 'highlight'
         }
-      };
-    };
-
-    // --- COMPONENTS ---
-
-    // 1. Header Navigation
-    const HeaderNav = ({ currentScene, totalScenes, onSelectScene, isDarkMode, onToggleDarkMode, hasGoldenKey, onOpenEditor }) => {
-      const sceneLabels = [
-        "Cổng Mở", "Lâu Đài", "Săn Chìa Khóa", "Phòng Báu Vật", 
-        "Thư Yêu Thương", "Âm Nhạc", "Album Ảnh", "Bánh Sinh Nhật", "Lời Kết"
       ];
 
-      return (
-        <header className="fixed top-0 inset-x-0 z-50 px-3 py-2.5 sm:px-6 backdrop-blur-xl bg-slate-900/80 border-b border-pink-500/20 text-white flex items-center justify-between shadow-lg">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-pink-500 to-amber-400 flex items-center justify-center text-white shadow-md">
-              <Icon name="Crown" className="w-4 h-4" />
-            </div>
-            <span className="font-hero font-bold text-sm sm:text-base text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-amber-200 to-purple-300 hidden sm:inline">
-              Royal Birthday Tale
-            </span>
-          </div>
-
-          <div className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto max-w-[50vw] sm:max-w-none no-scrollbar py-1 px-1">
-            {sceneLabels.map((label, idx) => (
-              <button
-                key={idx}
-                onClick={() => {
-                  audioEngine.playClick();
-                  onSelectScene(idx);
-                }}
-                className={`px-2.5 py-1 rounded-full text-xs font-button font-medium whitespace-nowrap transition-all ${
-                  currentScene === idx
-                    ? 'bg-gradient-to-r from-pink-500 to-amber-500 text-white shadow-md scale-105'
-                    : 'bg-slate-800/80 text-slate-300 hover:bg-slate-700/80 hover:text-white'
-                }`}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-
-          <div className="flex items-center gap-2">
-            <div className={`px-2.5 py-1 rounded-full border text-xs font-button font-medium flex items-center gap-1.5 ${
-              hasGoldenKey 
-                ? 'bg-amber-500/20 border-amber-400 text-amber-300' 
-                : 'bg-slate-800 border-slate-700 text-slate-400'
-            }`}>
-              <Icon name="Key" className={`w-3.5 h-3.5 ${hasGoldenKey ? 'text-amber-400 animate-bounce' : ''}`} />
-              <span className="hidden sm:inline">{hasGoldenKey ? 'Chìa Khóa Vàng' : 'Chưa Có Chìa Khóa'}</span>
-            </div>
-
-            <button
-              onClick={() => {
-                audioEngine.playClick();
-                onToggleDarkMode();
-              }}
-              className="p-2 rounded-xl bg-slate-800 border border-slate-700 text-amber-300 hover:bg-slate-700 transition"
-              title="Đổi Giao Diện"
-            >
-              <Icon name={isDarkMode ? 'Sun' : 'Moon'} className="w-4 h-4" />
-            </button>
-
-            <button
-              onClick={() => {
-                audioEngine.playClick();
-                onOpenEditor();
-              }}
-              className="p-2 rounded-xl bg-pink-500/20 border border-pink-400/30 text-pink-300 hover:bg-pink-500/30 transition flex items-center gap-1"
-              title="Chỉnh Sửa Nội Dung & Ảnh"
-            >
-              <Icon name="Settings" className="w-4 h-4" />
-            </button>
-          </div>
-        </header>
-      );
-    };
-
-    // 2. Loading Screen
-    const LoadingScreen = ({ onComplete, isDarkMode, config }) => {
-      return (
-        <div className={`min-h-screen flex flex-col items-center justify-center p-6 text-center transition-colors duration-500 ${
-          isDarkMode ? 'bg-slate-950 text-pink-100' : 'bg-gradient-to-b from-pink-100 via-rose-100 to-amber-100 text-slate-800'
-        }`}>
-          <div className="max-w-md w-full p-8 rounded-3xl backdrop-blur-2xl border border-pink-500/30 bg-slate-900/80 shadow-2xl relative z-10 space-y-6 animate-float">
-            <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-tr from-pink-500 via-rose-500 to-amber-400 flex items-center justify-center shadow-xl border-2 border-amber-300 animate-pulse">
-              <Icon name="Heart" className="w-10 h-10 text-white fill-white" />
-            </div>
-
-            <div className="space-y-2">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-400/20 border border-amber-400/40 text-amber-300 text-xs font-button font-medium uppercase tracking-wider">
-                <Icon name="Sparkles" className="w-3.5 h-3.5 text-amber-400" />
-                <span>{config.ageTitle || "Tuổi 20 Rạng Rỡ"}</span>
-              </div>
-
-              <h1 className="text-3xl sm:text-4xl font-hero font-bold text-amber-200 drop-shadow-md">
-                Happy Birthday
-              </h1>
-              <p className="text-xl font-handwriting text-pink-300 font-bold">
-                {config.recipientName} ❤️
-              </p>
-              <p className="text-xs text-pink-200/80 font-body">
-                {config.birthdayDate}
-              </p>
-            </div>
-
-            <button
-              onClick={() => {
-                audioEngine.playMagicSparkle();
-                if (window.confetti) {
-                  window.confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
-                }
-                onComplete();
-              }}
-              className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-pink-500 via-rose-500 to-amber-400 text-white font-button font-medium text-base shadow-xl hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2"
-            >
-              <Icon name="Crown" className="w-5 h-5 text-amber-200" />
-              <span>Khám Phá Vương Quốc Cổ Tích</span>
-            </button>
-          </div>
-        </div>
-      );
-    };
-
-    // 3. Castle Entrance
-    const CastleEntrance = ({ onNext, isDarkMode }) => {
-      return (
-        <div className={`min-h-screen flex flex-col items-center justify-center p-6 pt-20 sm:pt-24 text-center relative overflow-hidden transition-colors duration-500 ${
-          isDarkMode ? 'bg-slate-950 text-pink-100' : 'bg-gradient-to-b from-purple-900 via-pink-900 to-slate-950 text-white'
-        }`}>
-          <div className="max-w-xl w-full p-8 sm:p-10 rounded-3xl backdrop-blur-2xl border border-pink-500/30 bg-slate-900/80 shadow-2xl relative z-10 space-y-6">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-amber-500/20 via-pink-500/20 to-purple-500/20 border border-amber-400/40 text-amber-300 text-xs font-heading font-semibold uppercase tracking-widest shadow-inner">
-              <Icon name="ShieldCheck" className="w-4 h-4 text-amber-400" />
-              <span>Vương Quốc Tình Yêu Vĩnh Cửu</span>
-            </div>
-
-            <h1 className="text-3xl sm:text-5xl font-hero font-bold tracking-wide text-amber-200 drop-shadow-md leading-tight">
-              Cổng Lâu Đài Cổ Tích
-            </h1>
-
-            <p className="text-sm sm:text-base text-pink-200/90 font-body leading-relaxed">
-              Phía sau cánh cổng diệu kỳ này là hành trình lãng mạn được dành riêng cho em. Để mở được hộp quà sinh nhật hoàng gia, hãy tham gia trò chơi săn tìm Chìa Khóa Vàng nhé!
-            </p>
-
-            <button
-              onClick={() => {
-                audioEngine.playMagicSparkle();
-                onNext();
-              }}
-              className="py-4 px-8 rounded-2xl bg-gradient-to-r from-pink-500 via-rose-500 to-amber-400 text-white font-button font-medium text-base shadow-xl hover:scale-105 active:scale-95 transition-all inline-flex items-center gap-2"
-            >
-              <Icon name="Key" className="w-5 h-5 text-amber-200" />
-              <span>Bắt Đầu Săn Tìm Chìa Khóa Vàng</span>
-            </button>
-          </div>
-        </div>
-      );
-    };
-
-    // 4. Heart Quest Game
-    const HeartQuestGame = ({ onCompleteKey, isDarkMode }) => {
-      const canvasRef = useRef(null);
-      const [score, setScore] = useState(0);
-      const [gameWon, setGameWon] = useState(false);
-
-      useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-
-        let player = { x: 150, y: 150, radius: 16, speed: 4 };
-        let stars = [
-          { x: 50, y: 60, collected: false },
-          { x: 250, y: 80, collected: false },
-          { x: 80, y: 220, collected: false },
-          { x: 220, y: 220, collected: false },
-          { x: 150, y: 140, collected: false }
-        ];
-
-        let keys = {};
-        const handleKeyDown = (e) => { keys[e.key] = true; };
-        const handleKeyUp = (e) => { keys[e.key] = false; };
-
-        window.addEventListener('keydown', handleKeyDown);
-        window.addEventListener('keyup', handleKeyUp);
-
-        let animId;
-        const loop = () => {
-          if (keys['ArrowUp'] || keys['w'] || keys['W']) player.y = Math.max(player.radius, player.y - player.speed);
-          if (keys['ArrowDown'] || keys['s'] || keys['S']) player.y = Math.min(canvas.height - player.radius, player.y + player.speed);
-          if (keys['ArrowLeft'] || keys['a'] || keys['A']) player.x = Math.max(player.radius, player.x - player.speed);
-          if (keys['ArrowRight'] || keys['d'] || keys['D']) player.x = Math.min(canvas.width - player.radius, player.x + player.speed);
-
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-          stars.forEach((star) => {
-            if (!star.collected) {
-              const dist = Math.hypot(player.x - star.x, player.y - star.y);
-              if (dist < player.radius + 12) {
-                star.collected = true;
-                audioEngine.playClick();
-                setScore((s) => {
-                  const ns = s + 1;
-                  if (ns >= 5) {
-                    setGameWon(true);
-                    audioEngine.playFanfare();
-                  }
-                  return ns;
-                });
-              }
-
-              ctx.font = '20px sans-serif';
-              ctx.fillText('⭐', star.x - 10, star.y + 7);
-            }
-          });
-
-          ctx.font = '28px sans-serif';
-          ctx.fillText('❤️', player.x - 14, player.y + 10);
-
-          animId = requestAnimationFrame(loop);
-        };
-
-        loop();
-
-        return () => {
-          window.removeEventListener('keydown', handleKeyDown);
-          window.removeEventListener('keyup', handleKeyUp);
-          cancelAnimationFrame(animId);
-        };
-      }, []);
-
-      return (
-        <div className={`min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 pt-20 sm:pt-24 transition-colors duration-500 ${
-          isDarkMode ? 'bg-slate-950 text-emerald-100' : 'bg-gradient-to-b from-teal-900 via-emerald-800 to-slate-950 text-white'
-        }`}>
-          <div className="max-w-xl w-full flex items-center justify-between mb-4 px-2">
-            <div>
-              <h1 className="text-xl sm:text-2xl font-hero font-bold text-amber-300 drop-shadow-md">
-                Trò Chơi Săn Tìm Chìa Khóa Vàng
-              </h1>
-              <p className="text-xs text-amber-200/90 font-body">Điều khiển trái tim thu thập đủ 5 ngôi sao vàng!</p>
-            </div>
-            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-400/20 border border-amber-400/40 text-amber-300 font-button font-medium text-xs">
-              <Icon name="Star" className="w-4 h-4 text-amber-400 fill-amber-400" />
-              <span>{score} / 5</span>
-            </div>
-          </div>
-
-          <div className="relative p-3 rounded-3xl bg-slate-900/90 border-2 border-amber-400/50 shadow-2xl">
-            <canvas ref={canvasRef} width={300} height={280} className="rounded-2xl bg-slate-950" />
-
-            {gameWon && (
-              <div className="absolute inset-0 rounded-3xl bg-slate-950/90 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center space-y-4">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-amber-400 to-yellow-300 flex items-center justify-center shadow-lg animate-bounce">
-                  <Icon name="Key" className="w-8 h-8 text-slate-950" />
-                </div>
-                <h2 className="text-2xl font-hero font-bold text-amber-300">
-                  Chúc Mừng Em!
-                </h2>
-                <p className="text-xs text-pink-200 font-body">
-                  Em đã thu thập đủ 5 ngôi sao và nhận được Chìa Khóa Vàng Hoàng Gia!
-                </p>
-                <button
-                  onClick={() => {
-                    audioEngine.playMagicSparkle();
-                    onCompleteKey();
-                  }}
-                  className="py-3 px-6 rounded-2xl bg-gradient-to-r from-amber-400 to-yellow-300 text-slate-950 font-button font-bold text-sm shadow-xl hover:scale-105 transition-all flex items-center gap-2"
-                >
-                  <Icon name="Gift" className="w-4 h-4" />
-                  <span>Mở Hộp Quà Báu Vật</span>
-                </button>
-              </div>
-            )}
-          </div>
-          <p className="mt-3 text-[11px] text-emerald-200/70 font-body">Dùng các phím mũi tên hoặc WASD trên bàn phím để di chuyển</p>
-        </div>
-      );
-    };
-
-    // 5. Treasure Room
-    const TreasureRoom = ({ onNext, isDarkMode, hasGoldenKey }) => {
-      const [isOpen, setIsOpen] = useState(false);
-
-      const handleOpenChest = () => {
-        if (!hasGoldenKey) return;
-        audioEngine.playFanfare();
-        if (window.confetti) {
-          window.confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+      const defaultMilestones = [
+        {
+          id: 'm1',
+          date: 'Những ngày đầu tiên',
+          title: 'Chạm mặt & Ánh mắt đầu tiên',
+          description: 'Cuộc gặp gỡ đặc biệt tại Hẹn rooftop. Bữa đó tụi mình vừa cùng ý tượng chỗ hẹn vừa cùng mang màu áo chung luôn. Nhất là vừa nhìn thấy nụ cười của em, anh đã biết trái tim mình lỡ một nhịp.',
+          icon: 'fa-mug-hot',
+          photoUrl: './LoveStory_files/retouch_2026030305520159.jpg'
+        },
+        {
+          id: 'm2',
+          date: 'Khoảng 5 tháng',
+          title: 'Thời gian tụi mình tìm hiểu nhau',
+          description: 'Khoảng thời này rất đẹp luôn á nhưng chỉ thiếu là tụi mình chưa là một đôi.',
+          icon: 'fa-handshake-simple',
+          photoUrl: './LoveStory_files/retouch_2026040306231111.jpg'
+        },
+        {
+          id: 'm3',
+          date: '20/05',
+          title: 'Lời tỏ tình chân thành',
+          description: 'Dưới ánh đèn đường lung linh, anh ngập ngừng nắm tay em và nói: "Làm người yêu của anh nhé?" - Em mỉm cười gật đầu!\nP/S: Qua bao nhiêu lần thất bại :))',
+          icon: 'fa-sparkles',
+          photoUrl: './LoveStory_files/Screenshot_20260728_060900_Instagram.jpg'
+        },
+        {
+          id: 'm4',
+          date: 'Tròn 1 tháng',
+          title: 'Kỷ niệm 1 tháng hạnh phúc',
+          description: 'Tụi mình cùng nhau ăn những bữa tối ấm áp, ôn lại những thói quen đáng yêu của nhau. Rồi những chiếc ôm dần ấm áp hơn. Rồi có những chuyến đi gần nhau hơn.',
+          icon: 'fa-gift',
+          photoUrl: './LoveStory_files/IMG_20260615_013217_689.jpg'
+        },
+        {
+          id: 'm5',
+          date: 'Tròn 2 tháng (Hôm nay)',
+          title: 'Love Story - Kỉ niệm 2 tháng quen nhau',
+          description: '60 ngày trôi qua tựa một giấc mơ đẹp. Cảm ơn em vì đã là một phần tuyệt vời nhất trong cuộc đời anh!',
+          icon: 'fa-heart',
+          photoUrl: './LoveStory_files/IMG_20260629_061831_030.jpg'
         }
-        setIsOpen(true);
-      };
+      ];
 
-      return (
-        <div className={`min-h-screen flex flex-col items-center justify-center p-6 pt-20 sm:pt-24 text-center relative overflow-hidden transition-colors duration-500 ${
-          isDarkMode ? 'bg-slate-950 text-pink-100' : 'bg-gradient-to-b from-pink-100 via-rose-100 to-pink-200 text-slate-800'
-        }`}>
-          <div className="max-w-md w-full p-8 rounded-3xl backdrop-blur-2xl border border-pink-500/30 bg-slate-900/80 shadow-2xl space-y-6">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-400/20 border border-amber-400/40 text-amber-300 text-xs font-button font-medium uppercase tracking-wider">
-              <Icon name="Key" className="w-4 h-4 text-amber-400" />
-              <span>Mở Hộp Quà Sinh Nhật</span>
-            </div>
-
-            <h1 className="text-2xl sm:text-3xl font-hero font-bold text-pink-300 drop-shadow-md">
-              Hộp Quà Báu Vật
-            </h1>
-
-            <div className="py-6 flex justify-center">
-              <div className={`w-32 h-32 rounded-3xl bg-gradient-to-tr from-amber-500 via-pink-500 to-rose-500 flex items-center justify-center shadow-2xl border-4 border-amber-300 transition-transform duration-500 ${isOpen ? 'scale-110 rotate-6' : 'animate-bounce'}`}>
-                <Icon name={isOpen ? 'Gift' : 'Lock'} className="w-16 h-16 text-white" />
-              </div>
-            </div>
-
-            {!isOpen ? (
-              <button
-                onClick={handleOpenChest}
-                disabled={!hasGoldenKey}
-                className={`w-full py-4 px-6 rounded-2xl font-button font-medium text-sm shadow-xl transition-all flex items-center justify-center gap-2 ${
-                  hasGoldenKey 
-                    ? 'bg-gradient-to-r from-amber-400 to-yellow-300 text-slate-950 hover:scale-105 active:scale-95' 
-                    : 'bg-slate-800 text-slate-500 cursor-not-allowed'
-                }`}
-              >
-                <Icon name="Key" className="w-5 h-5" />
-                <span>{hasGoldenKey ? "Dùng Chìa Khóa Vàng Mở Quà" : "Chưa Có Chìa Khóa Vàng"}</span>
-              </button>
-            ) : (
-              <div className="space-y-4 animate-float">
-                <p className="text-sm sm:text-base text-pink-200 font-body leading-relaxed italic">
-                  "Chúc Mừng Sinh Nhật Công Chúa Của Anh! Món quà lớn nhất mà anh nhận được trong cuộc đời chính là tình yêu của em. Yêu em vô cùng! ❤️"
-                </p>
-                <button
-                  onClick={() => {
-                    audioEngine.playMagicSparkle();
-                    onNext();
-                  }}
-                  className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-pink-500 to-rose-500 text-white font-button font-medium text-sm shadow-xl hover:scale-105 transition-all flex items-center justify-center gap-2"
-                >
-                  <span>Đọc Thư Lời Chúc Yêu Thương</span>
-                  <Icon name="ArrowRight" className="w-4 h-4" />
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      );
-    };
-
-    // 6. Typewriter Letter
-    const TypewriterLetter = ({ onNext, isDarkMode, config }) => {
-      const bodyText = [
-        config.letter.title,
-        "",
-        ...config.letter.paragraphs
-      ].join("\n\n");
-
-      const [displayedLength, setDisplayedLength] = useState(0);
-      const [isPlaying, setIsPlaying] = useState(true);
-
-      const fullTextLength = bodyText.length + config.letter.closing.length + config.letter.signature.length + 10;
-
-      useEffect(() => {
-        if (!isPlaying || displayedLength >= fullTextLength) return;
-        const timer = setTimeout(() => {
-          setDisplayedLength((prev) => prev + 1);
-        }, config.letter.typewriterSpeedMs || 35);
-        return () => clearTimeout(timer);
-      }, [displayedLength, isPlaying, fullTextLength]);
-
-      const isFinished = displayedLength >= fullTextLength;
-
-      return (
-        <div className={`min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 pt-20 sm:pt-24 transition-colors duration-500 ${
-          isDarkMode 
-            ? 'bg-slate-950 text-pink-100' 
-            : 'bg-gradient-to-b from-rose-50 via-pink-50 to-white text-slate-800'
-        }`}>
-          <div className="max-w-xl w-full text-center mb-6 space-y-1">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-pink-500/10 border border-pink-400/30 text-pink-400 text-xs font-heading font-semibold uppercase tracking-wider shadow">
-              <Icon name="ScrollText" className="w-3.5 h-3.5" />
-              <span>Thư Lời Chúc Yêu Thương</span>
-            </div>
-            <h1 className="text-3xl sm:text-4xl font-hero font-bold text-pink-300 drop-shadow-md">
-              Gửi Tới Công Chúa Của Anh
-            </h1>
-          </div>
-
-          <div className="max-w-xl w-full p-6 sm:p-8 rounded-3xl backdrop-blur-2xl border border-pink-500/30 bg-slate-900/90 shadow-2xl relative">
-            <div className="min-h-[260px] font-body text-sm sm:text-base leading-relaxed whitespace-pre-wrap space-y-4 text-pink-100">
-              <div>
-                {bodyText.slice(0, displayedLength)}
-              </div>
-
-              {displayedLength > bodyText.length && (
-                <div className="pt-4 border-t border-pink-500/20 font-handwriting text-2xl sm:text-3xl text-pink-300 leading-snug">
-                  <div>{config.letter.closing}</div>
-                  <div className="font-bold text-3xl sm:text-4xl mt-1">{config.letter.signature}</div>
-                </div>
-              )}
-
-              {!isFinished && <span className="inline-block w-2 h-5 ml-1 bg-pink-500 animate-pulse" />}
-            </div>
-
-            <div className="mt-6 pt-4 border-t border-pink-500/20 flex items-center justify-between">
-              <div className="flex items-center gap-2 font-button font-medium">
-                <button
-                  onClick={() => setIsPlaying(!isPlaying)}
-                  className="px-3 py-1.5 rounded-xl bg-pink-500/20 text-pink-300 text-xs flex items-center gap-1.5 hover:bg-pink-500/30 transition"
-                >
-                  <Icon name={isPlaying ? 'Pause' : 'Play'} className="w-3.5 h-3.5" />
-                  <span>{isPlaying ? "Tạm dừng" : "Tiếp tục"}</span>
-                </button>
-                {!isFinished && (
-                  <button
-                    onClick={() => {
-                      setDisplayedLength(fullTextLength);
-                      setIsPlaying(false);
-                    }}
-                    className="px-3 py-1.5 rounded-xl bg-amber-500/20 text-amber-300 text-xs flex items-center gap-1.5 hover:bg-amber-500/30 transition"
-                  >
-                    <Icon name="FastForward" className="w-3.5 h-3.5" />
-                    <span>Xem tất cả</span>
-                  </button>
-                )}
-              </div>
-
-              <span className="text-xs text-pink-400 font-button">
-                {isFinished ? "100% Hoàn tất" : `${Math.floor((displayedLength / fullTextLength) * 100)}%`}
-              </span>
-            </div>
-          </div>
-
-          <button
-            onClick={() => {
-              audioEngine.playMagicSparkle();
-              onNext();
-            }}
-            className="mt-6 py-3.5 px-8 rounded-2xl bg-gradient-to-r from-pink-500 via-rose-500 to-amber-400 text-white font-button font-medium text-base shadow-xl hover:scale-105 transition-all flex items-center gap-2"
-          >
-            <span>Mở Nhạc Lãng Mạn</span>
-            <Icon name="ArrowRight" className="w-5 h-5" />
-          </button>
-        </div>
-      );
-    };
-
-    // 7. Jukebox Music Player
-    const MusicPlayer = ({ onNext, isDarkMode, playlist = initialBirthdayConfig.playlist }) => {
-      const [currentTrackIdx, setCurrentTrackIdx] = useState(0);
-      const [isPlaying, setIsPlaying] = useState(true);
-      const track = playlist[currentTrackIdx] || playlist[0];
-
-      const handlePlayPause = () => {
-        audioEngine.playClick();
-        if (isPlaying) {
-          audioEngine.stopSynthBgm();
-          setIsPlaying(false);
-        } else {
-          audioEngine.startSynthBgm();
-          setIsPlaying(true);
+      const defaultLoveNotes = [
+        {
+          id: 'n1',
+          author: 'Anh',
+          content: 'Cảm ơn em vì luôn kiên nhẫn nghe anh nói những điều nhảm nhí.',
+          tag: 'Điều nhỏ nhặt',
+          colorBg: 'from-amber-100 to-orange-100 border-amber-200'
+        },
+        {
+          id: 'n2',
+          author: 'Anh',
+          content: 'Mỗi khi nhìn thấy nụ cười của em, mọi mệt mỏi trong ngày dài dường như tan biến hết!',
+          tag: 'Bình yên',
+          colorBg: 'from-rose-100 to-pink-100 border-rose-200'
+        },
+        {
+          id: 'n3',
+          author: 'Anh',
+          content: 'Mong rằng 2 tháng, 2 năm hay 20 năm sau, chúng mình vẫn giữ trọn vẹn tình cảm đong đầy này.',
+          tag: 'Tương lai',
+          colorBg: 'from-orange-100 to-rose-100 border-orange-200'
         }
-      };
+      ];
 
-      const handleNextTrack = () => {
-        audioEngine.playClick();
-        setCurrentTrackIdx((prev) => (prev + 1) % playlist.length);
-        if (!isPlaying) {
-          audioEngine.startSynthBgm();
-          setIsPlaying(true);
-        }
-      };
+      // --- COMPONENTS ---
 
-      const handlePrevTrack = () => {
-        audioEngine.playClick();
-        setCurrentTrackIdx((prev) => (prev - 1 + playlist.length) % playlist.length);
-        if (!isPlaying) {
-          audioEngine.startSynthBgm();
-          setIsPlaying(true);
-        }
-      };
+      // 1. Floating Hearts Background
+      const FloatingHearts = () => {
+        const hearts = useMemo(() => {
+          const colors = ['text-rose-400', 'text-pink-400', 'text-amber-400', 'text-orange-400', 'text-rose-300'];
+          return Array.from({ length: 20 }).map((_, i) => ({
+            id: i,
+            left: Math.random() * 95,
+            size: Math.floor(Math.random() * 16) + 12,
+            duration: Math.random() * 10 + 12,
+            delay: Math.random() * 8,
+            color: colors[Math.floor(Math.random() * colors.length)]
+          }));
+        }, []);
 
-      return (
-        <div className={`min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 pt-20 sm:pt-24 transition-colors duration-500 ${
-          isDarkMode ? 'bg-slate-950 text-pink-100' : 'bg-gradient-to-b from-purple-900 via-pink-900 to-slate-950 text-white'
-        }`}>
-          <div className="max-w-md w-full text-center mb-6 space-y-1">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/20 border border-pink-400/30 text-pink-300 text-xs font-semibold uppercase tracking-wider">
-              <Icon name="Music" className="w-3.5 h-3.5 text-pink-400" />
-              <span>Âm Nhạc Lãng Mạn Hoàng Gia</span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-pink-300 drop-shadow-md">
-              Giai Đệu Cổ Tích Của Chúng Ta
-            </h2>
-          </div>
-
-          <div className="max-w-md w-full p-6 sm:p-8 rounded-3xl bg-slate-900/80 border border-pink-500/30 shadow-2xl backdrop-blur-xl relative z-10 space-y-6">
-            <div className="relative w-48 h-48 sm:w-56 sm:h-56 mx-auto flex items-center justify-center">
-              <div className={`absolute w-44 h-44 sm:w-52 sm:h-52 rounded-full bg-slate-950 border-4 border-slate-800 shadow-xl flex items-center justify-center transition-transform duration-1000 ${
-                isPlaying ? 'animate-spin' : ''
-              }`} style={{ animationDuration: '8s' }}>
-                <div className="w-16 h-16 rounded-full border-2 border-slate-700 bg-pink-950/80 flex items-center justify-center">
-                  <Icon name="Disc" className="w-8 h-8 text-pink-500" />
-                </div>
-              </div>
-
-              <div className="relative w-36 h-36 sm:w-44 sm:h-44 rounded-2xl overflow-hidden shadow-2xl border-2 border-pink-400/40 z-10">
-                <img src={track.cover} alt={track.title} className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
-              </div>
-            </div>
-
-            <div className="text-center space-y-1">
-              <h3 className="text-xl font-serif font-bold text-pink-200">{track.title}</h3>
-              <p className="text-xs text-pink-400 font-medium">{track.artist}</p>
-            </div>
-
-            {track.lyricsQuote && (
-              <div className="p-3 rounded-2xl bg-pink-950/40 border border-pink-500/20 text-xs text-pink-200/90 italic font-serif flex items-start gap-2 text-center justify-center">
-                <Icon name="Quote" className="w-4 h-4 text-pink-400 shrink-0 mt-0.5" />
-                <span>"{track.lyricsQuote}"</span>
-              </div>
-            )}
-
-            <div className="flex items-center justify-center gap-1.5 h-6 my-2">
-              {[40, 70, 30, 90, 50, 80, 40, 60, 100, 30, 70].map((h, i) => (
-                <div
-                  key={i}
-                  className="w-1 rounded-full bg-gradient-to-t from-pink-500 to-amber-400 transition-all duration-300"
-                  style={{ height: isPlaying ? `${Math.max(15, Math.round(h * Math.random()))}%` : '15%' }}
-                />
-              ))}
-            </div>
-
-            <div className="flex items-center justify-center gap-6">
-              <button onClick={handlePrevTrack} className="p-3 rounded-full bg-slate-800/80 text-pink-300 hover:bg-slate-700 transition">
-                <Icon name="SkipBack" className="w-5 h-5" />
-              </button>
-              <button onClick={handlePlayPause} className="p-5 rounded-full bg-gradient-to-r from-pink-500 via-purple-500 to-amber-400 text-white shadow-xl hover:scale-105 transition">
-                <Icon name={isPlaying ? "Pause" : "Play"} className="w-6 h-6" />
-              </button>
-              <button onClick={handleNextTrack} className="p-3 rounded-full bg-slate-800/80 text-pink-300 hover:bg-slate-700 transition">
-                <Icon name="SkipForward" className="w-5 h-5" />
-              </button>
-            </div>
-
-            <div className="flex items-center justify-between text-xs text-pink-400/80 pt-2 border-t border-pink-500/20">
-              <div className="flex items-center gap-1.5">
-                <Icon name="Volume2" className="w-4 h-4 text-pink-400" />
-                <span>Ambient Melody Synth</span>
-              </div>
-              <span>Bài {currentTrackIdx + 1} / {playlist.length}</span>
-            </div>
-          </div>
-
-          <button
-            onClick={() => {
-              audioEngine.playMagicSparkle();
-              onNext();
-            }}
-            className="mt-6 py-3.5 px-8 rounded-2xl bg-gradient-to-r from-pink-500 via-rose-500 to-amber-400 text-white font-button font-medium text-base shadow-xl hover:scale-105 transition-all flex items-center gap-2"
-          >
-            <span>Xem Album Kỷ Niệm</span>
-            <Icon name="ArrowRight" className="w-5 h-5" />
-          </button>
-        </div>
-      );
-    };
-
-    // 8. Polaroid Gallery
-    const PolaroidGallery = ({ onNext, isDarkMode, config }) => {
-      const [selectedPhoto, setSelectedPhoto] = useState(null);
-
-      return (
-        <div className={`min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 pt-20 sm:pt-24 transition-colors duration-500 ${
-          isDarkMode 
-            ? 'bg-slate-950 text-amber-100' 
-            : 'bg-gradient-to-b from-amber-50 via-amber-100/60 to-orange-50 text-slate-800'
-        }`}>
-          <div className="max-w-2xl w-full text-center mb-8 space-y-2">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-400/20 border border-amber-400/50 text-amber-300 text-xs font-heading font-semibold uppercase tracking-wider shadow">
-              <Icon name="Camera" className="w-3.5 h-3.5" />
-              <span>Album Kỷ Niệm Ngọt Ngào</span>
-            </div>
-            <h1 className="text-3xl sm:text-4xl font-hero font-bold text-amber-300">
-              Những Khoảnh Khắc Đẹp Nhất
-            </h1>
-            <p className="text-xs sm:text-sm text-amber-200/80 font-body italic">
-              Nhấn vào từng bức ảnh Polaroid để xem câu chuyện kỷ niệm ngọt ngào!
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl w-full">
-            {config.photos.map((photo) => (
+        return (
+          <div className="fixed inset-0 pointer-events-none overflow-hidden z-0" aria-hidden="true">
+            {hearts.map((h) => (
               <div
-                key={photo.id}
-                onClick={() => {
-                  audioEngine.playClick();
-                  setSelectedPhoto(photo);
+                key={h.id}
+                className={`absolute animate-float-heart ${h.color}`}
+                style={{
+                  left: `${h.left}%`,
+                  fontSize: `${h.size}px`,
+                  animationDuration: `${h.duration}s`,
+                  animationDelay: `${h.delay}s`,
+                  opacity: 0.4
                 }}
-                className="p-4 rounded-2xl bg-slate-900/90 border border-amber-400/30 shadow-xl hover:scale-105 transition-all cursor-pointer space-y-3"
               >
-                <img src={photo.url || photo.image} alt={photo.title} className="w-full h-48 object-cover rounded-xl" />
-                <div className="space-y-1">
-                  <h3 className="font-heading font-semibold text-base text-amber-200">{photo.title}</h3>
-                  <p className="text-xs text-slate-300 font-caption italic line-clamp-2">"{photo.caption}"</p>
-                  <p className="text-[10px] text-amber-400 font-button">{photo.date} • {photo.location || "Memory Spot"}</p>
-                </div>
+                <i className="fa-solid fa-heart"></i>
               </div>
             ))}
           </div>
-
-          {selectedPhoto && (
-            <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-              <div className="max-w-lg w-full p-6 rounded-3xl bg-slate-900 border border-amber-400/40 shadow-2xl relative space-y-4">
-                <button
-                  onClick={() => setSelectedPhoto(null)}
-                  className="absolute top-4 right-4 p-2 rounded-full bg-slate-800 text-slate-300 hover:text-white"
-                >
-                  <Icon name="X" className="w-5 h-5" />
-                </button>
-                <img src={selectedPhoto.url || selectedPhoto.image} alt={selectedPhoto.title} className="w-full h-64 object-cover rounded-2xl" />
-                <h3 className="text-xl font-hero font-bold text-amber-200">{selectedPhoto.title}</h3>
-                <p className="text-sm text-pink-100 font-body">"{selectedPhoto.caption}"</p>
-                <p className="text-xs text-amber-400 font-button">{selectedPhoto.date} - {selectedPhoto.location}</p>
-              </div>
-            </div>
-          )}
-
-          <button
-            onClick={() => {
-              audioEngine.playMagicSparkle();
-              onNext();
-            }}
-            className="mt-8 py-3.5 px-8 rounded-2xl bg-gradient-to-r from-pink-500 via-rose-500 to-amber-400 text-white font-button font-medium text-base shadow-xl hover:scale-105 transition-all flex items-center gap-2"
-          >
-            <span>Thắp Nến Bánh Sinh Nhật</span>
-            <Icon name="ArrowRight" className="w-5 h-5" />
-          </button>
-        </div>
-      );
-    };
-
-    // 9. Birthday Cake
-    const BirthdayCake = ({ onNext, isDarkMode, config }) => {
-      const [candlesLit, setCandlesLit] = useState(true);
-
-      const handleBlowCandles = () => {
-        audioEngine.playBlowCandle();
-        if (window.confetti) {
-          window.confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-        }
-        setCandlesLit(false);
+        );
       };
 
-      return (
-        <div className={`min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 pt-20 sm:pt-24 transition-colors duration-500 ${
-          isDarkMode ? 'bg-slate-950 text-pink-100' : 'bg-gradient-to-b from-pink-100 via-rose-100 to-amber-100 text-slate-800'
-        }`}>
-          <div className="max-w-md w-full text-center mb-6 space-y-2">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-pink-500/20 border border-pink-400/30 text-pink-300 text-xs font-heading font-semibold uppercase tracking-wider">
-              <Icon name="Cake" className="w-4 h-4 text-pink-400" />
-              <span>Bánh Sinh Nhật Diệu Kỳ</span>
+      // 2. Header Hero Section
+      const HeaderHero = ({ person1Name, person2Name, heroSubtitle, isPlayingMusic, onAnniversaryClick }) => {
+        const triggerConfetti = () => {
+          if (window.confetti) {
+            window.confetti({
+              particleCount: 80,
+              spread: 90,
+              origin: { y: 0.6 },
+              colors: ['#ff80bf', '#ff9966', '#ff528c', '#ffd700']
+            });
+          }
+        };
+
+        const handleClick = () => {
+          triggerConfetti();
+          onAnniversaryClick();
+        };
+
+        return (
+          <section className="relative pt-12 pb-14 px-4 text-center overflow-hidden z-10">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/70 backdrop-blur-md shadow-md border border-rose-200/80 mb-6 text-rose-600 text-sm sm:text-base font-medium">
+              <i className="fa-solid fa-heart text-rose-500 animate-pulse"></i>
+              <span className="font-dancing text-lg sm:text-xl font-bold">{person1Name} & {person2Name}</span>
+              <i className="fa-solid fa-wand-magic-sparkles text-amber-500"></i>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl font-hero font-bold text-amber-200 drop-shadow-md">
-              Ước Một Điều Ước, {config.recipientName}!
+            {/* REQUIRED MAIN TITLE */}
+            <h1 className="max-w-4xl mx-auto font-dancing text-4xl sm:text-6xl lg:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-rose-600 to-pink-600 leading-tight tracking-wide drop-shadow-sm px-2">
+              Love story - kỉ niệm 2 tháng chính thức quen nhau
             </h1>
-          </div>
 
-          <div className="relative py-8 flex flex-col items-center">
-            <div className="flex gap-4 mb-2 z-20">
-              {[1, 2, 3].map((idx) => (
-                <div key={idx} className="flex flex-col items-center">
-                  {candlesLit && (
-                    <div className="w-3 h-4 rounded-full bg-gradient-to-t from-amber-400 to-yellow-200 animate-pulse shadow-[0_0_12px_#FBBF24]" />
-                  )}
-                  <div className="w-2 h-10 bg-gradient-to-b from-pink-300 to-rose-400 rounded-sm border border-pink-200" />
-                </div>
-              ))}
-            </div>
+            <p className="mt-4 max-w-xl mx-auto text-slate-700 text-base sm:text-lg font-normal leading-relaxed px-4">
+              {heroSubtitle}
+            </p>
 
-            <div className="flex flex-col items-center z-10">
-              <div className="w-48 sm:w-56 h-16 sm:h-20 rounded-t-3xl bg-gradient-to-r from-pink-300 via-rose-200 to-pink-300 border-2 border-amber-300/80 shadow-xl flex flex-col items-center justify-center relative overflow-hidden">
-                <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-amber-400/30 border border-amber-300 text-amber-900 font-bold text-xs shadow-sm mb-0.5 animate-bounce">
-                  <Icon name="Sparkles" className="w-3 h-3 text-amber-600" />
-                  <span>Mừng Tuổi {config.ageNumber || 20}</span>
-                </div>
-                <span className="text-xs sm:text-sm font-heading font-bold text-pink-900 tracking-wider uppercase">
-                  {config.recipientName}
+            {/* REQUIRED INTERACTIVE PULSE BUTTON */}
+            <div className="mt-8 mb-6">
+              <button
+                onClick={handleClick}
+                id="btn-anniversary-action"
+                className="group relative inline-flex items-center gap-3 px-8 py-4 sm:px-10 sm:py-5 rounded-full bg-gradient-to-r from-orange-400 via-rose-500 to-pink-500 text-white font-semibold text-lg sm:text-xl shadow-xl hover:shadow-rose-400/50 transition-all transform hover:-translate-y-1 active:translate-y-0 cursor-pointer animate-pulse-glow"
+              >
+                <span className="relative flex h-4 w-4">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                  <i className="fa-solid fa-heart text-xs text-white"></i>
                 </span>
-              </div>
 
-              <div className="w-64 sm:w-72 h-18 sm:h-22 rounded-t-3xl bg-gradient-to-r from-rose-300 via-pink-200 to-amber-200 border-2 border-amber-300/80 shadow-2xl flex items-center justify-center relative -mt-1 overflow-hidden">
-                <div className="flex items-center gap-4">
-                  <Icon name="Heart" className="w-5 h-5 text-pink-500 fill-pink-500 animate-pulse" />
-                  <span className="text-2xl font-hero font-extrabold text-pink-700 drop-shadow-sm px-2">
-                    {config.ageNumber || 20}
-                  </span>
-                  <Icon name="Heart" className="w-5 h-5 text-pink-500 fill-pink-500 animate-pulse" />
-                </div>
-              </div>
-            </div>
-          </div>
+                <span className="tracking-wide">kỉ niệm 2 tháng của chúng ta</span>
 
-          <div className="mt-4 flex flex-col items-center gap-3">
-            {candlesLit ? (
-              <button
-                onClick={handleBlowCandles}
-                className="py-3.5 px-8 rounded-2xl bg-gradient-to-r from-amber-400 to-yellow-300 text-slate-950 font-button font-bold text-base shadow-xl hover:scale-105 transition-all flex items-center gap-2"
-              >
-                <Icon name="Flame" className="w-5 h-5 text-amber-600" />
-                <span>Thổi Nến Sinh Nhật</span>
+                <i className={`fa-solid fa-music transition-transform ${isPlayingMusic ? 'text-amber-200 animate-spin' : ''}`}></i>
+                <i className="fa-solid fa-chevron-down text-sm group-hover:translate-y-1 transition-transform"></i>
               </button>
-            ) : (
-              <button
-                onClick={() => {
-                  audioEngine.playMagicSparkle();
-                  onNext();
-                }}
-                className="py-3.5 px-8 rounded-2xl bg-gradient-to-r from-pink-500 via-rose-500 to-amber-400 text-white font-button font-medium text-base shadow-xl hover:scale-105 transition-all flex items-center gap-2 animate-bounce"
-              >
-                <span>Xem Lời Kết Yêu Thương</span>
-                <Icon name="ArrowRight" className="w-5 h-5" />
-              </button>
-            )}
-          </div>
-        </div>
-      );
-    };
 
-    // 10. Emotional Ending
-    const EmotionalEnding = ({ onRestart, isDarkMode, config }) => {
-      const [userWish, setUserWish] = useState("");
-      const [wishesList, setWishesList] = useState([
-        "Chúc tình yêu của chúng mình mãi mãi bền chặt, ngọt ngào và hạnh phúc! 🌸",
-        "Mong rằng mọi giấc mơ của em đều sẽ trở thành hiện thực rạng rỡ! ✨"
-      ]);
-      const [copied, setCopied] = useState(false);
-
-      useEffect(() => {
-        launchGrandConfettiShower();
-        const timer = setInterval(() => {
-          audioEngine.playFirework();
-        }, 2800);
-        return () => clearInterval(timer);
-      }, []);
-
-      const handleAddWish = (e) => {
-        e.preventDefault();
-        if (!userWish.trim()) return;
-        audioEngine.playStarCollect();
-        setWishesList((prev) => [userWish.trim(), ...prev]);
-        setUserWish("");
-        launchGrandConfettiShower();
-      };
-
-      const handleShare = () => {
-        audioEngine.playClick();
-        navigator.clipboard.writeText(window.location.href);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2500);
-      };
-
-      return (
-        <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 pt-20 sm:pt-24 text-center relative overflow-hidden bg-gradient-to-br from-pink-600 via-purple-700 to-indigo-900 text-white">
-          <div className="max-w-xl w-full p-8 rounded-3xl backdrop-blur-2xl border border-pink-400/30 bg-slate-950/80 shadow-2xl space-y-6 relative z-10">
-            <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-tr from-pink-500 to-amber-300 flex items-center justify-center shadow-2xl animate-pulse">
-              <Icon name="Heart" className="w-10 h-10 text-white fill-white" />
-            </div>
-
-            <div className="space-y-3">
-              <h1 className="text-3xl sm:text-4xl font-hero font-bold text-amber-200 drop-shadow-md">
-                Chúc Mừng Sinh Nhật {config.recipientName} ❤️
-              </h1>
-              <p className="text-xl sm:text-2xl text-pink-200 font-handwriting italic">
-                "Cảm ơn em đã xuất hiện và làm cho cuộc đời anh trở nên tuyệt vời nhất. Anh yêu em mãi mãi!"
-              </p>
-              <p className="text-sm font-handwriting font-bold text-pink-300">
-                — {config.senderName}
+              <p className="mt-3 text-xs sm:text-sm text-slate-600 italic">
+                ✨ Nhấn vào đây để phát nhạc lãng mạn & tự động cuộn xuống bộ sưu tập bên dưới ✨
               </p>
             </div>
+          </section>
+        );
+      };
 
-            <div className="pt-4 border-t border-pink-500/30 text-left space-y-3">
-              <h3 className="text-xs font-serif font-bold text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
-                <Icon name="Star" className="w-4 h-4 text-amber-400" />
-                <span>Hũ Nguyện Ước Bí Mật</span>
-              </h3>
+      // 3. Live Love Counter Widget
+      const LoveCounter = ({ startDateStr, person1Name, person2Name }) => {
+        const [time, setTime] = useState({ days: 60, hours: 0, minutes: 0, seconds: 0 });
 
-              <form onSubmit={handleAddWish} className="flex gap-2">
-                <input
-                  type="text"
-                  value={userWish}
-                  onChange={(e) => setUserWish(e.target.value)}
-                  placeholder="Nhập điều ước sinh nhật tại đây..."
-                  className="flex-1 px-4 py-2.5 rounded-xl bg-slate-900 border border-pink-500/30 text-xs text-pink-100 placeholder-pink-400/50 focus:outline-none focus:border-pink-400 transition"
-                />
-                <button
-                  type="submit"
-                  className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 text-white text-xs font-semibold hover:scale-105 transition flex items-center gap-1 shrink-0"
-                >
-                  <Icon name="Send" className="w-3.5 h-3.5" />
-                  <span>Gửi Ước</span>
-                </button>
-              </form>
+        useEffect(() => {
+          const calc = () => {
+            const start = new Date(startDateStr).getTime();
+            const now = new Date().getTime();
+            const diff = Math.max(0, now - (isNaN(start) ? Date.now() - 60*24*3600*1000 : start));
 
-              <div className="max-h-32 overflow-y-auto space-y-1.5 pr-1">
-                {wishesList.map((w, idx) => (
-                  <div key={idx} className="p-2.5 rounded-xl bg-pink-950/50 border border-pink-500/30 text-xs text-pink-200 italic font-serif flex items-start gap-2">
-                    <Icon name="Sparkles" className="w-3.5 h-3.5 text-amber-300 shrink-0 mt-0.5" />
-                    <span>"{w}"</span>
-                  </div>
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            setTime({ days, hours, minutes, seconds });
+          };
+          calc();
+          const timer = setInterval(calc, 1000);
+          return () => clearInterval(timer);
+        }, [startDateStr]);
+
+        return (
+          <div className="bg-white/80 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-xl border border-rose-200/60 max-w-2xl mx-auto text-center relative overflow-hidden z-10 my-6">
+            <div className="flex items-center justify-center gap-2 mb-3 text-rose-500 font-medium text-xs sm:text-sm uppercase tracking-wider">
+              <i className="fa-solid fa-sparkles text-amber-500"></i>
+              <span>Thời Gian Bên Nhau</span>
+              <i className="fa-solid fa-sparkles text-amber-500"></i>
+            </div>
+
+            <div className="flex items-center justify-center gap-4 sm:gap-6 my-4">
+              <div className="text-right">
+                <span className="block text-xl sm:text-2xl font-bold font-playfair text-slate-800">{person1Name}</span>
+                <span className="text-xs text-rose-500 font-medium">Chàng trai</span>
+              </div>
+
+              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-orange-400 via-rose-500 to-pink-500 text-white flex items-center justify-center shadow-md animate-bounce">
+                <i className="fa-solid fa-heart"></i>
+              </div>
+
+              <div className="text-left">
+                <span className="block text-xl sm:text-2xl font-bold font-playfair text-slate-800">{person2Name}</span>
+                <span className="text-xs text-rose-500 font-medium">Cô gái</span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-4 gap-2 sm:gap-4 my-6">
+              <div className="bg-gradient-to-b from-rose-50 to-orange-50 rounded-2xl p-3 sm:p-4 border border-rose-100 shadow-sm">
+                <span className="block text-2xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-rose-600 font-playfair">{time.days}</span>
+                <span className="text-xs sm:text-sm text-slate-600 font-medium mt-1 block">Ngày</span>
+              </div>
+              <div className="bg-gradient-to-b from-rose-50 to-orange-50 rounded-2xl p-3 sm:p-4 border border-rose-100 shadow-sm">
+                <span className="block text-2xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-rose-600 font-playfair">{String(time.hours).padStart(2, '0')}</span>
+                <span className="text-xs sm:text-sm text-slate-600 font-medium mt-1 block">Giờ</span>
+              </div>
+              <div className="bg-gradient-to-b from-rose-50 to-orange-50 rounded-2xl p-3 sm:p-4 border border-rose-100 shadow-sm">
+                <span className="block text-2xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-rose-600 font-playfair">{String(time.minutes).padStart(2, '0')}</span>
+                <span className="text-xs sm:text-sm text-slate-600 font-medium mt-1 block">Phút</span>
+              </div>
+              <div className="bg-gradient-to-b from-rose-50 to-orange-50 rounded-2xl p-3 sm:p-4 border border-rose-100 shadow-sm">
+                <span className="block text-2xl sm:text-4xl font-extrabold text-rose-600 font-playfair">{String(time.seconds).padStart(2, '0')}</span>
+                <span className="text-xs sm:text-sm text-slate-600 font-medium mt-1 block">Giây</span>
+              </div>
+            </div>
+
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-100/70 text-rose-700 text-xs sm:text-sm font-medium">
+              <i className="fa-regular fa-calendar-check text-rose-500"></i>
+              <span>Chính thức quen nhau từ: <strong>{startDateStr}</strong></span>
+            </div>
+          </div>
+        );
+      };
+
+      // 4. Gallery Section (Responsive Grid with hover zoom + rounded corners)
+      const GallerySection = ({ items, onUpdateItems }) => {
+        const [filter, setFilter] = useState('all');
+        const [lightboxItem, setLightboxItem] = useState(null);
+        const [isMuted, setIsMuted] = useState(true);
+        const [videoError, setVideoError] = useState(false);
+        const videoRef = React.useRef(null);
+
+        const handleToggleHighlight = (e, itemId) => {
+          e.stopPropagation();
+          if (!onUpdateItems) return;
+          const updated = items.map((it) =>
+            it.id === itemId
+              ? { ...it, category: it.category === 'highlight' ? 'daily' : 'highlight' }
+              : it
+          );
+          onUpdateItems(updated);
+        };
+
+        React.useEffect(() => {
+          setVideoError(false);
+          setIsMuted(true);
+
+          if (lightboxItem?.type === 'video' && videoRef.current) {
+            videoRef.current.muted = true;
+            const playPromise = videoRef.current.play();
+            if (playPromise !== undefined) {
+              playPromise.catch((err) => {
+                console.log('Video autoplay handled or blocked:', err);
+              });
+            }
+          }
+        }, [lightboxItem]);
+
+        const filtered = items.filter((item) => {
+          if (filter === 'all') return true;
+          if (filter === 'image') return item.type === 'image';
+          if (filter === 'video') return item.type === 'video';
+          if (filter === 'highlight') return item.category === 'highlight';
+          return true;
+        });
+
+        return (
+          <section id="gallery-section" className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-6 relative">
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-100 text-rose-600 text-xs font-semibold uppercase tracking-wider mb-2">
+                <i className="fa-solid fa-camera-retro"></i>
+                <span>Bộ Sưu Tập Kỷ Niệm</span>
+              </div>
+              <h2 className="font-playfair text-3xl sm:text-5xl font-bold text-slate-800">
+                Góc Kỷ Niệm 2 Tháng
+              </h2>
+              <p className="mt-2 text-slate-600 text-sm sm:text-base max-w-xl mx-auto">
+                Từng bức ảnh và video clip nhỏ lưu giữ muôn vàn nụ cười và khoảnh khắc ngọt ngào của hai đứa.
+              </p>
+
+              {/* Filter Tabs */}
+              <div className="flex flex-wrap items-center justify-center gap-2 mt-6">
+                {['all', 'image', 'video', 'highlight'].map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setFilter(cat)}
+                    className={`px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all cursor-pointer ${
+                      filter === cat
+                        ? 'bg-gradient-to-r from-orange-400 to-rose-500 text-white shadow-md'
+                        : 'bg-white/70 text-slate-600 hover:bg-white hover:text-rose-500'
+                    }`}
+                  >
+                    {cat === 'all' && `Tất cả (${items.length})`}
+                    {cat === 'image' && `📸 Hình ảnh`}
+                    {cat === 'video' && `🎬 Video Clips`}
+                    {cat === 'highlight' && `💖 Đặc sắc`}
+                  </button>
                 ))}
               </div>
             </div>
 
-            <div className="pt-4 border-t border-pink-500/30 flex flex-col sm:flex-row items-center gap-3">
-              <button
-                onClick={handleShare}
-                className="w-full py-3 px-4 rounded-xl bg-slate-900/80 border border-pink-500/30 text-xs font-semibold text-pink-200 hover:bg-slate-800 transition flex items-center justify-center gap-2"
-              >
-                <Icon name={copied ? "Check" : "Share2"} className="w-4 h-4 text-pink-400" />
-                <span>{copied ? "Đã Sao Chép Liên Kết Thiệp!" : "Chia Sẻ Thiệp Sinh Nhật"}</span>
-              </button>
-
-              <button
-                onClick={() => {
-                  audioEngine.playMagicSparkle();
-                  onRestart();
-                }}
-                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-pink-500 via-rose-500 to-amber-400 text-xs font-serif font-bold text-white hover:scale-105 transition flex items-center justify-center gap-2"
-              >
-                <Icon name="RotateCcw" className="w-4 h-4" />
-                <span>Phát Lại Hành Trình</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      );
-    };
-
-    // 11. Full Multi-Tab Config Editor Modal
-    const ConfigEditorModal = ({ isOpen, onClose, config, onSaveConfig, onResetDefault }) => {
-      const [activeTab, setActiveTab] = useState('general');
-      const [editedConfig, setEditedConfig] = useState(JSON.parse(JSON.stringify(config)));
-      const [savedSuccess, setSavedSuccess] = useState(false);
-
-      useEffect(() => {
-        setEditedConfig(JSON.parse(JSON.stringify(config)));
-      }, [config, isOpen]);
-
-      if (!isOpen) return null;
-
-      const handleSave = () => {
-        audioEngine.playStarCollect();
-        onSaveConfig(editedConfig);
-        setSavedSuccess(true);
-        setTimeout(() => setSavedSuccess(false), 2000);
-      };
-
-      const handlePhotoChange = (index, field, value) => {
-        const updatedPhotos = [...editedConfig.photos];
-        updatedPhotos[index] = { ...updatedPhotos[index], [field]: value };
-        setEditedConfig({ ...editedConfig, photos: updatedPhotos });
-      };
-
-      const handleAddPhoto = () => {
-        audioEngine.playClick();
-        const newPhoto = {
-          id: `p-${Date.now()}`,
-          title: "Kỷ niệm mới",
-          date: "Ngày đặc biệt",
-          url: "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=800&q=80",
-          caption: "Khoảnh khắc tuyệt vời bên em",
-          location: "Góc kỷ niệm"
-        };
-        setEditedConfig({ ...editedConfig, photos: [...editedConfig.photos, newPhoto] });
-      };
-
-      const handleRemovePhoto = (index) => {
-        audioEngine.playClick();
-        const updatedPhotos = editedConfig.photos.filter((_, i) => i !== index);
-        setEditedConfig({ ...editedConfig, photos: updatedPhotos });
-      };
-
-      const handleSongChange = (index, field, value) => {
-        const updatedPlaylist = [...editedConfig.playlist];
-        updatedPlaylist[index] = { ...updatedPlaylist[index], [field]: value };
-        setEditedConfig({ ...editedConfig, playlist: updatedPlaylist });
-      };
-
-      const handleAddSong = () => {
-        audioEngine.playClick();
-        const newSong = {
-          id: `track-${Date.now()}`,
-          title: "Bài hát ngọt ngào",
-          artist: "Nhạc lãng mạn",
-          cover: "https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=400&q=80",
-          lyricsQuote: "Yêu em từ cái nhìn đầu tiên..."
-        };
-        setEditedConfig({ ...editedConfig, playlist: [...editedConfig.playlist, newSong] });
-      };
-
-      const handleRemoveSong = (index) => {
-        audioEngine.playClick();
-        const updatedPlaylist = editedConfig.playlist.filter((_, i) => i !== index);
-        setEditedConfig({ ...editedConfig, playlist: updatedPlaylist });
-      };
-
-      return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="bg-slate-900 border border-pink-500/30 text-pink-100 rounded-3xl w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
-            
-            <div className="p-4 sm:p-5 border-b border-pink-500/20 flex items-center justify-between bg-slate-950/60">
-              <div className="flex items-center gap-2">
-                <Icon name="Sparkles" className="w-5 h-5 text-amber-400 animate-pulse" />
-                <h2 className="text-lg sm:text-xl font-serif font-bold text-pink-300 drop-shadow-md">
-                  Chỉnh Sửa Nội Dung & Album Ảnh
-                </h2>
-              </div>
-              <button onClick={onClose} className="p-2 rounded-full hover:bg-pink-500/20 text-pink-300 transition">
-                <Icon name="X" className="w-5 h-5" />
-              </button>
-            </div>
-
-            <div className="flex border-b border-pink-500/20 bg-slate-950/40 px-3 overflow-x-auto no-scrollbar">
-              <button
-                onClick={() => setActiveTab('general')}
-                className={`px-4 py-3 text-xs sm:text-sm font-semibold flex items-center gap-1.5 border-b-2 whitespace-nowrap transition ${
-                  activeTab === 'general' ? 'border-pink-500 text-pink-300 bg-pink-500/10' : 'border-transparent text-slate-400'
-                }`}
-              >
-                <Icon name="User" className="w-4 h-4" />
-                <span>Thông Tin</span>
-              </button>
-
-              <button
-                onClick={() => setActiveTab('letter')}
-                className={`px-4 py-3 text-xs sm:text-sm font-semibold flex items-center gap-1.5 border-b-2 whitespace-nowrap transition ${
-                  activeTab === 'letter' ? 'border-pink-500 text-pink-300 bg-pink-500/10' : 'border-transparent text-slate-400'
-                }`}
-              >
-                <Icon name="MessageSquare" className="w-4 h-4" />
-                <span>Thư & Lời Chúc</span>
-              </button>
-
-              <button
-                onClick={() => setActiveTab('photos')}
-                className={`px-4 py-3 text-xs sm:text-sm font-semibold flex items-center gap-1.5 border-b-2 whitespace-nowrap transition ${
-                  activeTab === 'photos' ? 'border-pink-500 text-pink-300 bg-pink-500/10' : 'border-transparent text-slate-400'
-                }`}
-              >
-                <Icon name="Image" className="w-4 h-4" />
-                <span>Album Ảnh ({editedConfig.photos ? editedConfig.photos.length : 0})</span>
-              </button>
-
-              <button
-                onClick={() => setActiveTab('music')}
-                className={`px-4 py-3 text-xs sm:text-sm font-semibold flex items-center gap-1.5 border-b-2 whitespace-nowrap transition ${
-                  activeTab === 'music' ? 'border-pink-500 text-pink-300 bg-pink-500/10' : 'border-transparent text-slate-400'
-                }`}
-              >
-                <Icon name="Music" className="w-4 h-4" />
-                <span>Nhạc Nền ({editedConfig.playlist ? editedConfig.playlist.length : 0})</span>
-              </button>
-            </div>
-
-            <div className="p-4 sm:p-6 overflow-y-auto flex-1 space-y-6">
-              {activeTab === 'general' && (
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-semibold text-pink-300 mb-1">Tên Người Nhận (Công chúa)</label>
-                      <input
-                        type="text"
-                        value={editedConfig.recipientName}
-                        onChange={(e) => setEditedConfig({ ...editedConfig, recipientName: e.target.value })}
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-pink-500/30 text-xs sm:text-sm text-pink-100 focus:outline-none focus:border-pink-400"
+            {/* Masonry / Flex Grid Layout */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filtered.map((item) => (
+                <div
+                  key={item.id}
+                  onClick={() => setLightboxItem(item)}
+                  className="group relative cursor-pointer overflow-hidden rounded-3xl bg-white/80 p-2 shadow-lg border border-rose-100 hover:shadow-2xl hover:border-rose-300 transition-all duration-300 transform hover:-translate-y-1.5"
+                >
+                  <div className="relative overflow-hidden rounded-2xl aspect-[4/3] bg-slate-100">
+                    {item.type === 'image' ? (
+                      /* Image Tag with Zoom-in & rounded corner effect on hover */
+                      <img
+                        src={convertGoogleDriveUrl(item.url, 'image')}
+                        alt={item.title}
+                        loading="lazy"
+                        className="w-full h-full object-cover rounded-2xl transition-all duration-700 ease-out group-hover:scale-110 group-hover:rounded-3xl"
                       />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-pink-300 mb-1">Tên Người Gửi</label>
-                      <input
-                        type="text"
-                        value={editedConfig.senderName}
-                        onChange={(e) => setEditedConfig({ ...editedConfig, senderName: e.target.value })}
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-pink-500/30 text-xs sm:text-sm text-pink-100 focus:outline-none focus:border-pink-400"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div>
-                      <label className="block text-xs font-semibold text-pink-300 mb-1">Số Tuổi Sinh Nhật</label>
-                      <input
-                        type="number"
-                        min="1"
-                        max="120"
-                        value={editedConfig.ageNumber || 20}
-                        onChange={(e) => setEditedConfig({ ...editedConfig, ageNumber: parseInt(e.target.value) || 20 })}
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-pink-500/30 text-xs sm:text-sm text-pink-100 focus:outline-none focus:border-pink-400"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-pink-300 mb-1">Ngày Sinh Nhật</label>
-                      <input
-                        type="text"
-                        value={editedConfig.birthdayDate}
-                        onChange={(e) => setEditedConfig({ ...editedConfig, birthdayDate: e.target.value })}
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-pink-500/30 text-xs sm:text-sm text-pink-100 focus:outline-none focus:border-pink-400"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-pink-300 mb-1">Tiêu Đề Phụ / Chương</label>
-                      <input
-                        type="text"
-                        value={editedConfig.ageTitle}
-                        onChange={(e) => setEditedConfig({ ...editedConfig, ageTitle: e.target.value })}
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-pink-500/30 text-xs sm:text-sm text-pink-100 focus:outline-none focus:border-pink-400"
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === 'letter' && (
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-semibold text-pink-300 mb-1">Tiêu Đề Thư</label>
-                    <input
-                      type="text"
-                      value={editedConfig.letter.title}
-                      onChange={(e) => setEditedConfig({
-                        ...editedConfig,
-                        letter: { ...editedConfig.letter, title: e.target.value }
-                      })}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-pink-500/30 text-xs sm:text-sm text-pink-100 focus:outline-none focus:border-pink-400"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold text-pink-300 mb-1">
-                      Nội Dung Thư (xuống dòng để chia thành nhiều đoạn)
-                    </label>
-                    <textarea
-                      rows={6}
-                      value={editedConfig.letter.paragraphs ? editedConfig.letter.paragraphs.join('\n\n') : ''}
-                      onChange={(e) => setEditedConfig({
-                        ...editedConfig,
-                        letter: {
-                          ...editedConfig.letter,
-                          paragraphs: e.target.value.split('\n\n').filter(Boolean)
-                        }
-                      })}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-pink-500/30 text-xs sm:text-sm text-pink-100 focus:outline-none focus:border-pink-400 leading-relaxed font-serif"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-semibold text-pink-300 mb-1">Lời Kết Thư</label>
-                      <input
-                        type="text"
-                        value={editedConfig.letter.closing}
-                        onChange={(e) => setEditedConfig({
-                          ...editedConfig,
-                          letter: { ...editedConfig.letter, closing: e.target.value }
-                        })}
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-pink-500/30 text-xs sm:text-sm text-pink-100 focus:outline-none focus:border-pink-400"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-pink-300 mb-1">Chữ Ký</label>
-                      <input
-                        type="text"
-                        value={editedConfig.letter.signature}
-                        onChange={(e) => setEditedConfig({
-                          ...editedConfig,
-                          letter: { ...editedConfig.letter, signature: e.target.value }
-                        })}
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-pink-500/30 text-xs sm:text-sm text-pink-100 focus:outline-none focus:border-pink-400"
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === 'photos' && (
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-pink-300 font-medium">Thay đổi đường dẫn hình ảnh (URL) hoặc chú thích</span>
-                    <button onClick={handleAddPhoto} className="px-3 py-1.5 rounded-xl bg-pink-500 text-white text-xs font-semibold flex items-center gap-1">
-                      <Icon name="Plus" className="w-3.5 h-3.5" /> Thêm Ảnh
-                    </button>
-                  </div>
-
-                  <div className="space-y-4">
-                    {editedConfig.photos && editedConfig.photos.map((photo, idx) => (
-                      <div key={photo.id || idx} className="p-4 rounded-2xl bg-slate-950/80 border border-pink-500/20 space-y-3">
-                        <div className="flex items-center justify-between border-b border-pink-500/20 pb-2">
-                          <span className="text-xs font-bold text-amber-300 font-serif">Ảnh #{idx + 1}</span>
-                          <button onClick={() => handleRemovePhoto(idx)} className="p-1 rounded bg-rose-500/20 text-rose-300 hover:bg-rose-500/40 text-xs flex items-center gap-1">
-                            <Icon name="Trash2" className="w-3.5 h-3.5" /> Xóa
-                          </button>
-                        </div>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
-                          <div className="aspect-[4/3] rounded-xl overflow-hidden border border-pink-400/30 bg-slate-900">
-                            <img src={photo.url || photo.image} alt={photo.title} className="w-full h-full object-cover" />
-                          </div>
-
-                          <div className="sm:col-span-2 space-y-2">
-                            <div>
-                              <label className="block text-[11px] font-semibold text-pink-300">Đường dẫn Hình ảnh (Image URL)</label>
-                              <input
-                                type="text"
-                                value={photo.url || photo.image || ''}
-                                onChange={(e) => handlePhotoChange(idx, 'url', e.target.value)}
-                                className="w-full px-3 py-1.5 rounded-lg bg-slate-900 border border-pink-500/30 text-xs text-pink-100 focus:outline-none"
-                              />
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-2">
-                              <div>
-                                <label className="block text-[11px] font-semibold text-pink-300">Tiêu đề ảnh</label>
-                                <input
-                                  type="text"
-                                  value={photo.title}
-                                  onChange={(e) => handlePhotoChange(idx, 'title', e.target.value)}
-                                  className="w-full px-3 py-1.5 rounded-lg bg-slate-900 border border-pink-500/30 text-xs text-pink-100 focus:outline-none"
-                                />
-                              </div>
-                              <div>
-                                <label className="block text-[11px] font-semibold text-pink-300">Thời gian / Ngày</label>
-                                <input
-                                  type="text"
-                                  value={photo.date}
-                                  onChange={(e) => handlePhotoChange(idx, 'date', e.target.value)}
-                                  className="w-full px-3 py-1.5 rounded-lg bg-slate-900 border border-pink-500/30 text-xs text-pink-100 focus:outline-none"
-                                />
-                              </div>
-                            </div>
-
-                            <div>
-                              <label className="block text-[11px] font-semibold text-pink-300">Chú thích (Caption)</label>
-                              <input
-                                type="text"
-                                value={photo.caption}
-                                onChange={(e) => handlePhotoChange(idx, 'caption', e.target.value)}
-                                className="w-full px-3 py-1.5 rounded-lg bg-slate-900 border border-pink-500/30 text-xs text-pink-100 focus:outline-none"
-                              />
-                            </div>
+                    ) : (
+                      /* Video Tag with preview */
+                      <div className="relative w-full h-full overflow-hidden rounded-2xl">
+                        <video
+                          src={convertGoogleDriveUrl(item.url, 'video')}
+                          poster={item.poster ? convertGoogleDriveUrl(item.poster, 'image') : undefined}
+                          muted
+                          loop
+                          playsInline
+                          className="w-full h-full object-cover rounded-2xl transition-all duration-700 ease-out group-hover:scale-110 group-hover:rounded-3xl"
+                        />
+                        <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                          <div className="w-12 h-12 rounded-full bg-white/90 text-rose-600 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                            <i className="fa-solid fa-play ml-1"></i>
                           </div>
                         </div>
                       </div>
-                    ))}
-                  </div>
-                </div>
-              )}
+                    )}
 
-              {activeTab === 'music' && (
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-pink-300 font-medium">Tùy chỉnh danh sách bài hát và câu nói hay</span>
-                    <button onClick={handleAddSong} className="px-3 py-1.5 rounded-xl bg-pink-500 text-white text-xs font-semibold flex items-center gap-1">
-                      <Icon name="Plus" className="w-3.5 h-3.5" /> Thêm Bài Hát
+                    {/* Tag badge */}
+                    <div className="absolute top-3 left-3 bg-black/50 backdrop-blur-md text-white text-xs px-2.5 py-1 rounded-full flex items-center gap-1 font-medium z-10">
+                      <i className={item.type === 'image' ? 'fa-regular fa-image' : 'fa-solid fa-film'}></i>
+                      <span>{item.type === 'image' ? 'Ảnh' : 'Clip'}</span>
+                    </div>
+
+                    {/* Date Tag & Heart Toggle Button */}
+                    <div className="absolute top-3 right-3 flex items-center gap-1.5 z-10">
+                      {item.date && (
+                        <div className="bg-black/40 backdrop-blur-md text-white text-[11px] px-2.5 py-1 rounded-full font-medium hidden sm:block">
+                          {item.date}
+                        </div>
+                      )}
+                      <button
+                        type="button"
+                        onClick={(e) => handleToggleHighlight(e, item.id)}
+                        title={item.category === 'highlight' ? 'Đặc sắc (Bấm để bỏ)' : 'Bấm icon Trái tim để chuyển qua mục Đặc Sắc'}
+                        className={`p-1.5 sm:p-2 rounded-full backdrop-blur-md transition-all shadow-md cursor-pointer ${
+                          item.category === 'highlight'
+                            ? 'bg-rose-500 text-white hover:bg-rose-600 scale-105 ring-2 ring-white/60'
+                            : 'bg-black/40 text-white/90 hover:bg-black/70 hover:text-rose-400 hover:scale-110'
+                        }`}
+                      >
+                        <i className={`fa-solid fa-heart ${item.category === 'highlight' ? 'text-white' : ''}`}></i>
+                      </button>
+                    </div>
+
+                    {/* Hover Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4 flex flex-col justify-end text-white rounded-2xl">
+                      <h3 className="font-semibold text-base sm:text-lg truncate">{item.title}</h3>
+                      {item.caption && <p className="text-xs text-slate-200 mt-1 line-clamp-2">{item.caption}</p>}
+                    </div>
+                  </div>
+
+                  <div className="p-3 flex items-center justify-between">
+                    <div className="min-w-0 flex-1 pr-2">
+                      <p className="font-semibold text-slate-800 text-sm sm:text-base truncate">{item.title}</p>
+                      {item.caption && <p className="text-xs text-slate-500 truncate mt-0.5">{item.caption}</p>}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={(e) => handleToggleHighlight(e, item.id)}
+                      title={item.category === 'highlight' ? 'Bỏ khỏi mục Đặc sắc' : 'Chuyển qua mục Đặc sắc'}
+                      className={`p-1.5 rounded-full transition-colors cursor-pointer flex-shrink-0 ${
+                        item.category === 'highlight'
+                          ? 'bg-rose-100 text-rose-600 hover:bg-rose-200'
+                          : 'text-slate-300 hover:text-rose-500 hover:bg-rose-50'
+                      }`}
+                    >
+                      <i className={`fa-solid fa-heart ${item.category === 'highlight' ? 'text-rose-500' : ''}`}></i>
                     </button>
                   </div>
-
-                  <div className="space-y-4">
-                    {editedConfig.playlist && editedConfig.playlist.map((song, idx) => (
-                      <div key={song.id || idx} className="p-4 rounded-2xl bg-slate-950/80 border border-pink-500/20 space-y-3">
-                        <div className="flex items-center justify-between border-b border-pink-500/20 pb-2">
-                          <span className="text-xs font-bold text-amber-300 font-serif">Bài hát #{idx + 1}</span>
-                          <button onClick={() => handleRemoveSong(idx)} className="p-1 rounded bg-rose-500/20 text-rose-300 hover:bg-rose-500/40 text-xs flex items-center gap-1">
-                            <Icon name="Trash2" className="w-3.5 h-3.5" /> Xóa
-                          </button>
-                        </div>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                          <div>
-                            <label className="block text-[11px] font-semibold text-pink-300">Tên bài hát</label>
-                            <input
-                              type="text"
-                              value={song.title}
-                              onChange={(e) => handleSongChange(idx, 'title', e.target.value)}
-                              className="w-full px-3 py-1.5 rounded-lg bg-slate-900 border border-pink-500/30 text-xs text-pink-100 focus:outline-none"
-                            />
-                          </div>
-                          <div>
-                            <label className="block text-[11px] font-semibold text-pink-300">Ca sĩ / Nghệ sĩ</label>
-                            <input
-                              type="text"
-                              value={song.artist}
-                              onChange={(e) => handleSongChange(idx, 'artist', e.target.value)}
-                              className="w-full px-3 py-1.5 rounded-lg bg-slate-900 border border-pink-500/30 text-xs text-pink-100 focus:outline-none"
-                            />
-                          </div>
-                          <div className="sm:col-span-2">
-                            <label className="block text-[11px] font-semibold text-pink-300">Trích dẫn Lời bài hát</label>
-                            <input
-                              type="text"
-                              value={song.lyricsQuote || ''}
-                              onChange={(e) => handleSongChange(idx, 'lyricsQuote', e.target.value)}
-                              className="w-full px-3 py-1.5 rounded-lg bg-slate-900 border border-pink-500/30 text-xs text-pink-100 focus:outline-none"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
                 </div>
-              )}
+              ))}
             </div>
 
-            <div className="p-4 border-t border-pink-500/20 bg-slate-950/80 flex flex-col sm:flex-row items-center justify-between gap-3">
-              <button
-                onClick={() => {
-                  onResetDefault();
-                  onClose();
-                }}
-                className="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-rose-500/30 text-rose-300 hover:bg-rose-500/10 text-xs font-semibold transition flex items-center justify-center gap-1.5"
+            {/* Lightbox Modal */}
+            {lightboxItem && (
+              <div
+                onClick={() => setLightboxItem(null)}
+                className="fixed inset-0 z-[9999] bg-black/85 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto animate-fade-in"
               >
-                <Icon name="RotateCcw" className="w-4 h-4" /> Khôi Phục Mặc Định
-              </button>
+                <div
+                  onClick={(e) => e.stopPropagation()}
+                  className="relative max-w-3xl w-full bg-slate-900 rounded-3xl overflow-hidden shadow-2xl text-white my-auto flex flex-col max-h-[90vh]"
+                >
+                  <button
+                    onClick={() => setLightboxItem(null)}
+                    className="absolute top-3 right-3 z-30 w-10 h-10 rounded-full bg-black/70 hover:bg-black text-white flex items-center justify-center transition-colors cursor-pointer border border-white/20"
+                  >
+                    <i className="fa-solid fa-xmark text-lg"></i>
+                  </button>
 
-              <div className="flex items-center gap-2 w-full sm:w-auto">
-                <button
-                  onClick={onClose}
-                  className="flex-1 sm:flex-none px-4 py-2.5 rounded-xl border border-pink-500/30 text-pink-200 hover:bg-slate-800 text-xs font-semibold transition"
-                >
-                  Hủy
-                </button>
-                <button
-                  onClick={handleSave}
-                  className="flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-gradient-to-r from-pink-500 via-purple-500 to-amber-400 text-white font-serif font-bold text-xs shadow-lg hover:scale-105 active:scale-95 transition flex items-center justify-center gap-2"
-                >
-                  <Icon name={savedSuccess ? "Check" : "Save"} className="w-4 h-4" />
-                  <span>{savedSuccess ? "Đã Lưu Thành Công!" : "Lưu & Áp Dụng"}</span>
-                </button>
+                  <div className="relative bg-black flex-1 flex items-center justify-center min-h-[220px] max-h-[70vh] p-2 sm:p-4 overflow-hidden">
+                    {lightboxItem.type === 'image' ? (
+                      <img src={convertGoogleDriveUrl(lightboxItem.url, 'image')} alt={lightboxItem.title} className="max-h-[65vh] max-w-full w-auto h-auto object-contain rounded-xl mx-auto shadow-lg" />
+                    ) : isGoogleDriveUrl(lightboxItem.url) ? (
+                      <div className="relative w-full h-[55vh] sm:h-[65vh] flex flex-col items-center justify-center bg-black rounded-xl overflow-hidden">
+                        <iframe
+                          src={getGoogleDrivePreviewIframeUrl(lightboxItem.url)}
+                          className="w-full h-full border-0 rounded-xl"
+                          allow="autoplay; encrypted-media; picture-in-picture"
+                          allowFullScreen
+                          title={lightboxItem.title}
+                        />
+                        <div className="absolute bottom-3 right-3 z-20">
+                          <a
+                            href={getGoogleDriveViewUrl(lightboxItem.url)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="bg-black/80 hover:bg-rose-600 text-white text-xs font-medium px-3.5 py-1.5 rounded-full backdrop-blur-md border border-white/20 flex items-center gap-1.5 transition-all shadow-xl"
+                          >
+                            <i className="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                            <span>Mở trên Google Drive ↗</span>
+                          </a>
+                        </div>
+                      </div>
+                    ) : videoError ? (
+                      <div className="relative max-h-[65vh] max-w-full w-auto h-auto flex items-center justify-center group my-auto">
+                        <img
+                          src={convertGoogleDriveUrl(lightboxItem.poster || 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=1200&auto=format&fit=crop', 'image')}
+                          alt={lightboxItem.title}
+                          onError={(e) => {
+                            e.target.src = 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=1200&auto=format&fit=crop';
+                          }}
+                          className="max-h-[65vh] max-w-full w-auto h-auto object-contain rounded-xl mx-auto shadow-lg"
+                        />
+                        <a
+                          href={getGoogleDriveViewUrl(lightboxItem.url)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 hover:bg-black/60 transition-colors rounded-xl p-4 text-center group"
+                        >
+                          <div className="w-16 h-16 rounded-full bg-rose-500 hover:bg-rose-600 text-white flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform mb-2">
+                            <i className="fa-solid fa-play text-2xl ml-1 text-white"></i>
+                          </div>
+                          <span className="text-white text-xs font-medium px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/20">
+                            Nhấn để mở xem video clip ↗
+                          </span>
+                        </a>
+                      </div>
+                    ) : (
+                      <div className="relative w-full h-full flex items-center justify-center">
+                        <video
+                          ref={videoRef}
+                          src={convertGoogleDriveUrl(lightboxItem.url, 'video')}
+                          controls
+                          autoPlay
+                          playsInline
+                          muted={isMuted}
+                          preload="auto"
+                          onError={() => setVideoError(true)}
+                          className="max-h-[65vh] max-w-full w-auto h-auto object-contain rounded-xl mx-auto shadow-lg"
+                        />
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (videoRef.current) {
+                              const nextState = !isMuted;
+                              videoRef.current.muted = nextState;
+                              setIsMuted(nextState);
+                              videoRef.current.play().catch(() => {});
+                            }
+                          }}
+                          className="absolute bottom-4 right-4 z-20 px-3.5 py-1.5 rounded-full bg-black/80 hover:bg-black text-white text-xs font-medium flex items-center gap-2 backdrop-blur-md border border-white/20 shadow-lg cursor-pointer transition-transform active:scale-95"
+                        >
+                          <i className={isMuted ? "fa-solid fa-volume-xmark text-rose-300" : "fa-solid fa-volume-high text-emerald-400"}></i>
+                          <span>{isMuted ? 'Bật tiếng (Unmute)' : 'Tắt tiếng'}</span>
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="p-5 sm:p-6 bg-slate-900 border-t border-slate-800 w-full flex-shrink-0 flex items-start justify-between gap-4">
+                    <div className="min-w-0 flex-1">
+                      <h3 className="text-xl font-bold font-playfair text-rose-300">{lightboxItem.title}</h3>
+                      {lightboxItem.caption && <p className="mt-2 text-slate-200 text-sm sm:text-base leading-relaxed">{lightboxItem.caption}</p>}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        handleToggleHighlight(e, lightboxItem.id);
+                        setLightboxItem({
+                          ...lightboxItem,
+                          category: lightboxItem.category === 'highlight' ? 'daily' : 'highlight'
+                        });
+                      }}
+                      title={lightboxItem.category === 'highlight' ? 'Đã ở mục Đặc Sắc (Bấm để bỏ)' : 'Chuyển vào mục Đặc Sắc'}
+                      className={`px-3.5 py-2 rounded-full border text-xs sm:text-sm font-semibold flex items-center gap-2 transition-all cursor-pointer flex-shrink-0 ${
+                        lightboxItem.category === 'highlight'
+                          ? 'bg-rose-500 text-white border-rose-500 shadow-lg'
+                          : 'bg-slate-800 text-slate-300 border-slate-700 hover:text-white hover:border-rose-400'
+                      }`}
+                    >
+                      <i className="fa-solid fa-heart"></i>
+                      <span>{lightboxItem.category === 'highlight' ? 'Mục Đặc Sắc' : 'Thêm vào Đặc Sắc'}</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </section>
+        );
+      };
+
+      // 5. Timeline Section
+      const TimelineSection = ({ milestones }) => {
+        return (
+          <section className="py-12 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto relative">
+            <div className="text-center mb-10">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-100 text-orange-600 text-xs font-semibold uppercase tracking-wider mb-2">
+                <i className="fa-solid fa-timeline"></i>
+                <span>Cột Mốc Tình Yêu</span>
+              </div>
+              <h2 className="font-playfair text-3xl sm:text-4xl font-bold text-slate-800">
+                Hành Trình 60 Ngày Cùng Nhau
+              </h2>
+            </div>
+
+            <div className="relative border-l-2 border-rose-300/80 ml-4 sm:ml-28 space-y-8">
+              {milestones.map((m) => (
+                <div key={m.id} className="relative pl-6 sm:pl-8 group">
+                  <div className="absolute -left-[17px] top-1.5 w-8 h-8 rounded-full bg-white border-2 border-rose-400 flex items-center justify-center shadow-md">
+                    <i className={`fa-solid ${m.icon} text-xs text-rose-500`}></i>
+                  </div>
+                  <div className="sm:absolute sm:-left-32 sm:top-1.5 sm:w-24 sm:text-right text-xs font-bold text-rose-600 uppercase tracking-wider mb-1 sm:mb-0">
+                    {m.date}
+                  </div>
+                  <div className="bg-white/80 backdrop-blur-md rounded-2xl p-5 shadow-md border border-rose-100 hover:shadow-xl transition-all">
+                    <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
+                      <div className="flex-1">
+                        <h3 className="font-playfair text-xl font-bold text-slate-800">{m.title}</h3>
+                        <p className="text-slate-600 text-sm mt-2 leading-relaxed">{m.description}</p>
+                      </div>
+                      {m.photoUrl && (
+                        <div className="w-full md:w-32 h-24 rounded-xl overflow-hidden flex-shrink-0">
+                          <img src={convertGoogleDriveUrl(m.photoUrl, 'image')} alt={m.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        );
+      };
+
+      // 6. Love Notes & Letter Section
+      const LoveNotesSection = ({ letterContent, notes, onUpdateNotes, person1Name, person2Name }) => {
+        const [newNote, setNewNote] = useState('');
+        const [authorName, setAuthorName] = useState(person1Name);
+
+        const handleAddNote = (e) => {
+          e.preventDefault();
+          if (!newNote.trim()) return;
+          const colors = [
+            'from-rose-100 to-pink-100 border-rose-200',
+            'from-amber-100 to-orange-100 border-amber-200',
+            'from-orange-100 to-rose-100 border-orange-200'
+          ];
+          const next = [
+            {
+              id: Date.now().toString(),
+              author: authorName || 'Dấu yêu',
+              content: newNote.trim(),
+              tag: 'Kỷ niệm mới',
+              colorBg: colors[Math.floor(Math.random() * colors.length)]
+            },
+            ...notes
+          ];
+          if (onUpdateNotes) onUpdateNotes(next);
+          setNewNote('');
+        };
+
+        const handleDeleteNote = (id) => {
+          const next = notes.filter(n => n.id !== id);
+          if (onUpdateNotes) onUpdateNotes(next);
+        };
+
+        return (
+          <section className="py-12 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto relative">
+            <div className="bg-gradient-to-br from-white/90 via-rose-50/80 to-orange-50/90 backdrop-blur-md rounded-3xl p-6 sm:p-10 shadow-xl border border-rose-200 mb-12">
+              <div className="flex items-center gap-2 text-rose-500 font-semibold text-xs sm:text-sm uppercase tracking-wider mb-4">
+                <i className="fa-solid fa-envelope-open-text"></i>
+                <span>Bức Thư Tình Tròn 2 Tháng</span>
+              </div>
+              <h2 className="font-dancing text-3xl sm:text-4xl font-bold text-slate-800 mb-6">
+                Gửi em, mảnh ghép ngọt ngào của anh 💕
+              </h2>
+              <div className="text-slate-700 text-base sm:text-lg leading-relaxed whitespace-pre-line font-playfair italic bg-white/60 p-6 rounded-2xl border border-rose-100 shadow-inner">
+                {letterContent}
+              </div>
+              <div className="mt-6 flex items-center justify-between">
+                <span className="text-xs sm:text-sm text-slate-500">Tròn 60 ngày yêu thương</span>
+                <div className="font-dancing text-2xl font-bold text-rose-600">Yêu em mãi mãi</div>
               </div>
             </div>
 
+            <div className="text-center mb-6">
+              <h3 className="font-playfair text-2xl font-bold text-slate-800">Lời Nhắn Nhủ Ngọt Ngào</h3>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+              {notes.map((n) => (
+                <div key={n.id} className={`bg-gradient-to-br ${n.colorBg} backdrop-blur-sm rounded-2xl p-5 shadow-md border flex flex-col justify-between group relative`}>
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/80 text-rose-600">{n.tag || 'Lời nhắn'}</span>
+                      {onUpdateNotes && (
+                        <button
+                          onClick={() => handleDeleteNote(n.id)}
+                          title="Xóa lời nhắn này"
+                          className="opacity-0 group-hover:opacity-100 p-1 text-slate-400 hover:text-rose-600 transition-opacity rounded-md hover:bg-white/60 cursor-pointer"
+                        >
+                          <i className="fa-solid fa-trash text-xs"></i>
+                        </button>
+                      )}
+                    </div>
+                    <p className="text-slate-800 text-sm italic">"{n.content}"</p>
+                  </div>
+                  <div className="mt-4 pt-3 border-t border-rose-200/50 flex items-center justify-between text-xs text-rose-700 font-medium">
+                    <span>Từ: <strong>{n.author}</strong></span>
+                    <i className="fa-solid fa-heart text-rose-500"></i>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="bg-white/80 backdrop-blur-md rounded-2xl p-4 border border-rose-100 shadow-sm max-w-xl mx-auto">
+              <form onSubmit={handleAddNote} className="space-y-3">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="Tên người gửi"
+                    value={authorName}
+                    onChange={(e) => setAuthorName(e.target.value)}
+                    className="w-1/3 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs sm:text-sm focus:outline-none"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Lời nhắn ngọt ngào dành cho đối phương..."
+                    value={newNote}
+                    onChange={(e) => setNewNote(e.target.value)}
+                    className="flex-1 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs sm:text-sm focus:outline-none"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="w-full py-2.5 rounded-xl bg-gradient-to-r from-orange-400 to-rose-500 text-white font-medium text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <i className="fa-solid fa-paper-plane"></i>
+                  <span>Gửi Lời Nhắn Này</span>
+                </button>
+              </form>
+            </div>
+          </section>
+        );
+      };
+
+      // 7. Persistent Audio Player Widget
+      const AudioPlayerWidget = ({ audioUrl, audioTitle, isPlaying, onTogglePlay }) => {
+        const audioRef = useRef(null);
+        const formattedAudioUrl = convertGoogleDriveUrl(audioUrl, 'audio');
+
+        useEffect(() => {
+          if (audioRef.current) {
+            if (isPlaying) {
+              audioRef.current.play().catch(e => console.log('Audio play error:', e));
+            } else {
+              audioRef.current.pause();
+            }
+          }
+        }, [isPlaying, formattedAudioUrl]);
+
+        return (
+          <>
+            <audio ref={audioRef} src={formattedAudioUrl} loop preload="auto" />
+            <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:bottom-6 z-40 max-w-sm">
+              <div className="bg-white/90 backdrop-blur-xl border border-rose-200 shadow-2xl rounded-2xl p-3 sm:p-4 flex items-center justify-between gap-3 text-slate-800">
+                <div className="flex items-center gap-3 overflow-hidden">
+                  <div className={`w-10 h-10 rounded-full bg-gradient-to-tr from-amber-400 via-rose-500 to-pink-500 p-0.5 flex items-center justify-center ${isPlaying ? 'animate-spin' : ''}`} style={{ animationDuration: '6s' }}>
+                    <div className="w-8 h-8 bg-slate-900 rounded-full flex items-center justify-center">
+                      <i className="fa-solid fa-compact-disc text-rose-300 text-sm"></i>
+                    </div>
+                  </div>
+                  <div className="min-w-0">
+                    <span className="text-xs text-rose-500 font-semibold uppercase tracking-wider block">Nhạc nền lãng mạn</span>
+                    <p className="text-xs sm:text-sm font-medium text-slate-700 truncate">{audioTitle}</p>
+                  </div>
+                </div>
+
+                <button
+                  onClick={onTogglePlay}
+                  className="w-10 h-10 rounded-full bg-gradient-to-r from-orange-400 to-rose-500 text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-transform flex-shrink-0 cursor-pointer"
+                >
+                  <i className={`fa-solid ${isPlaying ? 'fa-pause' : 'fa-play ml-0.5'}`}></i>
+                </button>
+              </div>
+            </div>
+          </>
+        );
+      };
+
+      // 8. Customizer Modal
+      const CustomizerModal = ({ isOpen, onClose, config, onSaveConfig, galleryItems, onSaveGallery, milestones, onSaveMilestones, loveNotes, onSaveLoveNotes }) => {
+        const [person1, setPerson1] = useState(config.person1Name);
+        const [person2, setPerson2] = useState(config.person2Name);
+        const [startDate, setStartDate] = useState(config.startDate);
+        const [audioUrl, setAudioUrl] = useState(config.audioUrl);
+        const [audioTitle, setAudioTitle] = useState(config.audioTitle);
+        const [letter, setLetter] = useState(config.letterContent);
+
+        const [items, setItems] = useState(galleryItems);
+        const [msList, setMsList] = useState(milestones);
+        const [noteList, setNoteList] = useState(loveNotes);
+
+        const [activeTab, setActiveTab] = useState('info');
+
+        // Gallery state
+        const [editingItemId, setEditingItemId] = useState(null);
+        const [newItemUrl, setNewItemUrl] = useState('');
+        const [newItemPoster, setNewItemPoster] = useState('');
+        const [newItemTitle, setNewItemTitle] = useState('');
+        const [newItemCaption, setNewItemCaption] = useState('');
+        const [newItemDate, setNewItemDate] = useState('');
+        const [newItemType, setNewItemType] = useState('image');
+        const [newItemCategory, setNewItemCategory] = useState('daily');
+
+        const resetGalleryForm = () => {
+          setEditingItemId(null);
+          setNewItemUrl('');
+          setNewItemPoster('');
+          setNewItemTitle('');
+          setNewItemCaption('');
+          setNewItemDate('');
+          setNewItemType('image');
+          setNewItemCategory('daily');
+        };
+
+        const handleStartEditItem = (it) => {
+          setEditingItemId(it.id);
+          setNewItemTitle(it.title || '');
+          setNewItemType(it.type || 'image');
+          setNewItemUrl(it.url || '');
+          setNewItemPoster(it.poster || '');
+          setNewItemDate(it.date || '');
+          setNewItemCaption(it.caption || '');
+          setNewItemCategory(it.category || 'daily');
+        };
+
+        // Milestone form state
+        const [editingMsId, setEditingMsId] = useState(null);
+        const [msDate, setMsDate] = useState('');
+        const [msTitle, setMsTitle] = useState('');
+        const [msDesc, setMsDesc] = useState('');
+        const [msPhoto, setMsPhoto] = useState('');
+
+        // Note form state
+        const [editingNoteId, setEditingNoteId] = useState(null);
+        const [noteAuthor, setNoteAuthor] = useState('');
+        const [noteContent, setNoteContent] = useState('');
+        const [noteTag, setNoteTag] = useState('');
+
+        const [copySuccess, setCopySuccess] = useState(false);
+
+        if (!isOpen) return null;
+
+        const handleSave = () => {
+          const formattedAudio = convertGoogleDriveUrl(audioUrl, 'audio');
+          const formattedItems = items.map((it) => ({
+            ...it,
+            url: convertGoogleDriveUrl(it.url, it.type),
+            poster: it.poster ? convertGoogleDriveUrl(it.poster, 'image') : undefined,
+          }));
+          const formattedMilestones = msList.map((m) => ({
+            ...m,
+            photoUrl: m.photoUrl ? convertGoogleDriveUrl(m.photoUrl, 'image') : undefined,
+          }));
+
+          onSaveConfig({ ...config, person1Name: person1, person2Name: person2, startDate, audioUrl: formattedAudio, audioTitle, letterContent: letter });
+          onSaveGallery(formattedItems);
+          onSaveMilestones(formattedMilestones);
+          onSaveLoveNotes(noteList);
+          onClose();
+        };
+
+        const handleSaveItem = () => {
+          if (!newItemUrl.trim() || !newItemTitle.trim()) return;
+          const finalUrl = convertGoogleDriveUrl(newItemUrl.trim(), newItemType);
+          const finalPoster = newItemType === 'video'
+            ? convertGoogleDriveUrl(newItemPoster.trim() || 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=1200&auto=format&fit=crop', 'image')
+            : undefined;
+
+          if (editingItemId) {
+            setItems(items.map((it) =>
+              it.id === editingItemId
+                ? {
+                    ...it,
+                    type: newItemType,
+                    url: finalUrl,
+                    poster: finalPoster,
+                    title: newItemTitle.trim(),
+                    caption: newItemCaption.trim() || 'Khoảnh khắc kỷ niệm ngọt ngào',
+                    date: newItemDate.trim() || 'Kỷ niệm mới',
+                    category: newItemCategory
+                  }
+                : it
+            ));
+          } else {
+            setItems([...items, {
+              id: Date.now().toString(),
+              type: newItemType,
+              url: finalUrl,
+              poster: finalPoster,
+              title: newItemTitle.trim(),
+              caption: newItemCaption.trim() || 'Khoảnh khắc kỷ niệm ngọt ngào',
+              date: newItemDate.trim() || 'Kỷ niệm mới',
+              category: newItemCategory
+            }]);
+          }
+          resetGalleryForm();
+        };
+
+        const handleSaveMilestone = () => {
+          if (!msTitle.trim() || !msDate.trim()) return;
+          const finalPhoto = msPhoto.trim() ? convertGoogleDriveUrl(msPhoto.trim(), 'image') : undefined;
+
+          if (editingMsId) {
+            setMsList(msList.map(m => m.id === editingMsId ? { ...m, date: msDate.trim(), title: msTitle.trim(), description: msDesc.trim(), photoUrl: finalPhoto } : m));
+            setEditingMsId(null);
+          } else {
+            setMsList([...msList, {
+              id: Date.now().toString(),
+              date: msDate.trim(),
+              title: msTitle.trim(),
+              description: msDesc.trim() || 'Kỷ niệm đáng nhớ',
+              icon: 'fa-heart',
+              photoUrl: finalPhoto
+            }]);
+          }
+          setMsDate(''); setMsTitle(''); setMsDesc(''); setMsPhoto('');
+        };
+
+        const handleSaveNote = () => {
+          if (!noteContent.trim()) return;
+          const colors = [
+            'from-rose-100 to-pink-100 border-rose-200',
+            'from-amber-100 to-orange-100 border-amber-200',
+            'from-orange-100 to-rose-100 border-orange-200'
+          ];
+          if (editingNoteId) {
+            setNoteList(noteList.map(n => n.id === editingNoteId ? { ...n, author: noteAuthor.trim() || person1 || 'Dấu yêu', content: noteContent.trim(), tag: noteTag.trim() || 'Lời nhắn' } : n));
+            setEditingNoteId(null);
+          } else {
+            setNoteList([{
+              id: Date.now().toString(),
+              author: noteAuthor.trim() || person1 || 'Dấu yêu',
+              content: noteContent.trim(),
+              tag: noteTag.trim() || 'Lời nhắn',
+              colorBg: colors[Math.floor(Math.random() * colors.length)]
+            }, ...noteList]);
+          }
+          setNoteAuthor(''); setNoteContent(''); setNoteTag('');
+        };
+
+        const getCurrentDataBundle = () => {
+          return {
+            config: {
+              ...config,
+              person1Name: person1,
+              person2Name: person2,
+              startDate,
+              audioUrl: convertGoogleDriveUrl(audioUrl, 'audio'),
+              audioTitle,
+              letterContent: letter
+            },
+            galleryItems: items,
+            milestones: msList,
+            loveNotes: noteList
+          };
+        };
+
+        const handleExportJSON = () => {
+          const dataBundle = getCurrentDataBundle();
+          const blob = new Blob([JSON.stringify(dataBundle, null, 2)], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `love_story_data_${new Date().toISOString().split('T')[0]}.json`;
+          a.click();
+          URL.revokeObjectURL(url);
+        };
+
+        const handleImportJSON = (e) => {
+          const file = e.target.files[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            try {
+              const data = JSON.parse(event.target.result);
+              if (data.config) {
+                setPerson1(data.config.person1Name || person1);
+                setPerson2(data.config.person2Name || person2);
+                setStartDate(data.config.startDate || startDate);
+                setAudioUrl(data.config.audioUrl || audioUrl);
+                setAudioTitle(data.config.audioTitle || audioTitle);
+                setLetter(data.config.letterContent || letter);
+              }
+              if (Array.isArray(data.galleryItems)) setItems(data.galleryItems);
+              if (Array.isArray(data.milestones)) setMsList(data.milestones);
+              if (Array.isArray(data.loveNotes)) setNoteList(data.loveNotes);
+              alert('✨ Đã nhập dữ liệu thành công! Hãy nhấn "Lưu Thay Đổi" để áp dụng lên web.');
+            } catch (err) {
+              alert('❌ File JSON không hợp lệ. Vui lòng kiểm tra lại!');
+            }
+          };
+          reader.readAsText(file);
+        };
+
+        const handleCopyJSON = () => {
+          const bundle = getCurrentDataBundle();
+          navigator.clipboard.writeText(JSON.stringify(bundle, null, 2));
+          setCopySuccess(true);
+          setTimeout(() => setCopySuccess(false), 3000);
+        };
+
+        return (
+          <div className="fixed inset-0 z-[9999] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+            <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl border border-rose-100 overflow-hidden text-slate-800 my-auto">
+              <div className="p-4 sm:p-5 bg-gradient-to-r from-orange-400 via-rose-500 to-pink-500 text-white flex items-center justify-between">
+                <h3 className="font-bold text-lg"><i className="fa-solid fa-gear mr-2"></i>Tùy Chỉnh Trang Web</h3>
+                <button onClick={onClose} className="p-1 hover:bg-white/20 rounded-full cursor-pointer"><i className="fa-solid fa-xmark text-xl"></i></button>
+              </div>
+
+              <div className="flex border-b bg-rose-50/50 text-xs sm:text-sm font-semibold overflow-x-auto no-scrollbar">
+                <button
+                  onClick={() => setActiveTab('info')}
+                  className={`px-3 py-3 flex-1 whitespace-nowrap ${activeTab === 'info' ? 'border-b-2 border-rose-500 text-rose-600 bg-white' : 'text-slate-500'}`}
+                >
+                  Thông Tin
+                </button>
+                <button
+                  onClick={() => setActiveTab('media')}
+                  className={`px-3 py-3 flex-1 whitespace-nowrap ${activeTab === 'media' ? 'border-b-2 border-rose-500 text-rose-600 bg-white' : 'text-slate-500'}`}
+                >
+                  Ảnh & Video ({items.length})
+                </button>
+                <button
+                  onClick={() => setActiveTab('milestones')}
+                  className={`px-3 py-3 flex-1 whitespace-nowrap ${activeTab === 'milestones' ? 'border-b-2 border-rose-500 text-rose-600 bg-white' : 'text-slate-500'}`}
+                >
+                  Cột Mốc ({msList.length})
+                </button>
+                <button
+                  onClick={() => setActiveTab('notes')}
+                  className={`px-3 py-3 flex-1 whitespace-nowrap ${activeTab === 'notes' ? 'border-b-2 border-rose-500 text-rose-600 bg-white' : 'text-slate-500'}`}
+                >
+                  Lời Nhắn ({noteList.length})
+                </button>
+                <button
+                  onClick={() => setActiveTab('export')}
+                  className={`px-3 py-3 flex-1 whitespace-nowrap ${activeTab === 'export' ? 'border-b-2 border-rose-500 text-rose-600 bg-white' : 'text-slate-500'}`}
+                >
+                  ⚡ Lương/WordPress Sync
+                </button>
+              </div>
+
+              <div className="p-4 sm:p-5 overflow-y-auto space-y-4 flex-1">
+                {activeTab === 'info' && (
+                  <>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs font-semibold mb-1">Tên Bạn:</label>
+                        <input type="text" value={person1} onChange={e => setPerson1(e.target.value)} className="w-full px-3 py-2 border rounded-xl text-sm" />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold mb-1">Tên Người Yêu:</label>
+                        <input type="text" value={person2} onChange={e => setPerson2(e.target.value)} className="w-full px-3 py-2 border rounded-xl text-sm" />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold mb-1">Ngày Chính Thức Quen Nhau (YYYY-MM-DD):</label>
+                      <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className="w-full px-3 py-2 border rounded-xl text-sm" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold mb-1">Link Nhạc MP3 (Tự động hỗ trợ Google Drive & Dropbox link):</label>
+                      <input type="url" value={audioUrl} onChange={e => setAudioUrl(e.target.value)} placeholder="https://... hoặc link Google Drive / Dropbox" className="w-full px-3 py-2 border rounded-xl text-sm" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold mb-1">Tên Bài Hát Hiển Thị:</label>
+                      <input type="text" value={audioTitle} onChange={e => setAudioTitle(e.target.value)} className="w-full px-3 py-2 border rounded-xl text-sm" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold mb-1">Bức Thư Tình:</label>
+                      <textarea rows={4} value={letter} onChange={e => setLetter(e.target.value)} className="w-full px-3 py-2 border rounded-xl text-sm" />
+                    </div>
+                  </>
+                )}
+
+                {activeTab === 'media' && (
+                  <>
+                    <div className="bg-rose-50 p-4 rounded-2xl border border-rose-100 space-y-2.5">
+                      <div className="flex items-center justify-between">
+                        <h4 className="font-semibold text-xs sm:text-sm text-slate-800">
+                          {editingItemId ? 'Chỉnh Sửa Ảnh / Video:' : 'Thêm Ảnh / Video Mới:'}
+                        </h4>
+                        {editingItemId ? (
+                          <button onClick={resetGalleryForm} className="text-xs text-rose-600 underline font-medium cursor-pointer">Hủy sửa</button>
+                        ) : (
+                          <span className="text-[11px] text-rose-600 font-medium bg-rose-100/80 px-2 py-0.5 rounded-full">✨ Tự động nhận diện Google Drive & Dropbox</span>
+                        )}
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <input type="text" placeholder="Tiêu đề (*)..." value={newItemTitle} onChange={e => setNewItemTitle(e.target.value)} className="px-3 py-2 border rounded-xl text-xs bg-white focus:outline-none focus:border-rose-400" />
+                        <select value={newItemType} onChange={e => setNewItemType(e.target.value)} className="px-3 py-2 border rounded-xl text-xs bg-white focus:outline-none focus:border-rose-400">
+                          <option value="image">Hình ảnh (Image)</option>
+                          <option value="video">Video Clip (MP4)</option>
+                        </select>
+                      </div>
+                      <input type="url" placeholder="Dán URL direct hoặc link Google Drive / Dropbox ảnh/video (*)..." value={newItemUrl} onChange={e => setNewItemUrl(e.target.value)} className="w-full px-3 py-2 border rounded-xl text-xs bg-white focus:outline-none focus:border-rose-400" />
+                      {newItemType === 'video' && (
+                        <input type="url" placeholder="Link ảnh bìa/xem trước Clip (Poster / Drive / Dropbox link)..." value={newItemPoster} onChange={e => setNewItemPoster(e.target.value)} className="w-full px-3 py-2 border rounded-xl text-xs bg-white focus:outline-none focus:border-rose-400" />
+                      )}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <input type="text" placeholder="Thời gian / Mốc kỷ niệm (VD: Tháng 2 - Tuần 3)..." value={newItemDate} onChange={e => setNewItemDate(e.target.value)} className="px-3 py-2 border rounded-xl text-xs bg-white focus:outline-none focus:border-rose-400" />
+                        <input type="text" placeholder="Nội dung / Lời nhắn mô tả kỷ niệm..." value={newItemCaption} onChange={e => setNewItemCaption(e.target.value)} className="px-3 py-2 border rounded-xl text-xs bg-white focus:outline-none focus:border-rose-400" />
+                      </div>
+                      <div className="flex items-center gap-2 pt-0.5">
+                        <button
+                          type="button"
+                          onClick={() => setNewItemCategory(newItemCategory === 'highlight' ? 'daily' : 'highlight')}
+                          className={`px-3 py-1.5 rounded-xl border text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+                            newItemCategory === 'highlight'
+                              ? 'bg-rose-500 text-white border-rose-500 shadow-sm'
+                              : 'bg-white text-slate-600 border-slate-200 hover:border-rose-300'
+                          }`}
+                        >
+                          <i className={`fa-solid fa-heart ${newItemCategory === 'highlight' ? 'text-white' : 'text-rose-500'}`}></i>
+                          <span>{newItemCategory === 'highlight' ? 'Đã chọn: Mục Đặc Sắc ❤️' : 'Chuyển qua mục Đặc Sắc (Bấm chọn)'}</span>
+                        </button>
+                      </div>
+                      <button onClick={handleSaveItem} className="w-full py-2.5 bg-rose-500 hover:bg-rose-600 text-white font-medium text-xs rounded-xl transition-colors cursor-pointer">
+                        {editingItemId ? 'Cập Nhật Ảnh / Video' : 'Thêm Vào Danh Sách'}
+                      </button>
+                    </div>
+
+                    <div className="space-y-2 max-h-[250px] overflow-y-auto">
+                      {items.map((it) => (
+                        <div key={it.id} className={`flex items-center justify-between p-2.5 rounded-xl border text-xs ${editingItemId === it.id ? 'bg-rose-50 border-rose-300 ring-2 ring-rose-300' : 'bg-slate-50'}`}>
+                          <div className="flex items-center gap-2.5 truncate min-w-0 flex-1">
+                            <span className="font-bold">{it.type === 'image' ? '🖼️' : '🎬'}</span>
+                            <span className="truncate font-semibold text-slate-800">{it.title}</span>
+                            {it.category === 'highlight' && (
+                              <span className="text-[10px] bg-rose-100 text-rose-600 font-bold px-1.5 py-0.5 rounded-full flex-shrink-0">Đặc sắc</span>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-1.5 flex-shrink-0">
+                            <button
+                              type="button"
+                              onClick={() => handleStartEditItem(it)}
+                              title="Chỉnh sửa chi tiết & link của mục này"
+                              className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:text-rose-600 hover:bg-rose-100 hover:border-rose-300 cursor-pointer transition-colors"
+                            >
+                              <i className="fa-solid fa-pen"></i>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setItems(
+                                  items.map((i) =>
+                                    i.id === it.id
+                                      ? { ...i, category: i.category === 'highlight' ? 'daily' : 'highlight' }
+                                      : i
+                                  )
+                                );
+                              }}
+                              title={it.category === 'highlight' ? 'Đang ở mục Đặc Sắc (Bấm để đổi)' : 'Chuyển sang mục Đặc Sắc'}
+                              className={`p-1.5 rounded-lg border text-xs font-semibold flex items-center gap-1 transition-all cursor-pointer ${
+                                it.category === 'highlight'
+                                  ? 'bg-rose-500 text-white border-rose-500 shadow-sm'
+                                  : 'bg-white text-slate-500 border-slate-200 hover:text-rose-500 hover:border-rose-300'
+                              }`}
+                            >
+                              <i className={`fa-solid fa-heart ${it.category === 'highlight' ? 'text-white' : ''}`}></i>
+                              <span className="hidden sm:inline">{it.category === 'highlight' ? 'Đặc sắc' : 'Thường'}</span>
+                            </button>
+                            <button onClick={() => {
+                              if (editingItemId === it.id) resetGalleryForm();
+                              setItems(items.filter(i => i.id !== it.id));
+                            }} className="text-rose-500 hover:text-rose-700 p-1.5 hover:bg-rose-100 rounded-lg cursor-pointer">
+                              <i className="fa-solid fa-trash"></i>
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
+
+                {activeTab === 'milestones' && (
+                  <>
+                    <div className="bg-orange-50 p-4 rounded-2xl border border-orange-100 space-y-2.5">
+                      <div className="flex justify-between items-center">
+                        <h4 className="font-semibold text-xs sm:text-sm text-slate-800">
+                          {editingMsId ? 'Chỉnh Sửa Cột Mốc Tình Yêu' : 'Thêm Cột Mốc Mới:'}
+                        </h4>
+                        {editingMsId && (
+                          <button onClick={() => { setEditingMsId(null); setMsDate(''); setMsTitle(''); setMsDesc(''); setMsPhoto(''); }} className="text-xs text-slate-500 underline">Hủy sửa</button>
+                        )}
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <input type="text" placeholder="Mốc thời gian (VD: Ngày 1)... (*)" value={msDate} onChange={e => setMsDate(e.target.value)} className="px-3 py-2 border rounded-xl text-xs bg-white focus:outline-none" />
+                        <input type="text" placeholder="Tiêu đề cột mốc... (*)" value={msTitle} onChange={e => setMsTitle(e.target.value)} className="px-3 py-2 border rounded-xl text-xs bg-white focus:outline-none" />
+                      </div>
+                      <textarea rows={2} placeholder="Mô tả kỷ niệm..." value={msDesc} onChange={e => setMsDesc(e.target.value)} className="w-full px-3 py-2 border rounded-xl text-xs bg-white focus:outline-none" />
+                      <input type="url" placeholder="Link ảnh minh họa (không bắt buộc)..." value={msPhoto} onChange={e => setMsPhoto(e.target.value)} className="w-full px-3 py-2 border rounded-xl text-xs bg-white focus:outline-none" />
+                      <button onClick={handleSaveMilestone} className="w-full py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-medium text-xs rounded-xl transition-colors cursor-pointer">
+                        {editingMsId ? 'Cập Nhật Cột Mốc' : 'Thêm Cột Mốc'}
+                      </button>
+                    </div>
+
+                    <div className="space-y-2 max-h-[250px] overflow-y-auto">
+                      {msList.map((m) => (
+                        <div key={m.id} className="flex items-center justify-between p-2.5 bg-slate-50 rounded-xl border text-xs gap-2">
+                          <div className="min-w-0 flex-1">
+                            <span className="font-bold text-rose-600 mr-2">{m.date}</span>
+                            <span className="font-semibold">{m.title}</span>
+                            <p className="text-slate-500 text-[11px] truncate">{m.description}</p>
+                          </div>
+                          <div className="flex gap-1">
+                            <button onClick={() => { setEditingMsId(m.id); setMsDate(m.date); setMsTitle(m.title); setMsDesc(m.description); setMsPhoto(m.photoUrl || ''); }} className="p-1 text-slate-600 hover:text-slate-900 cursor-pointer"><i className="fa-solid fa-pen"></i></button>
+                            <button onClick={() => setMsList(msList.filter(x => x.id !== m.id))} className="p-1 text-rose-500 hover:text-rose-700 cursor-pointer"><i className="fa-solid fa-trash"></i></button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
+
+                {activeTab === 'notes' && (
+                  <>
+                    <div className="bg-pink-50 p-4 rounded-2xl border border-pink-100 space-y-2.5">
+                      <div className="flex justify-between items-center">
+                        <h4 className="font-semibold text-xs sm:text-sm text-slate-800">
+                          {editingNoteId ? 'Chỉnh Sửa Lời Nhắn' : 'Thêm Lời Nhắn Mới:'}
+                        </h4>
+                        {editingNoteId && (
+                          <button onClick={() => { setEditingNoteId(null); setNoteAuthor(''); setNoteContent(''); setNoteTag(''); }} className="text-xs text-slate-500 underline">Hủy sửa</button>
+                        )}
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <input type="text" placeholder="Người gửi (VD: Anh yêu)..." value={noteAuthor} onChange={e => setNoteAuthor(e.target.value)} className="px-3 py-2 border rounded-xl text-xs bg-white focus:outline-none" />
+                        <input type="text" placeholder="Chủ đề / Nhãn..." value={noteTag} onChange={e => setNoteTag(e.target.value)} className="px-3 py-2 border rounded-xl text-xs bg-white focus:outline-none" />
+                      </div>
+                      <textarea rows={2} placeholder="Nội dung lời nhắn... (*)" value={noteContent} onChange={e => setNoteContent(e.target.value)} className="w-full px-3 py-2 border rounded-xl text-xs bg-white focus:outline-none" />
+                      <button onClick={handleSaveNote} className="w-full py-2.5 bg-pink-500 hover:bg-pink-600 text-white font-medium text-xs rounded-xl transition-colors cursor-pointer">
+                        {editingNoteId ? 'Cập Nhật Lời Nhắn' : 'Thêm Lời Nhắn'}
+                      </button>
+                    </div>
+
+                    <div className="space-y-2 max-h-[250px] overflow-y-auto">
+                      {noteList.map((n) => (
+                        <div key={n.id} className="flex items-center justify-between p-2.5 bg-slate-50 rounded-xl border text-xs gap-2">
+                          <div className="min-w-0 flex-1">
+                            <span className="font-bold text-pink-600 mr-2">[{n.tag || 'Lời nhắn'}]</span>
+                            <span className="text-slate-500">Từ {n.author}:</span>
+                            <p className="italic text-slate-800 truncate">"{n.content}"</p>
+                          </div>
+                          <div className="flex gap-1">
+                            <button onClick={() => { setEditingNoteId(n.id); setNoteAuthor(n.author); setNoteContent(n.content); setNoteTag(n.tag); }} className="p-1 text-slate-600 hover:text-slate-900 cursor-pointer"><i className="fa-solid fa-pen"></i></button>
+                            <button onClick={() => setNoteList(noteList.filter(x => x.id !== n.id))} className="p-1 text-rose-500 hover:text-rose-700 cursor-pointer"><i className="fa-solid fa-trash"></i></button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
+
+                {activeTab === 'export' && (
+                  <>
+                    <div className="bg-slate-50 p-4 rounded-2xl border space-y-3">
+                      <h4 className="font-bold text-sm text-slate-800 flex items-center gap-1.5">
+                        <i className="fa-solid fa-file-export text-rose-500"></i>
+                        <span>Sao Lưu & Đồng Bộ Dữ Liệu Qua Thiết Bị Khác</span>
+                      </h4>
+                      <p className="text-xs text-slate-600 leading-relaxed">
+                        Mặc định web tự lưu vào bộ nhớ trình duyệt máy này. Nếu bạn muốn chuyển dữ liệu đã chỉnh sang thiết bị/trình duyệt khác hoặc lưu lâu dài trên WordPress, chọn một trong các cách sau:
+                      </p>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                        <button
+                          onClick={handleExportJSON}
+                          className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-xs font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                        >
+                          <i className="fa-solid fa-download"></i>
+                          <span>Xuất File Cấu Hình JSON</span>
+                        </button>
+
+                        <label className="px-4 py-2.5 rounded-xl bg-rose-500 hover:bg-rose-600 text-white text-xs font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer">
+                          <i className="fa-solid fa-upload"></i>
+                          <span>Nhập File JSON Tải Về</span>
+                          <input type="file" accept=".json" onChange={handleImportJSON} className="hidden" />
+                        </label>
+                      </div>
+
+                      <button
+                        onClick={handleCopyJSON}
+                        className="w-full py-2.5 rounded-xl bg-rose-100 hover:bg-rose-200 text-rose-700 text-xs font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                      >
+                        <i className="fa-solid fa-copy"></i>
+                        <span>{copySuccess ? '✨ Đã Copy Mã JSON Vào Bộ Nhớ Tạm!' : 'Copy Mã JSON Dữ Liệu Hiện Tại'}</span>
+                      </button>
+                    </div>
+
+                    <div className="bg-amber-50 p-4 rounded-2xl border border-amber-200 text-xs text-slate-700 space-y-2">
+                      <h5 className="font-bold text-amber-800 flex items-center gap-1">
+                        <i className="fa-brands fa-wordpress text-amber-600"></i>
+                        <span>Cách nạp file HTML hoàn chỉnh lên WordPress:</span>
+                      </h5>
+                      <ol className="list-decimal pl-4 space-y-1">
+                        <li>Mở trình quản trị WordPress &gt; Tạo Bài viết / Trang mới (hoặc Elementor).</li>
+                        <li>Thêm khối block <strong>Custom HTML</strong> (HTML Tùy chỉnh).</li>
+                        <li>Dán toàn bộ mã HTML này vào khối Custom HTML và bấm <strong>Xuất bản (Publish)</strong>.</li>
+                        <li><strong>Mẹo thấy dữ liệu cố định trên mọi thiết bị:</strong> Trước khi nhúng HTML lên WordPress, bạn chỉ cần thay nội dung JSON vừa Copy ở nút trên vào biến <code className="bg-white/80 px-1 rounded border">defaultCoupleConfig</code>, <code className="bg-white/80 px-1 rounded border">defaultGalleryItems</code>, v.v. trong file HTML. Khi đó bất kỳ ai truy cập trên điện thoại/máy tính khác đều thấy đầy đủ!</li>
+                      </ol>
+                    </div>
+                  </>
+                )}
+              </div>
+
+              <div className="p-4 bg-slate-50 border-t flex items-center justify-between">
+                <button onClick={onClose} className="text-xs text-slate-600 font-medium cursor-pointer">Hủy</button>
+                <button onClick={handleSave} className="px-5 py-2 rounded-full bg-gradient-to-r from-orange-400 to-rose-500 text-white text-xs font-bold shadow-md cursor-pointer">Lưu Thay Đổi</button>
+              </div>
+            </div>
           </div>
-        </div>
-      );
-    };
+        );
+      };
 
-    // --- MAIN APP ENTRY ---
-    const App = () => {
-      const [currentScene, setCurrentScene] = useState(0);
-      const [isDarkMode, setIsDarkMode] = useState(true);
-      const [hasGoldenKey, setHasGoldenKey] = useState(false);
-      const [config, setConfig] = useState(initialBirthdayConfig);
-      const [isEditorOpen, setIsEditorOpen] = useState(false);
-      const canvasRef = useRef(null);
+      // 9. Footer
+      const Footer = ({ person1Name, person2Name, onOpenCustomizer }) => {
+        return (
+          <footer className="mt-16 pt-10 pb-20 border-t border-rose-200/60 bg-gradient-to-b from-transparent to-rose-100/40 text-center z-10 relative">
+            <h3 className="font-dancing text-3xl font-bold text-slate-800">
+              {person1Name} ❤️ {person2Name}
+            </h3>
+            <p className="mt-1 text-sm text-slate-600 font-medium">
+              Mãi bên nhau bình yên & hạnh phúc - Kỷ niệm 2 tháng yêu nhau
+            </p>
+            <div className="mt-4">
+              <button
+                onClick={onOpenCustomizer}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/80 hover:bg-white text-rose-600 font-semibold text-xs shadow-sm border border-rose-200 cursor-pointer"
+              >
+                <i className="fa-solid fa-pen-to-square"></i>
+                <span>Tùy chỉnh nội dung, mốc kỷ niệm & lời nhắn</span>
+              </button>
+            </div>
+          </footer>
+        );
+      };
 
-      useEffect(() => {
-        let sys;
-        if (canvasRef.current) {
-          sys = ParticleSystem(canvasRef.current);
-        }
-        return () => sys && sys.destroy();
-      }, []);
+      // --- MAIN ROOT APP ---
+      const App = () => {
+        const [config, setConfig] = useState(() => {
+          const saved = localStorage.getItem('love_story_config');
+          return saved ? JSON.parse(saved) : defaultCoupleConfig;
+        });
 
-      return (
-        <div className={`min-h-screen relative select-none ${isDarkMode ? 'dark' : ''}`}>
-          <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-0 w-full h-full" />
+        const [galleryItems, setGalleryItems] = useState(() => {
+          const saved = localStorage.getItem('love_story_gallery');
+          return saved ? JSON.parse(saved) : defaultGalleryItems;
+        });
 
-          {currentScene > 0 && (
-            <HeaderNav
-              currentScene={currentScene}
-              totalScenes={9}
-              onSelectScene={(idx) => setCurrentScene(idx)}
-              isDarkMode={isDarkMode}
-              onToggleDarkMode={() => setIsDarkMode(!isDarkMode)}
-              hasGoldenKey={hasGoldenKey}
-              onOpenEditor={() => setIsEditorOpen(true)}
+        const [milestones, setMilestones] = useState(() => {
+          const saved = localStorage.getItem('love_story_milestones');
+          return saved ? JSON.parse(saved) : defaultMilestones;
+        });
+
+        const [loveNotes, setLoveNotes] = useState(() => {
+          const saved = localStorage.getItem('love_story_notes');
+          return saved ? JSON.parse(saved) : defaultLoveNotes;
+        });
+
+        const [isPlayingMusic, setIsPlayingMusic] = useState(false);
+        const [isCustomizerOpen, setIsCustomizerOpen] = useState(false);
+
+        useEffect(() => {
+          localStorage.setItem('love_story_config', JSON.stringify(config));
+        }, [config]);
+
+        useEffect(() => {
+          localStorage.setItem('love_story_gallery', JSON.stringify(galleryItems));
+        }, [galleryItems]);
+
+        useEffect(() => {
+          localStorage.setItem('love_story_milestones', JSON.stringify(milestones));
+        }, [milestones]);
+
+        useEffect(() => {
+          localStorage.setItem('love_story_notes', JSON.stringify(loveNotes));
+        }, [loveNotes]);
+
+        const handleAnniversaryClick = () => {
+          setIsPlayingMusic(true);
+          const galleryEl = document.getElementById('gallery-section');
+          if (galleryEl) {
+            galleryEl.scrollIntoView({ behavior: 'smooth' });
+          }
+        };
+
+        return (
+          <div className="relative min-h-screen overflow-x-hidden font-sans text-slate-800 animate-fade-in">
+            <FloatingHearts />
+
+            <HeaderHero
+              person1Name={config.person1Name}
+              person2Name={config.person2Name}
+              heroSubtitle={config.heroSubtitle}
+              isPlayingMusic={isPlayingMusic}
+              onAnniversaryClick={handleAnniversaryClick}
             />
-          )}
 
-          <main className="relative z-10 min-h-screen">
-            {currentScene === 0 && <LoadingScreen onComplete={() => setCurrentScene(1)} isDarkMode={isDarkMode} config={config} />}
-            {currentScene === 1 && <CastleEntrance onNext={() => setCurrentScene(2)} isDarkMode={isDarkMode} />}
-            {currentScene === 2 && <HeartQuestGame onCompleteKey={() => { setHasGoldenKey(true); setCurrentScene(3); }} isDarkMode={isDarkMode} />}
-            {currentScene === 3 && <TreasureRoom onNext={() => setCurrentScene(4)} isDarkMode={isDarkMode} hasGoldenKey={hasGoldenKey} />}
-            {currentScene === 4 && <TypewriterLetter onNext={() => setCurrentScene(5)} isDarkMode={isDarkMode} config={config} />}
-            {currentScene === 5 && <MusicPlayer onNext={() => setCurrentScene(6)} isDarkMode={isDarkMode} playlist={config.playlist} />}
-            {currentScene === 6 && <PolaroidGallery onNext={() => setCurrentScene(7)} isDarkMode={isDarkMode} config={config} />}
-            {currentScene === 7 && <BirthdayCake onNext={() => setCurrentScene(8)} isDarkMode={isDarkMode} config={config} />}
-            {currentScene === 8 && <EmotionalEnding onRestart={() => setCurrentScene(0)} isDarkMode={isDarkMode} config={config} />}
-          </main>
+            <LoveCounter
+              startDateStr={config.startDate}
+              person1Name={config.person1Name}
+              person2Name={config.person2Name}
+            />
 
-          <ConfigEditorModal
-            isOpen={isEditorOpen}
-            onClose={() => setIsEditorOpen(false)}
-            config={config}
-            onSaveConfig={(cfg) => setConfig(cfg)}
-            onResetDefault={() => setConfig(initialBirthdayConfig)}
-          />
-        </div>
-      );
-    };
+            <GallerySection items={galleryItems} onUpdateItems={setGalleryItems} />
 
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<App />);
-  </script>
-</body>
+            <TimelineSection milestones={milestones} />
+
+            <LoveNotesSection
+              letterContent={config.letterContent}
+              notes={loveNotes}
+              onUpdateNotes={setLoveNotes}
+              person1Name={config.person1Name}
+              person2Name={config.person2Name}
+            />
+
+            <Footer
+              person1Name={config.person1Name}
+              person2Name={config.person2Name}
+              onOpenCustomizer={() => setIsCustomizerOpen(true)}
+            />
+
+            <AudioPlayerWidget
+              audioUrl={config.audioUrl}
+              audioTitle={config.audioTitle}
+              isPlaying={isPlayingMusic}
+              onTogglePlay={() => setIsPlayingMusic(!isPlayingMusic)}
+            />
+
+            <CustomizerModal
+              isOpen={isCustomizerOpen}
+              onClose={() => setIsCustomizerOpen(false)}
+              config={config}
+              onSaveConfig={setConfig}
+              galleryItems={galleryItems}
+              onSaveGallery={setGalleryItems}
+              milestones={milestones}
+              onSaveMilestones={setMilestones}
+              loveNotes={loveNotes}
+              onSaveLoveNotes={setLoveNotes}
+            />
+          </div>
+        );
+      };
+
+      // Mount App to DOM
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(<App />);
+    </script>
+  </body>
 </html>
