@@ -1,0 +1,1794 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thiệp Sinh Nhật Hoàng Gia & Cổ Tích Lãng Mạn</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            hero: ['Playfair Display', 'serif'],
+            serif: ['Playfair Display', 'serif'],
+            heading: ['Poppins', 'sans-serif'],
+            body: ['Poppins', 'sans-serif'],
+            button: ['Poppins', 'sans-serif'],
+            caption: ['Poppins', 'sans-serif'],
+            handwriting: ['Dancing Script', 'cursive'],
+            sans: ['Poppins', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <!-- React & ReactDOM 18 CDN -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+
+  <!-- Babel Standalone CDN -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    @keyframes pulseSlow {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.05); opacity: 1; }
+    }
+    .animate-pulse-slow {
+      animation: pulseSlow 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+    .animate-float {
+      animation: float 4s ease-in-out infinite;
+    }
+    /* Scrollbar Styling */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(244, 114, 182, 0.4);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(244, 114, 182, 0.7);
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased overflow-x-hidden selection:bg-pink-500 selection:text-white">
+  
+  <div id="root"></div>
+
+  <!-- React App Code -->
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    // --- SVG ICON COMPONENT ---
+    const Icon = ({ name, className = "w-5 h-5", ...props }) => {
+      const icons = {
+        Heart: <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />,
+        Sparkles: <path d="m12 3-1.9 5.8a2 2 0 0 1-1.28 1.28L3 12l5.8 1.9a2 2 0 0 1 1.28 1.28L12 21l1.9-5.8a2 2 0 0 1 1.28-1.28L21 12l-5.8-1.9a2 2 0 0 1-1.28-1.28Z" />,
+        Crown: <path d="m2 4 3 12h14l3-12-6 7-4-5-4 5-6-7zm3 16h14" />,
+        Key: <path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4a1 1 0 0 0-1.4 0l-2.1 2.1a1 1 0 0 0 0 1.4zM21 2l-9.6 9.6A6.5 6.5 0 1 0 14 14l1.5-1.5" />,
+        Lock: <path d="M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2zm-7 0V7a5 5 0 0 1 10 0v4" />,
+        Gift: <path d="M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7zm0 0h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" />,
+        ScrollText: <path d="M8 21h12a2 2 0 0 0 2-2v-2H10v2a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v12a4 4 0 0 0 4 4zm0 0H4M19 17V3a2 2 0 0 0-2-2H8M12 7h4M12 11h4" />,
+        Music: <path d="M9 18V5l12-2v13M9 9l12-2M6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm12 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />,
+        Camera: <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3zM12 18a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" />,
+        Cake: <path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1M2 21h20M7 8v3M12 8v3M17 8v3M7 4h.01M12 4h.01M17 4h.01" />,
+        Moon: <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />,
+        Sun: <path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm0-5v2m0 14v2m9-9h-2M5 12H3m15.364-6.364l-1.414 1.414M7.05 16.95l-1.414 1.414m12.728 0l-1.414-1.414M7.05 7.05L5.636 5.636" />,
+        Settings: <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2zM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />,
+        Play: <path d="m6 3 14 9-14 9V3z" />,
+        Pause: <path d="M6 4h4v16H6zm8 0h4v16h-4z" />,
+        RotateCcw: <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8M3 3v5h5" />,
+        ArrowRight: <path d="M5 12h14M12 5l7 7-7 7" />,
+        ArrowLeft: <path d="M19 12H5M12 19l-7-7 7-7" />,
+        Check: <path d="M20 6 9 17l-5-5" />,
+        X: <path d="M18 6 6 18M6 6l12 12" />,
+        Star: <path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />,
+        Flame: <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 3.5z" />,
+        ShieldCheck: <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10zM9 12l2 2 4-4" />,
+        FastForward: <path d="m13 19 9-7-9-7v14zM2 19l9-7-9-7v14z" />,
+        User: <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" />,
+        MessageSquare: <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />,
+        Image: <path d="M18 22H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2zM9 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm11 8-5-5-4 4-2-2-4 4" />,
+        Plus: <path d="M12 5v14M5 12h14" />,
+        Trash2: <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6" />,
+        Save: <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2zM17 21v-8H7v8M7 3v5h8" />,
+        Share2: <g><circle cx="18" cy="5" r="3"/><path d="M6 12 18 5M6 12l12 7"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/></g>,
+        Send: <g><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></g>,
+        Volume2: <g><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></g>,
+        Quote: <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.75-2-2-2H4c-1.25 0-2 .75-2 2v6c0 1.25.75 2 2 2h3c0 3-1 6-4 8zM15 21c3 0 7-1 7-8V5c0-1.25-.75-2-2-2h-4c-1.25 0-2 .75-2 2v6c0 1.25.75 2 2 2h3c0 3-1 6-4 8z"/>,
+        Disc: <g><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></g>,
+        SkipBack: <g><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></g>,
+        SkipForward: <g><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></g>
+      };
+
+      return (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className={className}
+          {...props}
+        >
+          {icons[name] || icons.Heart}
+        </svg>
+      );
+    };
+
+    // --- INITIAL CONFIG ---
+    const initialBirthdayConfig = {
+      recipientName: "My Princess",
+      senderName: "Your Forever Love",
+      birthdayDate: "07 August 2026",
+      ageNumber: 20,
+      ageTitle: "Tuổi 20 Rạng Rỡ & Ngọt Ngào",
+      theme: {
+        primaryColor: "#FF80AB",
+        secondaryColor: "#E040FB",
+        accentColor: "#FFD700"
+      },
+      photos: [
+        {
+          id: "1",
+          url: "https://images.unsplash.com/photo-1518895949257-7621c3c786d7?auto=format&fit=crop&w=800&q=80",
+          title: "Nụ Cười Đầu Tiên",
+          caption: "Khoảnh khắc anh nhìn thấy nụ cười của em, trái tim anh như tan chảy trong sự ngọt ngào.",
+          date: "14 Feb 2024",
+          location: "Đà Lạt Mộng Mơ"
+        },
+        {
+          id: "2",
+          url: "https://images.unsplash.com/photo-1529619768328-e37af76c6fe5?auto=format&fit=crop&w=800&q=80",
+          title: "Dưới Ánh Đèn Đêm",
+          caption: "Buổi tối cùng em dạo bước qua những con phố lung linh ánh đèn và tiếng cười ngập tràn.",
+          date: "20 May 2024",
+          location: "Phố Cổ Hội An"
+        },
+        {
+          id: "3",
+          url: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=800&q=80",
+          title: "Biển Chiều Hoàng Hôn",
+          caption: "Gió biển thổi nhẹ vờn tóc em, tay nắm chặt tay cùng hứa hẹn về một tương lai lãng mạn.",
+          date: "10 Aug 2024",
+          location: "Bãi Biển Phú Quốc"
+        },
+        {
+          id: "4",
+          url: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=800&q=80",
+          title: "Ấm Áp Ngày Mùa Đông",
+          caption: "Cùng uống tách trà ấm, trao nhau những cái ôm nồng nàn dẫu ngoài trời trở lạnh.",
+          date: "24 Dec 2024",
+          location: "Sapa Tuyết Trắng"
+        }
+      ],
+      letter: {
+        title: "Thư Sinh Nhật Lãng Mạn",
+        paragraphs: [
+          "Gửi em - công chúa xinh đẹp nhất trong thế giới của anh,",
+          "Hôm nay là một ngày vô cùng đặc biệt, ngày mà vũ trụ đã mang một thiên thần nhỏ đáng yêu đến bên anh. Cảm ơn em vì đã luôn ở đây, mang đến cho anh những nụ cười, tình yêu nồng thắm và những ký ức tuyệt vời nhất.",
+          "Tuổi mới đến, anh chúc em luôn rạng rỡ như ánh mặt trời ban mai, hạnh phúc tràn ngập trong ánh mắt và mọi điều ước ước mơ của em đều trở thành hiện thực.",
+          "Cho dù thời gian có trôi đi, tình yêu của anh dành cho em vẫn sẽ luôn ngọt ngào và vĩnh cửu như ngày đầu tiên."
+        ],
+        closing: "Yêu em nhiều hơn mỗi ngày,",
+        signature: "Anh Của Em ❤️",
+        typewriterSpeedMs: 35
+      },
+      playlist: [
+        {
+          id: "track-1",
+          title: "Fairytale Waltz of Love",
+          artist: "Magical Symphony",
+          cover: "https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=400&q=80",
+          duration: "03:45",
+          lyricsQuote: "Like stars in the night sky, your love shines forever bright."
+        },
+        {
+          id: "track-2",
+          title: "Golden Hogwarts Stars",
+          artist: "Dreamy Serenade",
+          cover: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=400&q=80",
+          duration: "04:12",
+          lyricsQuote: "In every magical universe, I would choose you again and again."
+        },
+        {
+          id: "track-3",
+          title: "Forever Princess Symphony",
+          artist: "Enchanted Strings",
+          cover: "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=400&q=80",
+          duration: "03:30",
+          lyricsQuote: "Thank you for existing and making every day a fairytale."
+        }
+      ]
+    };
+
+    // --- WEB AUDIO API SYNTHESIZER ---
+    class AudioEngine {
+      constructor() {
+        this.ctx = null;
+        this.masterGain = null;
+        this.isBgmPlaying = false;
+        this.bgmInterval = null;
+        this.currentNoteIndex = 0;
+      }
+      init() {
+        if (!this.ctx) {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (AudioContextClass) {
+            this.ctx = new AudioContextClass();
+            this.masterGain = this.ctx.createGain();
+            this.masterGain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+            this.masterGain.connect(this.ctx.destination);
+          }
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+      playClick() {
+        this.init();
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(600, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1000, this.ctx.currentTime + 0.08);
+        gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.08);
+        osc.connect(gain);
+        gain.connect(this.masterGain);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.08);
+      }
+      playMagicSparkle() {
+        this.init();
+        if (!this.ctx) return;
+        const notes = [523.25, 659.25, 783.99, 1046.50, 1318.51];
+        notes.forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.06);
+          gain.gain.setValueAtTime(0.1, this.ctx.currentTime + idx * 0.06);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + idx * 0.06 + 0.3);
+          osc.connect(gain);
+          gain.connect(this.masterGain);
+          osc.start(this.ctx.currentTime + idx * 0.06);
+          osc.stop(this.ctx.currentTime + idx * 0.06 + 0.3);
+        });
+      }
+      playStarCollect() {
+        this.playMagicSparkle();
+      }
+      playFanfare() {
+        this.init();
+        if (!this.ctx) return;
+        const fanfareNotes = [
+          { freq: 523.25, duration: 0.15, delay: 0 },
+          { freq: 659.25, duration: 0.15, delay: 0.15 },
+          { freq: 783.99, duration: 0.15, delay: 0.3 },
+          { freq: 1046.50, duration: 0.5, delay: 0.45 }
+        ];
+        fanfareNotes.forEach(({ freq, duration, delay }) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime + delay);
+          gain.gain.setValueAtTime(0.2, this.ctx.currentTime + delay);
+          gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + delay + duration);
+          osc.connect(gain);
+          gain.connect(this.masterGain);
+          osc.start(this.ctx.currentTime + delay);
+          osc.stop(this.ctx.currentTime + delay + duration);
+        });
+      }
+      playFirework() {
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(300, now);
+        osc.frequency.exponentialRampToValueAtTime(1200, now + 0.3);
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+        osc.connect(gain);
+        gain.connect(this.masterGain);
+        osc.start(now);
+        osc.stop(now + 0.3);
+      }
+      playBlowCandle() {
+        this.init();
+        if (!this.ctx) return;
+        const bufferSize = this.ctx.sampleRate * 0.3;
+        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const output = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          output[i] = Math.random() * 2 - 1;
+        }
+        const whiteNoise = this.ctx.createBufferSource();
+        whiteNoise.buffer = buffer;
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(800, this.ctx.currentTime);
+        filter.frequency.exponentialRampToValueAtTime(100, this.ctx.currentTime + 0.3);
+        const gain = this.ctx.createGain();
+        gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.3);
+        whiteNoise.connect(filter);
+        filter.connect(gain);
+        gain.connect(this.masterGain);
+        whiteNoise.start();
+      }
+      startSynthBgm() {
+        if (this.isBgmPlaying) return;
+        this.init();
+        this.isBgmPlaying = true;
+        const melodyNotes = [
+          [261.63, 329.63, 392.00, 493.88],
+          [220.00, 261.63, 329.63, 392.00],
+          [174.61, 220.00, 261.63, 329.63],
+          [196.00, 246.94, 293.66, 392.00],
+        ];
+        const arpeggio = [523.25, 659.25, 783.99, 987.77, 1046.50, 1318.51];
+        this.currentNoteIndex = 0;
+
+        this.bgmInterval = window.setInterval(() => {
+          if (!this.ctx || !this.masterGain) return;
+          const now = this.ctx.currentTime;
+          const chordIdx = Math.floor(this.currentNoteIndex / 8) % melodyNotes.length;
+          const chord = melodyNotes[chordIdx];
+          if (this.currentNoteIndex % 8 === 0) {
+            chord.forEach((freq) => {
+              if (!this.ctx || !this.masterGain) return;
+              const osc = this.ctx.createOscillator();
+              const gain = this.ctx.createGain();
+              osc.type = 'sine';
+              osc.frequency.setValueAtTime(freq, now);
+              gain.gain.setValueAtTime(0.04, now);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + 2.0);
+              osc.connect(gain);
+              gain.connect(this.masterGain);
+              osc.start(now);
+              osc.stop(now + 2.0);
+            });
+          }
+          const arpFreq = arpeggio[this.currentNoteIndex % arpeggio.length];
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(arpFreq, now);
+          gain.gain.setValueAtTime(0.03, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+          osc.connect(gain);
+          gain.connect(this.masterGain);
+          osc.start(now);
+          osc.stop(now + 0.5);
+          this.currentNoteIndex++;
+        }, 320);
+      }
+      stopSynthBgm() {
+        if (this.bgmInterval !== null) {
+          clearInterval(this.bgmInterval);
+          this.bgmInterval = null;
+        }
+        this.isBgmPlaying = false;
+      }
+    }
+    const audioEngine = new AudioEngine();
+
+    const launchGrandConfettiShower = () => {
+      if (!window.confetti) return;
+      const duration = 2.5 * 1000;
+      const animationEnd = Date.now() + duration;
+      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
+
+      const interval = setInterval(() => {
+        const timeLeft = animationEnd - Date.now();
+        if (timeLeft <= 0) return clearInterval(interval);
+        const particleCount = 50 * (timeLeft / duration);
+        window.confetti({ ...defaults, particleCount, origin: { x: Math.random() * 0.4 + 0.1, y: Math.random() - 0.2 } });
+        window.confetti({ ...defaults, particleCount, origin: { x: Math.random() * 0.4 + 0.5, y: Math.random() - 0.2 } });
+      }, 250);
+    };
+
+    // --- PARTICLE BACKGROUND CANVAS ---
+    const ParticleSystem = (canvas) => {
+      let ctx = canvas.getContext('2d');
+      let animId = null;
+      let particles = [];
+
+      const resize = () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      };
+
+      const createParticle = () => {
+        const types = ['heart', 'star', 'sparkle'];
+        return {
+          x: Math.random() * canvas.width,
+          y: canvas.height + 20,
+          size: Math.random() * 12 + 6,
+          speedY: Math.random() * 1.5 + 0.5,
+          speedX: (Math.random() - 0.5) * 0.6,
+          opacity: Math.random() * 0.5 + 0.3,
+          type: types[Math.floor(Math.random() * types.length)],
+          color: ['#F472B6', '#FBBF24', '#C084FC', '#F43F5E'][Math.floor(Math.random() * 4)]
+        };
+      };
+
+      const init = () => {
+        resize();
+        window.addEventListener('resize', resize);
+        particles = Array.from({ length: 35 }, createParticle);
+      };
+
+      const draw = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach((p, idx) => {
+          p.y -= p.speedY;
+          p.x += p.speedX;
+          if (p.y < -30) {
+            particles[idx] = createParticle();
+          }
+
+          ctx.save();
+          ctx.globalAlpha = p.opacity;
+          ctx.fillStyle = p.color;
+          ctx.font = `${p.size}px sans-serif`;
+          ctx.fillText(p.type === 'heart' ? '❤️' : p.type === 'star' ? '⭐' : '✨', p.x, p.y);
+          ctx.restore();
+        });
+
+        animId = requestAnimationFrame(draw);
+      };
+
+      init();
+      draw();
+
+      return {
+        destroy: () => {
+          window.removeEventListener('resize', resize);
+          if (animId) cancelAnimationFrame(animId);
+        }
+      };
+    };
+
+    // --- COMPONENTS ---
+
+    // 1. Header Navigation
+    const HeaderNav = ({ currentScene, totalScenes, onSelectScene, isDarkMode, onToggleDarkMode, hasGoldenKey, onOpenEditor }) => {
+      const sceneLabels = [
+        "Cổng Mở", "Lâu Đài", "Săn Chìa Khóa", "Phòng Báu Vật", 
+        "Thư Yêu Thương", "Âm Nhạc", "Album Ảnh", "Bánh Sinh Nhật", "Lời Kết"
+      ];
+
+      return (
+        <header className="fixed top-0 inset-x-0 z-50 px-3 py-2.5 sm:px-6 backdrop-blur-xl bg-slate-900/80 border-b border-pink-500/20 text-white flex items-center justify-between shadow-lg">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-pink-500 to-amber-400 flex items-center justify-center text-white shadow-md">
+              <Icon name="Crown" className="w-4 h-4" />
+            </div>
+            <span className="font-hero font-bold text-sm sm:text-base text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-amber-200 to-purple-300 hidden sm:inline">
+              Royal Birthday Tale
+            </span>
+          </div>
+
+          <div className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto max-w-[50vw] sm:max-w-none no-scrollbar py-1 px-1">
+            {sceneLabels.map((label, idx) => (
+              <button
+                key={idx}
+                onClick={() => {
+                  audioEngine.playClick();
+                  onSelectScene(idx);
+                }}
+                className={`px-2.5 py-1 rounded-full text-xs font-button font-medium whitespace-nowrap transition-all ${
+                  currentScene === idx
+                    ? 'bg-gradient-to-r from-pink-500 to-amber-500 text-white shadow-md scale-105'
+                    : 'bg-slate-800/80 text-slate-300 hover:bg-slate-700/80 hover:text-white'
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-2">
+            <div className={`px-2.5 py-1 rounded-full border text-xs font-button font-medium flex items-center gap-1.5 ${
+              hasGoldenKey 
+                ? 'bg-amber-500/20 border-amber-400 text-amber-300' 
+                : 'bg-slate-800 border-slate-700 text-slate-400'
+            }`}>
+              <Icon name="Key" className={`w-3.5 h-3.5 ${hasGoldenKey ? 'text-amber-400 animate-bounce' : ''}`} />
+              <span className="hidden sm:inline">{hasGoldenKey ? 'Chìa Khóa Vàng' : 'Chưa Có Chìa Khóa'}</span>
+            </div>
+
+            <button
+              onClick={() => {
+                audioEngine.playClick();
+                onToggleDarkMode();
+              }}
+              className="p-2 rounded-xl bg-slate-800 border border-slate-700 text-amber-300 hover:bg-slate-700 transition"
+              title="Đổi Giao Diện"
+            >
+              <Icon name={isDarkMode ? 'Sun' : 'Moon'} className="w-4 h-4" />
+            </button>
+
+            <button
+              onClick={() => {
+                audioEngine.playClick();
+                onOpenEditor();
+              }}
+              className="p-2 rounded-xl bg-pink-500/20 border border-pink-400/30 text-pink-300 hover:bg-pink-500/30 transition flex items-center gap-1"
+              title="Chỉnh Sửa Nội Dung & Ảnh"
+            >
+              <Icon name="Settings" className="w-4 h-4" />
+            </button>
+          </div>
+        </header>
+      );
+    };
+
+    // 2. Loading Screen
+    const LoadingScreen = ({ onComplete, isDarkMode, config }) => {
+      return (
+        <div className={`min-h-screen flex flex-col items-center justify-center p-6 text-center transition-colors duration-500 ${
+          isDarkMode ? 'bg-slate-950 text-pink-100' : 'bg-gradient-to-b from-pink-100 via-rose-100 to-amber-100 text-slate-800'
+        }`}>
+          <div className="max-w-md w-full p-8 rounded-3xl backdrop-blur-2xl border border-pink-500/30 bg-slate-900/80 shadow-2xl relative z-10 space-y-6 animate-float">
+            <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-tr from-pink-500 via-rose-500 to-amber-400 flex items-center justify-center shadow-xl border-2 border-amber-300 animate-pulse">
+              <Icon name="Heart" className="w-10 h-10 text-white fill-white" />
+            </div>
+
+            <div className="space-y-2">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-400/20 border border-amber-400/40 text-amber-300 text-xs font-button font-medium uppercase tracking-wider">
+                <Icon name="Sparkles" className="w-3.5 h-3.5 text-amber-400" />
+                <span>{config.ageTitle || "Tuổi 20 Rạng Rỡ"}</span>
+              </div>
+
+              <h1 className="text-3xl sm:text-4xl font-hero font-bold text-amber-200 drop-shadow-md">
+                Happy Birthday
+              </h1>
+              <p className="text-xl font-handwriting text-pink-300 font-bold">
+                {config.recipientName} ❤️
+              </p>
+              <p className="text-xs text-pink-200/80 font-body">
+                {config.birthdayDate}
+              </p>
+            </div>
+
+            <button
+              onClick={() => {
+                audioEngine.playMagicSparkle();
+                if (window.confetti) {
+                  window.confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+                }
+                onComplete();
+              }}
+              className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-pink-500 via-rose-500 to-amber-400 text-white font-button font-medium text-base shadow-xl hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2"
+            >
+              <Icon name="Crown" className="w-5 h-5 text-amber-200" />
+              <span>Khám Phá Vương Quốc Cổ Tích</span>
+            </button>
+          </div>
+        </div>
+      );
+    };
+
+    // 3. Castle Entrance
+    const CastleEntrance = ({ onNext, isDarkMode }) => {
+      return (
+        <div className={`min-h-screen flex flex-col items-center justify-center p-6 pt-20 sm:pt-24 text-center relative overflow-hidden transition-colors duration-500 ${
+          isDarkMode ? 'bg-slate-950 text-pink-100' : 'bg-gradient-to-b from-purple-900 via-pink-900 to-slate-950 text-white'
+        }`}>
+          <div className="max-w-xl w-full p-8 sm:p-10 rounded-3xl backdrop-blur-2xl border border-pink-500/30 bg-slate-900/80 shadow-2xl relative z-10 space-y-6">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-amber-500/20 via-pink-500/20 to-purple-500/20 border border-amber-400/40 text-amber-300 text-xs font-heading font-semibold uppercase tracking-widest shadow-inner">
+              <Icon name="ShieldCheck" className="w-4 h-4 text-amber-400" />
+              <span>Vương Quốc Tình Yêu Vĩnh Cửu</span>
+            </div>
+
+            <h1 className="text-3xl sm:text-5xl font-hero font-bold tracking-wide text-amber-200 drop-shadow-md leading-tight">
+              Cổng Lâu Đài Cổ Tích
+            </h1>
+
+            <p className="text-sm sm:text-base text-pink-200/90 font-body leading-relaxed">
+              Phía sau cánh cổng diệu kỳ này là hành trình lãng mạn được dành riêng cho em. Để mở được hộp quà sinh nhật hoàng gia, hãy tham gia trò chơi săn tìm Chìa Khóa Vàng nhé!
+            </p>
+
+            <button
+              onClick={() => {
+                audioEngine.playMagicSparkle();
+                onNext();
+              }}
+              className="py-4 px-8 rounded-2xl bg-gradient-to-r from-pink-500 via-rose-500 to-amber-400 text-white font-button font-medium text-base shadow-xl hover:scale-105 active:scale-95 transition-all inline-flex items-center gap-2"
+            >
+              <Icon name="Key" className="w-5 h-5 text-amber-200" />
+              <span>Bắt Đầu Săn Tìm Chìa Khóa Vàng</span>
+            </button>
+          </div>
+        </div>
+      );
+    };
+
+    // 4. Heart Quest Game
+    const HeartQuestGame = ({ onCompleteKey, isDarkMode }) => {
+      const canvasRef = useRef(null);
+      const [score, setScore] = useState(0);
+      const [gameWon, setGameWon] = useState(false);
+
+      useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+
+        let player = { x: 150, y: 150, radius: 16, speed: 4 };
+        let stars = [
+          { x: 50, y: 60, collected: false },
+          { x: 250, y: 80, collected: false },
+          { x: 80, y: 220, collected: false },
+          { x: 220, y: 220, collected: false },
+          { x: 150, y: 140, collected: false }
+        ];
+
+        let keys = {};
+        const handleKeyDown = (e) => { keys[e.key] = true; };
+        const handleKeyUp = (e) => { keys[e.key] = false; };
+
+        window.addEventListener('keydown', handleKeyDown);
+        window.addEventListener('keyup', handleKeyUp);
+
+        let animId;
+        const loop = () => {
+          if (keys['ArrowUp'] || keys['w'] || keys['W']) player.y = Math.max(player.radius, player.y - player.speed);
+          if (keys['ArrowDown'] || keys['s'] || keys['S']) player.y = Math.min(canvas.height - player.radius, player.y + player.speed);
+          if (keys['ArrowLeft'] || keys['a'] || keys['A']) player.x = Math.max(player.radius, player.x - player.speed);
+          if (keys['ArrowRight'] || keys['d'] || keys['D']) player.x = Math.min(canvas.width - player.radius, player.x + player.speed);
+
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          stars.forEach((star) => {
+            if (!star.collected) {
+              const dist = Math.hypot(player.x - star.x, player.y - star.y);
+              if (dist < player.radius + 12) {
+                star.collected = true;
+                audioEngine.playClick();
+                setScore((s) => {
+                  const ns = s + 1;
+                  if (ns >= 5) {
+                    setGameWon(true);
+                    audioEngine.playFanfare();
+                  }
+                  return ns;
+                });
+              }
+
+              ctx.font = '20px sans-serif';
+              ctx.fillText('⭐', star.x - 10, star.y + 7);
+            }
+          });
+
+          ctx.font = '28px sans-serif';
+          ctx.fillText('❤️', player.x - 14, player.y + 10);
+
+          animId = requestAnimationFrame(loop);
+        };
+
+        loop();
+
+        return () => {
+          window.removeEventListener('keydown', handleKeyDown);
+          window.removeEventListener('keyup', handleKeyUp);
+          cancelAnimationFrame(animId);
+        };
+      }, []);
+
+      return (
+        <div className={`min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 pt-20 sm:pt-24 transition-colors duration-500 ${
+          isDarkMode ? 'bg-slate-950 text-emerald-100' : 'bg-gradient-to-b from-teal-900 via-emerald-800 to-slate-950 text-white'
+        }`}>
+          <div className="max-w-xl w-full flex items-center justify-between mb-4 px-2">
+            <div>
+              <h1 className="text-xl sm:text-2xl font-hero font-bold text-amber-300 drop-shadow-md">
+                Trò Chơi Săn Tìm Chìa Khóa Vàng
+              </h1>
+              <p className="text-xs text-amber-200/90 font-body">Điều khiển trái tim thu thập đủ 5 ngôi sao vàng!</p>
+            </div>
+            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-400/20 border border-amber-400/40 text-amber-300 font-button font-medium text-xs">
+              <Icon name="Star" className="w-4 h-4 text-amber-400 fill-amber-400" />
+              <span>{score} / 5</span>
+            </div>
+          </div>
+
+          <div className="relative p-3 rounded-3xl bg-slate-900/90 border-2 border-amber-400/50 shadow-2xl">
+            <canvas ref={canvasRef} width={300} height={280} className="rounded-2xl bg-slate-950" />
+
+            {gameWon && (
+              <div className="absolute inset-0 rounded-3xl bg-slate-950/90 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center space-y-4">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-amber-400 to-yellow-300 flex items-center justify-center shadow-lg animate-bounce">
+                  <Icon name="Key" className="w-8 h-8 text-slate-950" />
+                </div>
+                <h2 className="text-2xl font-hero font-bold text-amber-300">
+                  Chúc Mừng Em!
+                </h2>
+                <p className="text-xs text-pink-200 font-body">
+                  Em đã thu thập đủ 5 ngôi sao và nhận được Chìa Khóa Vàng Hoàng Gia!
+                </p>
+                <button
+                  onClick={() => {
+                    audioEngine.playMagicSparkle();
+                    onCompleteKey();
+                  }}
+                  className="py-3 px-6 rounded-2xl bg-gradient-to-r from-amber-400 to-yellow-300 text-slate-950 font-button font-bold text-sm shadow-xl hover:scale-105 transition-all flex items-center gap-2"
+                >
+                  <Icon name="Gift" className="w-4 h-4" />
+                  <span>Mở Hộp Quà Báu Vật</span>
+                </button>
+              </div>
+            )}
+          </div>
+          <p className="mt-3 text-[11px] text-emerald-200/70 font-body">Dùng các phím mũi tên hoặc WASD trên bàn phím để di chuyển</p>
+        </div>
+      );
+    };
+
+    // 5. Treasure Room
+    const TreasureRoom = ({ onNext, isDarkMode, hasGoldenKey }) => {
+      const [isOpen, setIsOpen] = useState(false);
+
+      const handleOpenChest = () => {
+        if (!hasGoldenKey) return;
+        audioEngine.playFanfare();
+        if (window.confetti) {
+          window.confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+        }
+        setIsOpen(true);
+      };
+
+      return (
+        <div className={`min-h-screen flex flex-col items-center justify-center p-6 pt-20 sm:pt-24 text-center relative overflow-hidden transition-colors duration-500 ${
+          isDarkMode ? 'bg-slate-950 text-pink-100' : 'bg-gradient-to-b from-pink-100 via-rose-100 to-pink-200 text-slate-800'
+        }`}>
+          <div className="max-w-md w-full p-8 rounded-3xl backdrop-blur-2xl border border-pink-500/30 bg-slate-900/80 shadow-2xl space-y-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-400/20 border border-amber-400/40 text-amber-300 text-xs font-button font-medium uppercase tracking-wider">
+              <Icon name="Key" className="w-4 h-4 text-amber-400" />
+              <span>Mở Hộp Quà Sinh Nhật</span>
+            </div>
+
+            <h1 className="text-2xl sm:text-3xl font-hero font-bold text-pink-300 drop-shadow-md">
+              Hộp Quà Báu Vật
+            </h1>
+
+            <div className="py-6 flex justify-center">
+              <div className={`w-32 h-32 rounded-3xl bg-gradient-to-tr from-amber-500 via-pink-500 to-rose-500 flex items-center justify-center shadow-2xl border-4 border-amber-300 transition-transform duration-500 ${isOpen ? 'scale-110 rotate-6' : 'animate-bounce'}`}>
+                <Icon name={isOpen ? 'Gift' : 'Lock'} className="w-16 h-16 text-white" />
+              </div>
+            </div>
+
+            {!isOpen ? (
+              <button
+                onClick={handleOpenChest}
+                disabled={!hasGoldenKey}
+                className={`w-full py-4 px-6 rounded-2xl font-button font-medium text-sm shadow-xl transition-all flex items-center justify-center gap-2 ${
+                  hasGoldenKey 
+                    ? 'bg-gradient-to-r from-amber-400 to-yellow-300 text-slate-950 hover:scale-105 active:scale-95' 
+                    : 'bg-slate-800 text-slate-500 cursor-not-allowed'
+                }`}
+              >
+                <Icon name="Key" className="w-5 h-5" />
+                <span>{hasGoldenKey ? "Dùng Chìa Khóa Vàng Mở Quà" : "Chưa Có Chìa Khóa Vàng"}</span>
+              </button>
+            ) : (
+              <div className="space-y-4 animate-float">
+                <p className="text-sm sm:text-base text-pink-200 font-body leading-relaxed italic">
+                  "Chúc Mừng Sinh Nhật Công Chúa Của Anh! Món quà lớn nhất mà anh nhận được trong cuộc đời chính là tình yêu của em. Yêu em vô cùng! ❤️"
+                </p>
+                <button
+                  onClick={() => {
+                    audioEngine.playMagicSparkle();
+                    onNext();
+                  }}
+                  className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-pink-500 to-rose-500 text-white font-button font-medium text-sm shadow-xl hover:scale-105 transition-all flex items-center justify-center gap-2"
+                >
+                  <span>Đọc Thư Lời Chúc Yêu Thương</span>
+                  <Icon name="ArrowRight" className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    };
+
+    // 6. Typewriter Letter
+    const TypewriterLetter = ({ onNext, isDarkMode, config }) => {
+      const bodyText = [
+        config.letter.title,
+        "",
+        ...config.letter.paragraphs
+      ].join("\n\n");
+
+      const [displayedLength, setDisplayedLength] = useState(0);
+      const [isPlaying, setIsPlaying] = useState(true);
+
+      const fullTextLength = bodyText.length + config.letter.closing.length + config.letter.signature.length + 10;
+
+      useEffect(() => {
+        if (!isPlaying || displayedLength >= fullTextLength) return;
+        const timer = setTimeout(() => {
+          setDisplayedLength((prev) => prev + 1);
+        }, config.letter.typewriterSpeedMs || 35);
+        return () => clearTimeout(timer);
+      }, [displayedLength, isPlaying, fullTextLength]);
+
+      const isFinished = displayedLength >= fullTextLength;
+
+      return (
+        <div className={`min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 pt-20 sm:pt-24 transition-colors duration-500 ${
+          isDarkMode 
+            ? 'bg-slate-950 text-pink-100' 
+            : 'bg-gradient-to-b from-rose-50 via-pink-50 to-white text-slate-800'
+        }`}>
+          <div className="max-w-xl w-full text-center mb-6 space-y-1">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-pink-500/10 border border-pink-400/30 text-pink-400 text-xs font-heading font-semibold uppercase tracking-wider shadow">
+              <Icon name="ScrollText" className="w-3.5 h-3.5" />
+              <span>Thư Lời Chúc Yêu Thương</span>
+            </div>
+            <h1 className="text-3xl sm:text-4xl font-hero font-bold text-pink-300 drop-shadow-md">
+              Gửi Tới Công Chúa Của Anh
+            </h1>
+          </div>
+
+          <div className="max-w-xl w-full p-6 sm:p-8 rounded-3xl backdrop-blur-2xl border border-pink-500/30 bg-slate-900/90 shadow-2xl relative">
+            <div className="min-h-[260px] font-body text-sm sm:text-base leading-relaxed whitespace-pre-wrap space-y-4 text-pink-100">
+              <div>
+                {bodyText.slice(0, displayedLength)}
+              </div>
+
+              {displayedLength > bodyText.length && (
+                <div className="pt-4 border-t border-pink-500/20 font-handwriting text-2xl sm:text-3xl text-pink-300 leading-snug">
+                  <div>{config.letter.closing}</div>
+                  <div className="font-bold text-3xl sm:text-4xl mt-1">{config.letter.signature}</div>
+                </div>
+              )}
+
+              {!isFinished && <span className="inline-block w-2 h-5 ml-1 bg-pink-500 animate-pulse" />}
+            </div>
+
+            <div className="mt-6 pt-4 border-t border-pink-500/20 flex items-center justify-between">
+              <div className="flex items-center gap-2 font-button font-medium">
+                <button
+                  onClick={() => setIsPlaying(!isPlaying)}
+                  className="px-3 py-1.5 rounded-xl bg-pink-500/20 text-pink-300 text-xs flex items-center gap-1.5 hover:bg-pink-500/30 transition"
+                >
+                  <Icon name={isPlaying ? 'Pause' : 'Play'} className="w-3.5 h-3.5" />
+                  <span>{isPlaying ? "Tạm dừng" : "Tiếp tục"}</span>
+                </button>
+                {!isFinished && (
+                  <button
+                    onClick={() => {
+                      setDisplayedLength(fullTextLength);
+                      setIsPlaying(false);
+                    }}
+                    className="px-3 py-1.5 rounded-xl bg-amber-500/20 text-amber-300 text-xs flex items-center gap-1.5 hover:bg-amber-500/30 transition"
+                  >
+                    <Icon name="FastForward" className="w-3.5 h-3.5" />
+                    <span>Xem tất cả</span>
+                  </button>
+                )}
+              </div>
+
+              <span className="text-xs text-pink-400 font-button">
+                {isFinished ? "100% Hoàn tất" : `${Math.floor((displayedLength / fullTextLength) * 100)}%`}
+              </span>
+            </div>
+          </div>
+
+          <button
+            onClick={() => {
+              audioEngine.playMagicSparkle();
+              onNext();
+            }}
+            className="mt-6 py-3.5 px-8 rounded-2xl bg-gradient-to-r from-pink-500 via-rose-500 to-amber-400 text-white font-button font-medium text-base shadow-xl hover:scale-105 transition-all flex items-center gap-2"
+          >
+            <span>Mở Nhạc Lãng Mạn</span>
+            <Icon name="ArrowRight" className="w-5 h-5" />
+          </button>
+        </div>
+      );
+    };
+
+    // 7. Jukebox Music Player
+    const MusicPlayer = ({ onNext, isDarkMode, playlist = initialBirthdayConfig.playlist }) => {
+      const [currentTrackIdx, setCurrentTrackIdx] = useState(0);
+      const [isPlaying, setIsPlaying] = useState(true);
+      const track = playlist[currentTrackIdx] || playlist[0];
+
+      const handlePlayPause = () => {
+        audioEngine.playClick();
+        if (isPlaying) {
+          audioEngine.stopSynthBgm();
+          setIsPlaying(false);
+        } else {
+          audioEngine.startSynthBgm();
+          setIsPlaying(true);
+        }
+      };
+
+      const handleNextTrack = () => {
+        audioEngine.playClick();
+        setCurrentTrackIdx((prev) => (prev + 1) % playlist.length);
+        if (!isPlaying) {
+          audioEngine.startSynthBgm();
+          setIsPlaying(true);
+        }
+      };
+
+      const handlePrevTrack = () => {
+        audioEngine.playClick();
+        setCurrentTrackIdx((prev) => (prev - 1 + playlist.length) % playlist.length);
+        if (!isPlaying) {
+          audioEngine.startSynthBgm();
+          setIsPlaying(true);
+        }
+      };
+
+      return (
+        <div className={`min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 pt-20 sm:pt-24 transition-colors duration-500 ${
+          isDarkMode ? 'bg-slate-950 text-pink-100' : 'bg-gradient-to-b from-purple-900 via-pink-900 to-slate-950 text-white'
+        }`}>
+          <div className="max-w-md w-full text-center mb-6 space-y-1">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/20 border border-pink-400/30 text-pink-300 text-xs font-semibold uppercase tracking-wider">
+              <Icon name="Music" className="w-3.5 h-3.5 text-pink-400" />
+              <span>Âm Nhạc Lãng Mạn Hoàng Gia</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-pink-300 drop-shadow-md">
+              Giai Đệu Cổ Tích Của Chúng Ta
+            </h2>
+          </div>
+
+          <div className="max-w-md w-full p-6 sm:p-8 rounded-3xl bg-slate-900/80 border border-pink-500/30 shadow-2xl backdrop-blur-xl relative z-10 space-y-6">
+            <div className="relative w-48 h-48 sm:w-56 sm:h-56 mx-auto flex items-center justify-center">
+              <div className={`absolute w-44 h-44 sm:w-52 sm:h-52 rounded-full bg-slate-950 border-4 border-slate-800 shadow-xl flex items-center justify-center transition-transform duration-1000 ${
+                isPlaying ? 'animate-spin' : ''
+              }`} style={{ animationDuration: '8s' }}>
+                <div className="w-16 h-16 rounded-full border-2 border-slate-700 bg-pink-950/80 flex items-center justify-center">
+                  <Icon name="Disc" className="w-8 h-8 text-pink-500" />
+                </div>
+              </div>
+
+              <div className="relative w-36 h-36 sm:w-44 sm:h-44 rounded-2xl overflow-hidden shadow-2xl border-2 border-pink-400/40 z-10">
+                <img src={track.cover} alt={track.title} className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
+              </div>
+            </div>
+
+            <div className="text-center space-y-1">
+              <h3 className="text-xl font-serif font-bold text-pink-200">{track.title}</h3>
+              <p className="text-xs text-pink-400 font-medium">{track.artist}</p>
+            </div>
+
+            {track.lyricsQuote && (
+              <div className="p-3 rounded-2xl bg-pink-950/40 border border-pink-500/20 text-xs text-pink-200/90 italic font-serif flex items-start gap-2 text-center justify-center">
+                <Icon name="Quote" className="w-4 h-4 text-pink-400 shrink-0 mt-0.5" />
+                <span>"{track.lyricsQuote}"</span>
+              </div>
+            )}
+
+            <div className="flex items-center justify-center gap-1.5 h-6 my-2">
+              {[40, 70, 30, 90, 50, 80, 40, 60, 100, 30, 70].map((h, i) => (
+                <div
+                  key={i}
+                  className="w-1 rounded-full bg-gradient-to-t from-pink-500 to-amber-400 transition-all duration-300"
+                  style={{ height: isPlaying ? `${Math.max(15, Math.round(h * Math.random()))}%` : '15%' }}
+                />
+              ))}
+            </div>
+
+            <div className="flex items-center justify-center gap-6">
+              <button onClick={handlePrevTrack} className="p-3 rounded-full bg-slate-800/80 text-pink-300 hover:bg-slate-700 transition">
+                <Icon name="SkipBack" className="w-5 h-5" />
+              </button>
+              <button onClick={handlePlayPause} className="p-5 rounded-full bg-gradient-to-r from-pink-500 via-purple-500 to-amber-400 text-white shadow-xl hover:scale-105 transition">
+                <Icon name={isPlaying ? "Pause" : "Play"} className="w-6 h-6" />
+              </button>
+              <button onClick={handleNextTrack} className="p-3 rounded-full bg-slate-800/80 text-pink-300 hover:bg-slate-700 transition">
+                <Icon name="SkipForward" className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="flex items-center justify-between text-xs text-pink-400/80 pt-2 border-t border-pink-500/20">
+              <div className="flex items-center gap-1.5">
+                <Icon name="Volume2" className="w-4 h-4 text-pink-400" />
+                <span>Ambient Melody Synth</span>
+              </div>
+              <span>Bài {currentTrackIdx + 1} / {playlist.length}</span>
+            </div>
+          </div>
+
+          <button
+            onClick={() => {
+              audioEngine.playMagicSparkle();
+              onNext();
+            }}
+            className="mt-6 py-3.5 px-8 rounded-2xl bg-gradient-to-r from-pink-500 via-rose-500 to-amber-400 text-white font-button font-medium text-base shadow-xl hover:scale-105 transition-all flex items-center gap-2"
+          >
+            <span>Xem Album Kỷ Niệm</span>
+            <Icon name="ArrowRight" className="w-5 h-5" />
+          </button>
+        </div>
+      );
+    };
+
+    // 8. Polaroid Gallery
+    const PolaroidGallery = ({ onNext, isDarkMode, config }) => {
+      const [selectedPhoto, setSelectedPhoto] = useState(null);
+
+      return (
+        <div className={`min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 pt-20 sm:pt-24 transition-colors duration-500 ${
+          isDarkMode 
+            ? 'bg-slate-950 text-amber-100' 
+            : 'bg-gradient-to-b from-amber-50 via-amber-100/60 to-orange-50 text-slate-800'
+        }`}>
+          <div className="max-w-2xl w-full text-center mb-8 space-y-2">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-400/20 border border-amber-400/50 text-amber-300 text-xs font-heading font-semibold uppercase tracking-wider shadow">
+              <Icon name="Camera" className="w-3.5 h-3.5" />
+              <span>Album Kỷ Niệm Ngọt Ngào</span>
+            </div>
+            <h1 className="text-3xl sm:text-4xl font-hero font-bold text-amber-300">
+              Những Khoảnh Khắc Đẹp Nhất
+            </h1>
+            <p className="text-xs sm:text-sm text-amber-200/80 font-body italic">
+              Nhấn vào từng bức ảnh Polaroid để xem câu chuyện kỷ niệm ngọt ngào!
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl w-full">
+            {config.photos.map((photo) => (
+              <div
+                key={photo.id}
+                onClick={() => {
+                  audioEngine.playClick();
+                  setSelectedPhoto(photo);
+                }}
+                className="p-4 rounded-2xl bg-slate-900/90 border border-amber-400/30 shadow-xl hover:scale-105 transition-all cursor-pointer space-y-3"
+              >
+                <img src={photo.url || photo.image} alt={photo.title} className="w-full h-48 object-cover rounded-xl" />
+                <div className="space-y-1">
+                  <h3 className="font-heading font-semibold text-base text-amber-200">{photo.title}</h3>
+                  <p className="text-xs text-slate-300 font-caption italic line-clamp-2">"{photo.caption}"</p>
+                  <p className="text-[10px] text-amber-400 font-button">{photo.date} • {photo.location || "Memory Spot"}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {selectedPhoto && (
+            <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+              <div className="max-w-lg w-full p-6 rounded-3xl bg-slate-900 border border-amber-400/40 shadow-2xl relative space-y-4">
+                <button
+                  onClick={() => setSelectedPhoto(null)}
+                  className="absolute top-4 right-4 p-2 rounded-full bg-slate-800 text-slate-300 hover:text-white"
+                >
+                  <Icon name="X" className="w-5 h-5" />
+                </button>
+                <img src={selectedPhoto.url || selectedPhoto.image} alt={selectedPhoto.title} className="w-full h-64 object-cover rounded-2xl" />
+                <h3 className="text-xl font-hero font-bold text-amber-200">{selectedPhoto.title}</h3>
+                <p className="text-sm text-pink-100 font-body">"{selectedPhoto.caption}"</p>
+                <p className="text-xs text-amber-400 font-button">{selectedPhoto.date} - {selectedPhoto.location}</p>
+              </div>
+            </div>
+          )}
+
+          <button
+            onClick={() => {
+              audioEngine.playMagicSparkle();
+              onNext();
+            }}
+            className="mt-8 py-3.5 px-8 rounded-2xl bg-gradient-to-r from-pink-500 via-rose-500 to-amber-400 text-white font-button font-medium text-base shadow-xl hover:scale-105 transition-all flex items-center gap-2"
+          >
+            <span>Thắp Nến Bánh Sinh Nhật</span>
+            <Icon name="ArrowRight" className="w-5 h-5" />
+          </button>
+        </div>
+      );
+    };
+
+    // 9. Birthday Cake
+    const BirthdayCake = ({ onNext, isDarkMode, config }) => {
+      const [candlesLit, setCandlesLit] = useState(true);
+
+      const handleBlowCandles = () => {
+        audioEngine.playBlowCandle();
+        if (window.confetti) {
+          window.confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+        }
+        setCandlesLit(false);
+      };
+
+      return (
+        <div className={`min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 pt-20 sm:pt-24 transition-colors duration-500 ${
+          isDarkMode ? 'bg-slate-950 text-pink-100' : 'bg-gradient-to-b from-pink-100 via-rose-100 to-amber-100 text-slate-800'
+        }`}>
+          <div className="max-w-md w-full text-center mb-6 space-y-2">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-pink-500/20 border border-pink-400/30 text-pink-300 text-xs font-heading font-semibold uppercase tracking-wider">
+              <Icon name="Cake" className="w-4 h-4 text-pink-400" />
+              <span>Bánh Sinh Nhật Diệu Kỳ</span>
+            </div>
+
+            <h1 className="text-3xl sm:text-4xl font-hero font-bold text-amber-200 drop-shadow-md">
+              Ước Một Điều Ước, {config.recipientName}!
+            </h1>
+          </div>
+
+          <div className="relative py-8 flex flex-col items-center">
+            <div className="flex gap-4 mb-2 z-20">
+              {[1, 2, 3].map((idx) => (
+                <div key={idx} className="flex flex-col items-center">
+                  {candlesLit && (
+                    <div className="w-3 h-4 rounded-full bg-gradient-to-t from-amber-400 to-yellow-200 animate-pulse shadow-[0_0_12px_#FBBF24]" />
+                  )}
+                  <div className="w-2 h-10 bg-gradient-to-b from-pink-300 to-rose-400 rounded-sm border border-pink-200" />
+                </div>
+              ))}
+            </div>
+
+            <div className="flex flex-col items-center z-10">
+              <div className="w-48 sm:w-56 h-16 sm:h-20 rounded-t-3xl bg-gradient-to-r from-pink-300 via-rose-200 to-pink-300 border-2 border-amber-300/80 shadow-xl flex flex-col items-center justify-center relative overflow-hidden">
+                <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-amber-400/30 border border-amber-300 text-amber-900 font-bold text-xs shadow-sm mb-0.5 animate-bounce">
+                  <Icon name="Sparkles" className="w-3 h-3 text-amber-600" />
+                  <span>Mừng Tuổi {config.ageNumber || 20}</span>
+                </div>
+                <span className="text-xs sm:text-sm font-heading font-bold text-pink-900 tracking-wider uppercase">
+                  {config.recipientName}
+                </span>
+              </div>
+
+              <div className="w-64 sm:w-72 h-18 sm:h-22 rounded-t-3xl bg-gradient-to-r from-rose-300 via-pink-200 to-amber-200 border-2 border-amber-300/80 shadow-2xl flex items-center justify-center relative -mt-1 overflow-hidden">
+                <div className="flex items-center gap-4">
+                  <Icon name="Heart" className="w-5 h-5 text-pink-500 fill-pink-500 animate-pulse" />
+                  <span className="text-2xl font-hero font-extrabold text-pink-700 drop-shadow-sm px-2">
+                    {config.ageNumber || 20}
+                  </span>
+                  <Icon name="Heart" className="w-5 h-5 text-pink-500 fill-pink-500 animate-pulse" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-4 flex flex-col items-center gap-3">
+            {candlesLit ? (
+              <button
+                onClick={handleBlowCandles}
+                className="py-3.5 px-8 rounded-2xl bg-gradient-to-r from-amber-400 to-yellow-300 text-slate-950 font-button font-bold text-base shadow-xl hover:scale-105 transition-all flex items-center gap-2"
+              >
+                <Icon name="Flame" className="w-5 h-5 text-amber-600" />
+                <span>Thổi Nến Sinh Nhật</span>
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  audioEngine.playMagicSparkle();
+                  onNext();
+                }}
+                className="py-3.5 px-8 rounded-2xl bg-gradient-to-r from-pink-500 via-rose-500 to-amber-400 text-white font-button font-medium text-base shadow-xl hover:scale-105 transition-all flex items-center gap-2 animate-bounce"
+              >
+                <span>Xem Lời Kết Yêu Thương</span>
+                <Icon name="ArrowRight" className="w-5 h-5" />
+              </button>
+            )}
+          </div>
+        </div>
+      );
+    };
+
+    // 10. Emotional Ending
+    const EmotionalEnding = ({ onRestart, isDarkMode, config }) => {
+      const [userWish, setUserWish] = useState("");
+      const [wishesList, setWishesList] = useState([
+        "Chúc tình yêu của chúng mình mãi mãi bền chặt, ngọt ngào và hạnh phúc! 🌸",
+        "Mong rằng mọi giấc mơ của em đều sẽ trở thành hiện thực rạng rỡ! ✨"
+      ]);
+      const [copied, setCopied] = useState(false);
+
+      useEffect(() => {
+        launchGrandConfettiShower();
+        const timer = setInterval(() => {
+          audioEngine.playFirework();
+        }, 2800);
+        return () => clearInterval(timer);
+      }, []);
+
+      const handleAddWish = (e) => {
+        e.preventDefault();
+        if (!userWish.trim()) return;
+        audioEngine.playStarCollect();
+        setWishesList((prev) => [userWish.trim(), ...prev]);
+        setUserWish("");
+        launchGrandConfettiShower();
+      };
+
+      const handleShare = () => {
+        audioEngine.playClick();
+        navigator.clipboard.writeText(window.location.href);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2500);
+      };
+
+      return (
+        <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 pt-20 sm:pt-24 text-center relative overflow-hidden bg-gradient-to-br from-pink-600 via-purple-700 to-indigo-900 text-white">
+          <div className="max-w-xl w-full p-8 rounded-3xl backdrop-blur-2xl border border-pink-400/30 bg-slate-950/80 shadow-2xl space-y-6 relative z-10">
+            <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-tr from-pink-500 to-amber-300 flex items-center justify-center shadow-2xl animate-pulse">
+              <Icon name="Heart" className="w-10 h-10 text-white fill-white" />
+            </div>
+
+            <div className="space-y-3">
+              <h1 className="text-3xl sm:text-4xl font-hero font-bold text-amber-200 drop-shadow-md">
+                Chúc Mừng Sinh Nhật {config.recipientName} ❤️
+              </h1>
+              <p className="text-xl sm:text-2xl text-pink-200 font-handwriting italic">
+                "Cảm ơn em đã xuất hiện và làm cho cuộc đời anh trở nên tuyệt vời nhất. Anh yêu em mãi mãi!"
+              </p>
+              <p className="text-sm font-handwriting font-bold text-pink-300">
+                — {config.senderName}
+              </p>
+            </div>
+
+            <div className="pt-4 border-t border-pink-500/30 text-left space-y-3">
+              <h3 className="text-xs font-serif font-bold text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
+                <Icon name="Star" className="w-4 h-4 text-amber-400" />
+                <span>Hũ Nguyện Ước Bí Mật</span>
+              </h3>
+
+              <form onSubmit={handleAddWish} className="flex gap-2">
+                <input
+                  type="text"
+                  value={userWish}
+                  onChange={(e) => setUserWish(e.target.value)}
+                  placeholder="Nhập điều ước sinh nhật tại đây..."
+                  className="flex-1 px-4 py-2.5 rounded-xl bg-slate-900 border border-pink-500/30 text-xs text-pink-100 placeholder-pink-400/50 focus:outline-none focus:border-pink-400 transition"
+                />
+                <button
+                  type="submit"
+                  className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 text-white text-xs font-semibold hover:scale-105 transition flex items-center gap-1 shrink-0"
+                >
+                  <Icon name="Send" className="w-3.5 h-3.5" />
+                  <span>Gửi Ước</span>
+                </button>
+              </form>
+
+              <div className="max-h-32 overflow-y-auto space-y-1.5 pr-1">
+                {wishesList.map((w, idx) => (
+                  <div key={idx} className="p-2.5 rounded-xl bg-pink-950/50 border border-pink-500/30 text-xs text-pink-200 italic font-serif flex items-start gap-2">
+                    <Icon name="Sparkles" className="w-3.5 h-3.5 text-amber-300 shrink-0 mt-0.5" />
+                    <span>"{w}"</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-pink-500/30 flex flex-col sm:flex-row items-center gap-3">
+              <button
+                onClick={handleShare}
+                className="w-full py-3 px-4 rounded-xl bg-slate-900/80 border border-pink-500/30 text-xs font-semibold text-pink-200 hover:bg-slate-800 transition flex items-center justify-center gap-2"
+              >
+                <Icon name={copied ? "Check" : "Share2"} className="w-4 h-4 text-pink-400" />
+                <span>{copied ? "Đã Sao Chép Liên Kết Thiệp!" : "Chia Sẻ Thiệp Sinh Nhật"}</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  audioEngine.playMagicSparkle();
+                  onRestart();
+                }}
+                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-pink-500 via-rose-500 to-amber-400 text-xs font-serif font-bold text-white hover:scale-105 transition flex items-center justify-center gap-2"
+              >
+                <Icon name="RotateCcw" className="w-4 h-4" />
+                <span>Phát Lại Hành Trình</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    // 11. Full Multi-Tab Config Editor Modal
+    const ConfigEditorModal = ({ isOpen, onClose, config, onSaveConfig, onResetDefault }) => {
+      const [activeTab, setActiveTab] = useState('general');
+      const [editedConfig, setEditedConfig] = useState(JSON.parse(JSON.stringify(config)));
+      const [savedSuccess, setSavedSuccess] = useState(false);
+
+      useEffect(() => {
+        setEditedConfig(JSON.parse(JSON.stringify(config)));
+      }, [config, isOpen]);
+
+      if (!isOpen) return null;
+
+      const handleSave = () => {
+        audioEngine.playStarCollect();
+        onSaveConfig(editedConfig);
+        setSavedSuccess(true);
+        setTimeout(() => setSavedSuccess(false), 2000);
+      };
+
+      const handlePhotoChange = (index, field, value) => {
+        const updatedPhotos = [...editedConfig.photos];
+        updatedPhotos[index] = { ...updatedPhotos[index], [field]: value };
+        setEditedConfig({ ...editedConfig, photos: updatedPhotos });
+      };
+
+      const handleAddPhoto = () => {
+        audioEngine.playClick();
+        const newPhoto = {
+          id: `p-${Date.now()}`,
+          title: "Kỷ niệm mới",
+          date: "Ngày đặc biệt",
+          url: "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=800&q=80",
+          caption: "Khoảnh khắc tuyệt vời bên em",
+          location: "Góc kỷ niệm"
+        };
+        setEditedConfig({ ...editedConfig, photos: [...editedConfig.photos, newPhoto] });
+      };
+
+      const handleRemovePhoto = (index) => {
+        audioEngine.playClick();
+        const updatedPhotos = editedConfig.photos.filter((_, i) => i !== index);
+        setEditedConfig({ ...editedConfig, photos: updatedPhotos });
+      };
+
+      const handleSongChange = (index, field, value) => {
+        const updatedPlaylist = [...editedConfig.playlist];
+        updatedPlaylist[index] = { ...updatedPlaylist[index], [field]: value };
+        setEditedConfig({ ...editedConfig, playlist: updatedPlaylist });
+      };
+
+      const handleAddSong = () => {
+        audioEngine.playClick();
+        const newSong = {
+          id: `track-${Date.now()}`,
+          title: "Bài hát ngọt ngào",
+          artist: "Nhạc lãng mạn",
+          cover: "https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=400&q=80",
+          lyricsQuote: "Yêu em từ cái nhìn đầu tiên..."
+        };
+        setEditedConfig({ ...editedConfig, playlist: [...editedConfig.playlist, newSong] });
+      };
+
+      const handleRemoveSong = (index) => {
+        audioEngine.playClick();
+        const updatedPlaylist = editedConfig.playlist.filter((_, i) => i !== index);
+        setEditedConfig({ ...editedConfig, playlist: updatedPlaylist });
+      };
+
+      return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="bg-slate-900 border border-pink-500/30 text-pink-100 rounded-3xl w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            
+            <div className="p-4 sm:p-5 border-b border-pink-500/20 flex items-center justify-between bg-slate-950/60">
+              <div className="flex items-center gap-2">
+                <Icon name="Sparkles" className="w-5 h-5 text-amber-400 animate-pulse" />
+                <h2 className="text-lg sm:text-xl font-serif font-bold text-pink-300 drop-shadow-md">
+                  Chỉnh Sửa Nội Dung & Album Ảnh
+                </h2>
+              </div>
+              <button onClick={onClose} className="p-2 rounded-full hover:bg-pink-500/20 text-pink-300 transition">
+                <Icon name="X" className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="flex border-b border-pink-500/20 bg-slate-950/40 px-3 overflow-x-auto no-scrollbar">
+              <button
+                onClick={() => setActiveTab('general')}
+                className={`px-4 py-3 text-xs sm:text-sm font-semibold flex items-center gap-1.5 border-b-2 whitespace-nowrap transition ${
+                  activeTab === 'general' ? 'border-pink-500 text-pink-300 bg-pink-500/10' : 'border-transparent text-slate-400'
+                }`}
+              >
+                <Icon name="User" className="w-4 h-4" />
+                <span>Thông Tin</span>
+              </button>
+
+              <button
+                onClick={() => setActiveTab('letter')}
+                className={`px-4 py-3 text-xs sm:text-sm font-semibold flex items-center gap-1.5 border-b-2 whitespace-nowrap transition ${
+                  activeTab === 'letter' ? 'border-pink-500 text-pink-300 bg-pink-500/10' : 'border-transparent text-slate-400'
+                }`}
+              >
+                <Icon name="MessageSquare" className="w-4 h-4" />
+                <span>Thư & Lời Chúc</span>
+              </button>
+
+              <button
+                onClick={() => setActiveTab('photos')}
+                className={`px-4 py-3 text-xs sm:text-sm font-semibold flex items-center gap-1.5 border-b-2 whitespace-nowrap transition ${
+                  activeTab === 'photos' ? 'border-pink-500 text-pink-300 bg-pink-500/10' : 'border-transparent text-slate-400'
+                }`}
+              >
+                <Icon name="Image" className="w-4 h-4" />
+                <span>Album Ảnh ({editedConfig.photos ? editedConfig.photos.length : 0})</span>
+              </button>
+
+              <button
+                onClick={() => setActiveTab('music')}
+                className={`px-4 py-3 text-xs sm:text-sm font-semibold flex items-center gap-1.5 border-b-2 whitespace-nowrap transition ${
+                  activeTab === 'music' ? 'border-pink-500 text-pink-300 bg-pink-500/10' : 'border-transparent text-slate-400'
+                }`}
+              >
+                <Icon name="Music" className="w-4 h-4" />
+                <span>Nhạc Nền ({editedConfig.playlist ? editedConfig.playlist.length : 0})</span>
+              </button>
+            </div>
+
+            <div className="p-4 sm:p-6 overflow-y-auto flex-1 space-y-6">
+              {activeTab === 'general' && (
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-semibold text-pink-300 mb-1">Tên Người Nhận (Công chúa)</label>
+                      <input
+                        type="text"
+                        value={editedConfig.recipientName}
+                        onChange={(e) => setEditedConfig({ ...editedConfig, recipientName: e.target.value })}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-pink-500/30 text-xs sm:text-sm text-pink-100 focus:outline-none focus:border-pink-400"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-pink-300 mb-1">Tên Người Gửi</label>
+                      <input
+                        type="text"
+                        value={editedConfig.senderName}
+                        onChange={(e) => setEditedConfig({ ...editedConfig, senderName: e.target.value })}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-pink-500/30 text-xs sm:text-sm text-pink-100 focus:outline-none focus:border-pink-400"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-xs font-semibold text-pink-300 mb-1">Số Tuổi Sinh Nhật</label>
+                      <input
+                        type="number"
+                        min="1"
+                        max="120"
+                        value={editedConfig.ageNumber || 20}
+                        onChange={(e) => setEditedConfig({ ...editedConfig, ageNumber: parseInt(e.target.value) || 20 })}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-pink-500/30 text-xs sm:text-sm text-pink-100 focus:outline-none focus:border-pink-400"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-pink-300 mb-1">Ngày Sinh Nhật</label>
+                      <input
+                        type="text"
+                        value={editedConfig.birthdayDate}
+                        onChange={(e) => setEditedConfig({ ...editedConfig, birthdayDate: e.target.value })}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-pink-500/30 text-xs sm:text-sm text-pink-100 focus:outline-none focus:border-pink-400"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-pink-300 mb-1">Tiêu Đề Phụ / Chương</label>
+                      <input
+                        type="text"
+                        value={editedConfig.ageTitle}
+                        onChange={(e) => setEditedConfig({ ...editedConfig, ageTitle: e.target.value })}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-pink-500/30 text-xs sm:text-sm text-pink-100 focus:outline-none focus:border-pink-400"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'letter' && (
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-semibold text-pink-300 mb-1">Tiêu Đề Thư</label>
+                    <input
+                      type="text"
+                      value={editedConfig.letter.title}
+                      onChange={(e) => setEditedConfig({
+                        ...editedConfig,
+                        letter: { ...editedConfig.letter, title: e.target.value }
+                      })}
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-pink-500/30 text-xs sm:text-sm text-pink-100 focus:outline-none focus:border-pink-400"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-pink-300 mb-1">
+                      Nội Dung Thư (xuống dòng để chia thành nhiều đoạn)
+                    </label>
+                    <textarea
+                      rows={6}
+                      value={editedConfig.letter.paragraphs ? editedConfig.letter.paragraphs.join('\n\n') : ''}
+                      onChange={(e) => setEditedConfig({
+                        ...editedConfig,
+                        letter: {
+                          ...editedConfig.letter,
+                          paragraphs: e.target.value.split('\n\n').filter(Boolean)
+                        }
+                      })}
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-pink-500/30 text-xs sm:text-sm text-pink-100 focus:outline-none focus:border-pink-400 leading-relaxed font-serif"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-semibold text-pink-300 mb-1">Lời Kết Thư</label>
+                      <input
+                        type="text"
+                        value={editedConfig.letter.closing}
+                        onChange={(e) => setEditedConfig({
+                          ...editedConfig,
+                          letter: { ...editedConfig.letter, closing: e.target.value }
+                        })}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-pink-500/30 text-xs sm:text-sm text-pink-100 focus:outline-none focus:border-pink-400"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-pink-300 mb-1">Chữ Ký</label>
+                      <input
+                        type="text"
+                        value={editedConfig.letter.signature}
+                        onChange={(e) => setEditedConfig({
+                          ...editedConfig,
+                          letter: { ...editedConfig.letter, signature: e.target.value }
+                        })}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-pink-500/30 text-xs sm:text-sm text-pink-100 focus:outline-none focus:border-pink-400"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'photos' && (
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-pink-300 font-medium">Thay đổi đường dẫn hình ảnh (URL) hoặc chú thích</span>
+                    <button onClick={handleAddPhoto} className="px-3 py-1.5 rounded-xl bg-pink-500 text-white text-xs font-semibold flex items-center gap-1">
+                      <Icon name="Plus" className="w-3.5 h-3.5" /> Thêm Ảnh
+                    </button>
+                  </div>
+
+                  <div className="space-y-4">
+                    {editedConfig.photos && editedConfig.photos.map((photo, idx) => (
+                      <div key={photo.id || idx} className="p-4 rounded-2xl bg-slate-950/80 border border-pink-500/20 space-y-3">
+                        <div className="flex items-center justify-between border-b border-pink-500/20 pb-2">
+                          <span className="text-xs font-bold text-amber-300 font-serif">Ảnh #{idx + 1}</span>
+                          <button onClick={() => handleRemovePhoto(idx)} className="p-1 rounded bg-rose-500/20 text-rose-300 hover:bg-rose-500/40 text-xs flex items-center gap-1">
+                            <Icon name="Trash2" className="w-3.5 h-3.5" /> Xóa
+                          </button>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
+                          <div className="aspect-[4/3] rounded-xl overflow-hidden border border-pink-400/30 bg-slate-900">
+                            <img src={photo.url || photo.image} alt={photo.title} className="w-full h-full object-cover" />
+                          </div>
+
+                          <div className="sm:col-span-2 space-y-2">
+                            <div>
+                              <label className="block text-[11px] font-semibold text-pink-300">Đường dẫn Hình ảnh (Image URL)</label>
+                              <input
+                                type="text"
+                                value={photo.url || photo.image || ''}
+                                onChange={(e) => handlePhotoChange(idx, 'url', e.target.value)}
+                                className="w-full px-3 py-1.5 rounded-lg bg-slate-900 border border-pink-500/30 text-xs text-pink-100 focus:outline-none"
+                              />
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-2">
+                              <div>
+                                <label className="block text-[11px] font-semibold text-pink-300">Tiêu đề ảnh</label>
+                                <input
+                                  type="text"
+                                  value={photo.title}
+                                  onChange={(e) => handlePhotoChange(idx, 'title', e.target.value)}
+                                  className="w-full px-3 py-1.5 rounded-lg bg-slate-900 border border-pink-500/30 text-xs text-pink-100 focus:outline-none"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-[11px] font-semibold text-pink-300">Thời gian / Ngày</label>
+                                <input
+                                  type="text"
+                                  value={photo.date}
+                                  onChange={(e) => handlePhotoChange(idx, 'date', e.target.value)}
+                                  className="w-full px-3 py-1.5 rounded-lg bg-slate-900 border border-pink-500/30 text-xs text-pink-100 focus:outline-none"
+                                />
+                              </div>
+                            </div>
+
+                            <div>
+                              <label className="block text-[11px] font-semibold text-pink-300">Chú thích (Caption)</label>
+                              <input
+                                type="text"
+                                value={photo.caption}
+                                onChange={(e) => handlePhotoChange(idx, 'caption', e.target.value)}
+                                className="w-full px-3 py-1.5 rounded-lg bg-slate-900 border border-pink-500/30 text-xs text-pink-100 focus:outline-none"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'music' && (
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-pink-300 font-medium">Tùy chỉnh danh sách bài hát và câu nói hay</span>
+                    <button onClick={handleAddSong} className="px-3 py-1.5 rounded-xl bg-pink-500 text-white text-xs font-semibold flex items-center gap-1">
+                      <Icon name="Plus" className="w-3.5 h-3.5" /> Thêm Bài Hát
+                    </button>
+                  </div>
+
+                  <div className="space-y-4">
+                    {editedConfig.playlist && editedConfig.playlist.map((song, idx) => (
+                      <div key={song.id || idx} className="p-4 rounded-2xl bg-slate-950/80 border border-pink-500/20 space-y-3">
+                        <div className="flex items-center justify-between border-b border-pink-500/20 pb-2">
+                          <span className="text-xs font-bold text-amber-300 font-serif">Bài hát #{idx + 1}</span>
+                          <button onClick={() => handleRemoveSong(idx)} className="p-1 rounded bg-rose-500/20 text-rose-300 hover:bg-rose-500/40 text-xs flex items-center gap-1">
+                            <Icon name="Trash2" className="w-3.5 h-3.5" /> Xóa
+                          </button>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          <div>
+                            <label className="block text-[11px] font-semibold text-pink-300">Tên bài hát</label>
+                            <input
+                              type="text"
+                              value={song.title}
+                              onChange={(e) => handleSongChange(idx, 'title', e.target.value)}
+                              className="w-full px-3 py-1.5 rounded-lg bg-slate-900 border border-pink-500/30 text-xs text-pink-100 focus:outline-none"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-[11px] font-semibold text-pink-300">Ca sĩ / Nghệ sĩ</label>
+                            <input
+                              type="text"
+                              value={song.artist}
+                              onChange={(e) => handleSongChange(idx, 'artist', e.target.value)}
+                              className="w-full px-3 py-1.5 rounded-lg bg-slate-900 border border-pink-500/30 text-xs text-pink-100 focus:outline-none"
+                            />
+                          </div>
+                          <div className="sm:col-span-2">
+                            <label className="block text-[11px] font-semibold text-pink-300">Trích dẫn Lời bài hát</label>
+                            <input
+                              type="text"
+                              value={song.lyricsQuote || ''}
+                              onChange={(e) => handleSongChange(idx, 'lyricsQuote', e.target.value)}
+                              className="w-full px-3 py-1.5 rounded-lg bg-slate-900 border border-pink-500/30 text-xs text-pink-100 focus:outline-none"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="p-4 border-t border-pink-500/20 bg-slate-950/80 flex flex-col sm:flex-row items-center justify-between gap-3">
+              <button
+                onClick={() => {
+                  onResetDefault();
+                  onClose();
+                }}
+                className="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-rose-500/30 text-rose-300 hover:bg-rose-500/10 text-xs font-semibold transition flex items-center justify-center gap-1.5"
+              >
+                <Icon name="RotateCcw" className="w-4 h-4" /> Khôi Phục Mặc Định
+              </button>
+
+              <div className="flex items-center gap-2 w-full sm:w-auto">
+                <button
+                  onClick={onClose}
+                  className="flex-1 sm:flex-none px-4 py-2.5 rounded-xl border border-pink-500/30 text-pink-200 hover:bg-slate-800 text-xs font-semibold transition"
+                >
+                  Hủy
+                </button>
+                <button
+                  onClick={handleSave}
+                  className="flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-gradient-to-r from-pink-500 via-purple-500 to-amber-400 text-white font-serif font-bold text-xs shadow-lg hover:scale-105 active:scale-95 transition flex items-center justify-center gap-2"
+                >
+                  <Icon name={savedSuccess ? "Check" : "Save"} className="w-4 h-4" />
+                  <span>{savedSuccess ? "Đã Lưu Thành Công!" : "Lưu & Áp Dụng"}</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      );
+    };
+
+    // --- MAIN APP ENTRY ---
+    const App = () => {
+      const [currentScene, setCurrentScene] = useState(0);
+      const [isDarkMode, setIsDarkMode] = useState(true);
+      const [hasGoldenKey, setHasGoldenKey] = useState(false);
+      const [config, setConfig] = useState(initialBirthdayConfig);
+      const [isEditorOpen, setIsEditorOpen] = useState(false);
+      const canvasRef = useRef(null);
+
+      useEffect(() => {
+        let sys;
+        if (canvasRef.current) {
+          sys = ParticleSystem(canvasRef.current);
+        }
+        return () => sys && sys.destroy();
+      }, []);
+
+      return (
+        <div className={`min-h-screen relative select-none ${isDarkMode ? 'dark' : ''}`}>
+          <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-0 w-full h-full" />
+
+          {currentScene > 0 && (
+            <HeaderNav
+              currentScene={currentScene}
+              totalScenes={9}
+              onSelectScene={(idx) => setCurrentScene(idx)}
+              isDarkMode={isDarkMode}
+              onToggleDarkMode={() => setIsDarkMode(!isDarkMode)}
+              hasGoldenKey={hasGoldenKey}
+              onOpenEditor={() => setIsEditorOpen(true)}
+            />
+          )}
+
+          <main className="relative z-10 min-h-screen">
+            {currentScene === 0 && <LoadingScreen onComplete={() => setCurrentScene(1)} isDarkMode={isDarkMode} config={config} />}
+            {currentScene === 1 && <CastleEntrance onNext={() => setCurrentScene(2)} isDarkMode={isDarkMode} />}
+            {currentScene === 2 && <HeartQuestGame onCompleteKey={() => { setHasGoldenKey(true); setCurrentScene(3); }} isDarkMode={isDarkMode} />}
+            {currentScene === 3 && <TreasureRoom onNext={() => setCurrentScene(4)} isDarkMode={isDarkMode} hasGoldenKey={hasGoldenKey} />}
+            {currentScene === 4 && <TypewriterLetter onNext={() => setCurrentScene(5)} isDarkMode={isDarkMode} config={config} />}
+            {currentScene === 5 && <MusicPlayer onNext={() => setCurrentScene(6)} isDarkMode={isDarkMode} playlist={config.playlist} />}
+            {currentScene === 6 && <PolaroidGallery onNext={() => setCurrentScene(7)} isDarkMode={isDarkMode} config={config} />}
+            {currentScene === 7 && <BirthdayCake onNext={() => setCurrentScene(8)} isDarkMode={isDarkMode} config={config} />}
+            {currentScene === 8 && <EmotionalEnding onRestart={() => setCurrentScene(0)} isDarkMode={isDarkMode} config={config} />}
+          </main>
+
+          <ConfigEditorModal
+            isOpen={isEditorOpen}
+            onClose={() => setIsEditorOpen(false)}
+            config={config}
+            onSaveConfig={(cfg) => setConfig(cfg)}
+            onResetDefault={() => setConfig(initialBirthdayConfig)}
+          />
+        </div>
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
